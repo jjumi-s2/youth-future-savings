@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>청년미래적금 은행별 비교</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, 'Apple SD Gothic Neo', 'Pretendard', sans-serif; background: #F7F8F3; color: #1a1a1a; }
+  .container { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  .page-title { font-size: 28px; font-weight: 700; color: #1B4332; margin-bottom: 6px; }
+  .page-meta { font-size: 13px; color: #888; margin-bottom: 2rem; }
+  .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 2rem; }
+  .summary-card { background: #fff; border-radius: 12px; padding: 14px 16px; border: 1px solid #E5E7EB; }
+  .summary-label { font-size: 11px; color: #888; margin-bottom: 6px; }
+  .summary-value { font-size: 22px; font-weight: 700; color: #1B4332; }
+  .summary-sub { font-size: 11px; color: #aaa; margin-top: 3px; line-height: 1.4; }
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .filter-btn { font-size: 12px; padding: 5px 14px; border: 1px solid #D1D5DB; border-radius: 100px; background: #fff; color: #555; cursor: pointer; transition: all 0.15s; }
+  .filter-btn.active { background: #1B4332; color: #fff; border-color: #1B4332; }
+  .filter-btn:hover:not(.active) { background: #F0FFF4; border-color: #9ecfae; }
+  .bank-card { border: 1px solid #E5E7EB; border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 10px; background: #fff; }
+  .bank-header { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+  .bank-avatar { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .bank-name { font-size: 15px; font-weight: 600; color: #1a1a1a; }
+  .bank-sub { font-size: 12px; color: #999; margin-top: 2px; }
+  .rate-badges { display: flex; gap: 8px; margin-left: auto; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .badge { font-size: 12px; padding: 3px 10px; border-radius: 100px; font-weight: 600; }
+  .badge-base { background: #F3F4F6; color: #6B7280; }
+  .badge-max8 { background: #D8F3DC; color: #1B4332; }
+  .badge-max7 { background: #DBE9F8; color: #1e4d7b; }
+  .chevron { font-size: 16px; color: #aaa; transition: transform 0.2s; margin-left: 8px; }
+  .chevron.open { transform: rotate(180deg); }
+  .details { display: none; border-top: 1px solid #F3F4F6; padding-top: 1rem; margin-top: 1rem; }
+  .details.open { display: block; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+  .detail-item .label { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .detail-item .value { font-size: 13px; color: #1a1a1a; line-height: 1.5; }
+  .pref-title { font-size: 11px; font-weight: 600; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .pref-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .pref-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #333; line-height: 1.55; }
+  .pref-num { font-size: 10px; background: #F3F4F6; border-radius: 50%; width: 18px; height: 18px; min-width: 18px; display: flex; align-items: center; justify-content: center; color: #888; margin-top: 2px; font-weight: 600; }
+  .pref-rate { font-size: 11px; color: #1B4332; background: #D8F3DC; padding: 2px 7px; border-radius: 100px; margin-left: 4px; white-space: nowrap; flex-shrink: 0; margin-top: 3px; font-weight: 600; }
+  .pref-mandatory { font-size: 11px; background: #FEF3C7; border: 1px solid #FCD34D; border-radius: 8px; padding: 7px 10px; margin-top: 6px; color: #92400E; line-height: 1.5; }
+  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1rem; }
+  .pros, .cons { border-radius: 10px; padding: 10px 12px; }
+  .pros { background: #F0FFF4; border: 1px solid #C6E9D0; }
+  .cons { background: #FFF5F5; border: 1px solid #FECACA; }
+  .pros-cons-title { font-size: 11px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.03em; }
+  .pros .pros-cons-title { color: #1B4332; }
+  .cons .pros-cons-title { color: #991B1B; }
+  .pros-cons ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .pros-cons ul li { font-size: 12px; line-height: 1.5; padding-left: 14px; position: relative; color: #333; }
+  .pros ul li::before { content: "✓"; position: absolute; left: 0; color: #1B4332; font-weight: 700; font-size: 11px; }
+  .cons ul li::before { content: "✗"; position: absolute; left: 0; color: #DC2626; font-weight: 700; font-size: 11px; }
+  .difficulty-badge { font-size: 11px; padding: 2px 8px; border-radius: 100px; font-weight: 600; margin-left: 6px; }
+  .diff-easy { background: #D8F3DC; color: #1B4332; }
+  .diff-mid { background: #FEF3C7; color: #92400E; }
+  .diff-hard { background: #FCE7F3; color: #831843; }
+  .section-divider { font-size: 11px; font-weight: 700; color: #888; margin: 1rem 0 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .notice { margin-top: 2.5rem; background: #F8F9FA; border: 1px solid #E5E7EB; border-radius: 12px; padding: 1rem 1.25rem; }
+  .notice-title { font-size: 12px; font-weight: 700; color: #555; margin-bottom: 8px; }
+  .notice ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .notice ul li { font-size: 12px; color: #888; line-height: 1.6; padding-left: 12px; position: relative; }
+  .notice ul li::before { content: "·"; position: absolute; left: 0; color: #bbb; }
+  footer { margin-top: 1rem; font-size: 11px; color: #bbb; text-align: center; }
+  @media (max-width: 600px) {
+    .container { padding: 1.5rem 1rem; }
+    .page-title { font-size: 22px; }
+
+    /* 상단 요약 카드: 3열 → 2열 */
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+    .summary-value { font-size: 18px; }
+
+    /* 은행 카드 헤더: 뱃지 줄바꿈 방지 */
+    .bank-header { align-items: flex-start; gap: 8px; }
+    .bank-avatar { width: 36px; height: 36px; font-size: 11px; margin-top: 2px; }
+    .bank-name { font-size: 14px; }
+    .rate-badges { gap: 4px; flex-direction: column; align-items: flex-end; }
+    .badge { font-size: 11px; padding: 2px 8px; }
+    .chevron { margin-left: 2px; }
+    .difficulty-badge { margin-left: 0; }
+
+    /* 펼쳐지는 상세: 3열 → 1열 */
+    .detail-grid { grid-template-columns: 1fr; gap: 8px; }
+
+    /* 장단점: 2열 → 1열 */
+    .pros-cons { grid-template-columns: 1fr; }
+
+    /* 상품 개요 내 정보 카드: 2열 → 1열 */
+    .info-2col { grid-template-columns: 1fr !important; }
+
+    /* 정부 기여금 박스 */
+    .gov-support { flex-direction: column !important; }
+
+    /* 신청 일정 */
+    .schedule-5col { grid-template-columns: repeat(3, 1fr) !important; }
+
+    /* 문의처 */
+    .contact-grid { grid-template-columns: 1fr 1fr !important; }
+
+    /* 만기수령액 비교 */
+    .payout-grid { grid-template-columns: 1fr !important; }
+
+    /* 필터 버튼 */
+    .filter-btn { font-size: 11px; padding: 4px 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 class="page-title">🏦 청년미래적금 은행별 비교</h1>
+  <p class="page-meta">기준일 2026.06.07 &nbsp;·&nbsp; 총 14개 은행 &nbsp;·&nbsp; 기본금리 연 5.00% 공통</p>
+
+  <!-- 상품 개요 섹션 -->
+  <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+    <p style="font-size:15px;font-weight:700;color:#1B4332;margin-bottom:10px;">📋 청년미래적금이란?</p>
+    <p style="font-size:13px;color:#444;line-height:1.8;margin-bottom:1rem;">청년들의 기초자산 형성을 지원하기 위한 정책형 금융상품으로, 3년 만기 시까지 매월 최대 50만원 한도 내에서 자유롭게 납입하면 일반형 6%, 우대형 12%의 정부 기여금을 지급하고 이자소득에 대한 비과세 혜택을 제공하는 상품이에요.</p>
+
+    <div class="info-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem;">
+      <div style="background:#F0FFF4;border-radius:10px;padding:12px 14px;">
+        <p style="font-size:11px;color:#888;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">가입 대상</p>
+        <p style="font-size:12px;color:#333;line-height:1.7;">만 19~34세 청년 (병역이행기간 최대 6년 제외)<br>개인소득 연 7,500만원 이하 또는 연매출 3억원 이하 소상공인<br>가구 기준중위소득 200% 이하</p>
+        <p style="font-size:11px;color:#888;margin-top:6px;">※ 개인소득 6,000~7,500만원 이하는 비과세 혜택만 적용<br>※ 직전 3개년도 중 1회 이상 금융소득종합과세 대상자는 가입 제외</p>
+      </div>
+      <div style="background:#F0FFF4;border-radius:10px;padding:12px 14px;">
+        <p style="font-size:11px;color:#888;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">상품 내용</p>
+        <p style="font-size:12px;color:#333;line-height:1.7;">월 최대 50만원 · 3년 만기 자유적립식<br>만기일시지급 · 1인 1계좌<br>은행 앱 또는 지점에서 가입</p>
+      </div>
+    </div>
+
+    <div style="background:#F8F9FA;border-radius:10px;padding:12px 14px;margin-bottom:10px;">
+      <p style="font-size:11px;color:#888;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">정부 기여금 지원</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:160px;background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #E5E7EB;">
+          <p style="font-size:12px;font-weight:700;color:#1B4332;margin-bottom:4px;">일반형 · 납입금의 6%</p>
+          <p style="font-size:11px;color:#666;line-height:1.6;">총급여 6,000만원(종합소득 4,800만원) 이하<br>또는 연매출 3억원 이하 소상공인<br>+ 가구중위소득 200% 이하</p>
+        </div>
+        <div style="flex:1;min-width:160px;background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #D8F3DC;">
+          <p style="font-size:12px;font-weight:700;color:#1B4332;margin-bottom:4px;">우대형 · 납입금의 12%</p>
+          <p style="font-size:11px;color:#666;line-height:1.6;">총급여 3,600만원(종합소득 2,600만원) 이하 중소기업 재직자<br>또는 연매출 1억원 이하 소상공인<br>+ 가구중위소득 150% 이하</p>
+        </div>
+      </div>
+      <p style="font-size:11px;color:#aaa;margin-top:8px;">※ 맞벌이 2인가구(부부)는 일반형 200%→250%, 우대형 150%→200% 적용<br>※ 직전 3개년도 중 1회 이상 금융소득종합과세 대상자는 가입 제외</p>
+    </div>
+
+    <div style="background:#F8F9FA;border-radius:10px;padding:12px 14px;">
+      <p style="font-size:11px;color:#888;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">공통 우대금리 (전 은행 동일)</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:12px;background:#D8F3DC;color:#1B4332;padding:4px 10px;border-radius:100px;font-weight:600;">소득 우대 +0.5%p</span>
+        <span style="font-size:12px;background:#D8F3DC;color:#1B4332;padding:4px 10px;border-radius:100px;font-weight:600;">청년재무상담 이수 +0.2%p</span>
+      </div>
+      <p style="font-size:11px;color:#aaa;margin-top:6px;">※ 총급여 3,600만원(종합소득 2,600만원) 이하 소득자에게 소득 우대 적용<br>※ 비과세소득(육아휴직급여, 군장병급여)자는 소득 우대 미적용</p>
+    </div>
+  </div>
+
+  <!-- 신청 일정 -->
+  <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+    <p style="font-size:15px;font-weight:700;color:#1B4332;margin-bottom:1rem;">📅 가입 신청 일정</p>
+    <p style="font-size:11px;color:#888;margin-bottom:8px;font-weight:600;">1단계 · 출생연도 끝자리별 신청 (6.22~6.26)</p>
+    <div class="schedule-5col" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px;">
+      <div style="background:#E8F4FD;border-radius:10px;padding:10px 6px;text-align:center;">
+        <p style="font-size:11px;font-weight:700;color:#1e4d7b;margin-bottom:4px;">6.22(월)</p>
+        <p style="font-size:13px;font-weight:700;color:#1a1a1a;">1, 6</p>
+      </div>
+      <div style="background:#E8F4FD;border-radius:10px;padding:10px 6px;text-align:center;">
+        <p style="font-size:11px;font-weight:700;color:#1e4d7b;margin-bottom:4px;">6.23(화)</p>
+        <p style="font-size:13px;font-weight:700;color:#1a1a1a;">2, 7</p>
+      </div>
+      <div style="background:#E8F4FD;border-radius:10px;padding:10px 6px;text-align:center;">
+        <p style="font-size:11px;font-weight:700;color:#1e4d7b;margin-bottom:4px;">6.24(수)</p>
+        <p style="font-size:13px;font-weight:700;color:#1a1a1a;">3, 8</p>
+      </div>
+      <div style="background:#E8F4FD;border-radius:10px;padding:10px 6px;text-align:center;">
+        <p style="font-size:11px;font-weight:700;color:#1e4d7b;margin-bottom:4px;">6.25(목)</p>
+        <p style="font-size:13px;font-weight:700;color:#1a1a1a;">4, 9</p>
+      </div>
+      <div style="background:#E8F4FD;border-radius:10px;padding:10px 6px;text-align:center;">
+        <p style="font-size:11px;font-weight:700;color:#1e4d7b;margin-bottom:4px;">6.26(금)</p>
+        <p style="font-size:13px;font-weight:700;color:#1a1a1a;">5, 0</p>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#888;margin-bottom:8px;font-weight:600;">2단계 · 누구나 신청 가능 (6.29~7.3)</p>
+    <div style="background:#D8F3DC;border-radius:10px;padding:12px 14px;text-align:center;">
+      <p style="font-size:13px;font-weight:700;color:#1B4332;">6.29(월) ~ 7.3(금) 출생연도 끝자리와 관계없이 모두 가입신청 가능!</p>
+    </div>
+  </div>
+
+  <!-- 문의처 -->
+  <details style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:1rem 1.5rem;margin-bottom:1.5rem;">
+    <summary style="font-size:14px;font-weight:700;color:#1B4332;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">📞 기관별 문의처 <span style="font-size:12px;color:#aaa;font-weight:400;">클릭해서 펼치기</span></summary>
+    <div class="contact-grid" style="margin-top:1rem;display:grid;grid-template-columns:repeat(2,1fr);gap:6px;">
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">서민금융진흥원</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1397</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">NH농협은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1661-3000, 1522-3000</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">신한은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1577-8000</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">우리은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1588-5000</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">하나은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1599-1111</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">IBK기업은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1566-2566</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">KB국민은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1588-9999</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">Sh수협은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1588-1515</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">iM은행(구 대구은행)</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1566-5050, 1588-5050</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">BNK부산은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1588-6200</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">광주은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1600-4000</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">전북은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1588-4477</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">BNK경남은행</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1600-8585</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">카카오뱅크</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1599-3333</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">토스뱅크</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1661-7654</p></div>
+      <div style="background:#F8F9FA;border-radius:8px;padding:8px 10px;"><p style="font-size:11px;color:#888;margin-bottom:2px;">우정사업본부</p><p style="font-size:12px;font-weight:600;color:#1a1a1a;">1599-1900, 1588-1900</p></div>
+    </div>
+    <p style="font-size:11px;color:#aaa;margin-top:10px;">※ 제도 관련 문의: 서민금융진흥원 국번없이 1397</p>
+  </details>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <p class="summary-label">최고금리 8% 은행</p>
+      <p class="summary-value">7개</p>
+      <p class="summary-sub">NH·신한·우리·하나·기업·KB·우체국</p>
+    </div>
+    <div class="summary-card">
+      <p class="summary-label">최고금리 7% 은행</p>
+      <p class="summary-value">7개</p>
+      <p class="summary-sub">수협·iM·부산·광주·전북·경남·카카오</p>
+    </div>
+    <div class="summary-card">
+      <p class="summary-label">공통 기본금리</p>
+      <p class="summary-value">5.00%</p>
+      <p class="summary-sub">전 은행 동일</p>
+    </div>
+  </div>
+  <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:10px 14px;margin-bottom:1.5rem;display:flex;align-items:center;gap:10px;">
+    <span style="font-size:16px;">🔜</span>
+    <p style="font-size:13px;color:#1e4d7b;line-height:1.6;"><strong>총 15개 은행 중 14개 은행 기준 정보예요</strong><br>토스뱅크는 아직 금리 공시 전이라 포함되지 않았어요. 공시 후 업데이트할게요!</p>
+  </div>
+
+  <!-- 만기수령액 비교 -->
+  <div style="background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;">
+    <p style="font-size:15px;font-weight:700;color:#1B4332;margin-bottom:4px;">💰 7% vs 8% 만기수령액 비교</p>
+    <p style="font-size:12px;color:#aaa;margin-bottom:1rem;">월 50만원 × 3년 납입 기준</p>
+    <div class="payout-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="background:#F8F9FA;border-radius:10px;padding:12px 14px;">
+        <p style="font-size:11px;color:#888;margin-bottom:10px;font-weight:600;">일반형 (정부기여금 6%)</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:12px;color:#555;">최고 7% 은행</span>
+          <span style="font-size:15px;font-weight:700;color:#1a1a1a;">2,110만원</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-size:12px;color:#555;">최고 8% 은행</span>
+          <span style="font-size:15px;font-weight:700;color:#1B4332;">2,138만원</span>
+        </div>
+        <div style="background:#D8F3DC;border-radius:8px;padding:6px 10px;text-align:center;">
+          <span style="font-size:12px;font-weight:700;color:#1B4332;">8% 은행이 +28만원 더</span>
+        </div>
+      </div>
+      <div style="background:#F8F9FA;border-radius:10px;padding:12px 14px;">
+        <p style="font-size:11px;color:#888;margin-bottom:10px;font-weight:600;">우대형 (정부기여금 12%)</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:12px;color:#555;">최고 7% 은행</span>
+          <span style="font-size:15px;font-weight:700;color:#1a1a1a;">2,227만원</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-size:12px;color:#555;">최고 8% 은행</span>
+          <span style="font-size:15px;font-weight:700;color:#1B4332;">2,255만원</span>
+        </div>
+        <div style="background:#D8F3DC;border-radius:8px;padding:6px 10px;text-align:center;">
+          <span style="font-size:12px;font-weight:700;color:#1B4332;">8% 은행이 +28만원 더</span>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:#888;background:#FFFBEB;border-radius:8px;padding:8px 12px;line-height:1.8;">💡 8% 은행을 선택하더라도 <strong style="color:#1B4332;">우대조건을 충족하지 못하면</strong> 이 <strong style="color:#1B4332;">+28만원</strong>의 혜택을 받을 수 없어요.<br><strong style="color:#1B4332;">내가 실제로 맞출 수 있는 조건을 가진 은행</strong>이 어디인지를 먼저 확인하고 선택하는 게 중요해요.</p>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterCards('all',this)">전체 (14)</button>
+    <button class="filter-btn" onclick="filterCards('8',this)">최고 8% 은행</button>
+    <button class="filter-btn" onclick="filterCards('7',this)">최고 7% 은행</button>
+    <button class="filter-btn" onclick="filterCards('salary',this)">급여이체 우대</button>
+  </div>
+
+  <div id="card-list"></div>
+  <p class="no-result" id="no-result">조건에 맞는 은행이 없습니다.</p>
+  <div class="notice">
+    <p class="notice-title">⚠️ 정보 이용 시 유의사항</p>
+    <ul>
+      <li>본 비교공시 정보는 은행의 청년미래적금의 금리에 대해 개략적으로 비교할 수 있도록 참고로 제공되고 있습니다.</li>
+      <li>공시된 금리는 세후 금리이며, 자세한 내용은 각 은행의 "상세정보"를 확인하여 주시기 바랍니다.</li>
+      <li>해당 정보는 06.07 기준의 자료이며 정보의 변경과 공시의 시차로 다소 지연 공시될 수 있으므로 자세한 사항은 거래은행에 문의하여 주시기 바랍니다.</li>
+    </ul>
+  </div>
+  <footer>서민금융진흥원 청년미래적금 공시 기준 · 상세 조건은 각 은행 상품설명서를 확인하세요</footer>
+</div>
+
+<script>
+const banks = [
+  // ── 🟢 조건 쉬움 ──────────────────────────────
+  { name:"우체국", color:"#D8F3DC", tc:"#1B4332", initials:"우체", base:5.0, max:8.0, difficulty:"쉬움", updated:"2026-06-01", afterRate:"만기 후 6개월: 30% | 6개월 초과: 보통예금 이율",
+    pros:["이벤트 포함 쉬운 조건으로만 최고금리 달성 가능","체크카드 3개월 20만원으로 카드 조건 중 가장 낮은 기준","만기 후 6개월까지 30% 유지로 여유 있음"],
+    cons:["이벤트 +1.0%p는 6.22~7.3 사전신청 기간 놓치면 소멸","우체국 인프라(지점·ATM)가 상대적으로 적음"],
+    prefs:[{rate:"+1.0%p",text:"사전신청 후 지정기간 내 가입 이벤트 (2026.6.22~7.3 신청, 7.27~8.7 가입)"},{rate:"+0.5%p",text:"우체국 적금 첫거래 또는 급여이체 실적"},{rate:"+0.4%p",text:"우체국 체크카드 3개월 이용실적 20만원 이상"},{rate:"+0.4%p",text:"우체국 수시입출식→적금 자동이체 18개월 이상"},{rate:"+0.5%p",text:"소득 요건 충족 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"청년재무상담 이수"}] },
+  { name:"KB국민은행", color:"#DBE9F8", tc:"#1e4d7b", initials:"KB", base:5.0, max:8.0, difficulty:"쉬움", updated:"2026-05-28", afterRate:"만기 후 1개월: 50% | 3개월: 30% | 3개월 초과: 0.1%",
+    pros:["공과금·KB카드·리브모바일 중 택1로 유연함","조건 5개로 심플하고, 급여이체 12회만으로 +1.0%p","도약계좌 이력만 있어도 +0.5%p 가능"],
+    cons:["만기 후 3개월 초과 시 0.1%로 급락","KB 계열 카드나 서비스 안 쓰면 선택지가 좁아짐"],
+    prefs:[{rate:"+1.0%p",text:"KB국민은행 입출금통장 급여 입금 12회 이상"},{rate:"+0.8%p",text:"공과금 자동이체 12회 이상 OR KB리브모바일 자동이체 12회 이상 OR KB국민카드 결제 12회 이상 (택1)"},{rate:"+0.5%p",text:"KB청년도약계좌 가입이력 OR 가입일 기준 6개월 이내 KB예적금 보유이력 없는 경우 OR KB모임통장 총무+모임원 2명 이상"},{rate:"+0.5%p",text:"소득플러스 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"청년재무상담 이수 (만기월 3개월 전 말일까지)"}] },
+  { name:"우리은행", color:"#FFF3CD", tc:"#7c5a00", initials:"우리", base:5.0, max:8.0, difficulty:"쉬움", updated:"2026-05-29", afterRate:"만기 후 1개월: 50% | 6개월: 30% | 6개월 초과: 20%",
+    pros:["급여이체 하나로 +1.5%p — 단일 조건 중 최고","통신비·보험료 자동이체처럼 이미 쓰는 항목으로 채울 수 있음","까다로운 조건 없음","만기 후 금리가 6개월까지 20%로 여유 있음"],
+    cons:["일반 우대금리 전체를 받으려면 우리금융그룹 마케팅동의(휴대폰/SMS) 필수 — 만기까지 유지해야 함","카드 조건이 자사 카드로만 인정됨","출시기념 우대(+0.3%p)는 12.31까지만 적용"],
+    prefs:[{rate:"+1.5%p",text:"급여 100만원 이상 또는 가맹점 대금 18개월 이상"},{rate:"+0.5%p",text:"직전 6개월 우리은행 예적금 미보유 또는 도약계좌 연계"},{rate:"+0.5%p",text:"우리카드 이용 OR 동양생명/ABL생명 보험료 자동이체 OR 우리WON모바일 통신비 자동이체 18개월 이상"},{rate:"+0.5%p",text:"소득 우대 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"서민금융진흥원 재무상담 이용"},{rate:"+0.3%p",text:"출시기념 우대 (2026.12.31까지 가입)"},{rate:"필수",text:"⚠️ 일반 우대금리 전체 적용을 위해 우리금융그룹 마케팅동의(휴대폰/SMS 중 하나 이상) 동의 후 만기까지 유지 필수"}] },
+  // ── 🟡 조건 보통 ──────────────────────────────
+  { name:"NH농협은행", color:"#D8F3DC", tc:"#1B4332", initials:"NH", base:5.0, max:8.0, difficulty:"보통", updated:"2026-05-28", afterRate:"만기 후 1년 이내: 기본금리 1/2 | 1년 초과: 보통예금 이율",
+    pros:["NH카드 이미 쓰는 사람이라면 자연스럽게 조건 충족","마이데이터 연결만으로 +0.3%p 추가 가능"],
+    cons:["NH카드 월 20만원×18개월 실적이 부담될 수 있음","마이데이터 2개 업권 연결 조건이 다소 생소함"],
+    prefs:[{rate:"+1.0%p",text:"급여이체 또는 가맹점 대금 입금 18개월 이상"},{rate:"+0.7%p",text:"NH카드 월평균 20만원 이상 이용 18개월 이상"},{rate:"+0.3%p",text:"가입 전 1년간 농협 예적금 미보유 또는 도약계좌 연계"},{rate:"+0.3%p",text:"NH마이데이터 2개 업권 이상 자산연결 18개월 이상"},{rate:"+0.2%p",text:"모두를 위한 재무상담 참여"},{rate:"+0.5%p",text:"소득+ 우대 (총급여 3,600만원 이하)"}] },
+  { name:"신한은행", color:"#DBE9F8", tc:"#1e4d7b", initials:"신한", base:5.0, max:8.0, difficulty:"보통", updated:"2026-05-28", afterRate:"만기 후 1개월: 1/2 | 1~6개월: 1/4 | 6개월 초과: 0.1%",
+    pros:["청년도약계좌 연계 시 8.31까지 +1.0%p 보너스","카드 실적 기준이 '18개월 사용'으로 금액 기준 없음"],
+    cons:["증권거래 실적 조건은 투자 경험 없으면 진입장벽 있음","만기 후 금리가 0.1%로 빠르게 낮아짐"],
+    prefs:[{rate:"+0.5%p",text:"소득+ 우대 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"청년재무상담 이수 (만기월 3개월 전까지)"},{rate:"+0.3%p",text:"급여이체 18개월 이상 (건당 50만원 이상)"},{rate:"+0.2%p",text:"신한카드 18개월 이상 사용"},{rate:"+0.5%p",text:"신한투자증권 증권거래 실적 3개월 이상"},{rate:"+0.3%p",text:"가입 직전 6개월간 신한은행 정기예금·정기적금 미보유 또는 청년도약계좌 연계가입"},{rate:"+1.0%p",text:"청년도약계좌 연계가입 특별우대 (2026.8.31까지)"}] },
+  { name:"하나은행", color:"#EDE9FE", tc:"#4c1d95", initials:"하나", base:5.0, max:8.0, difficulty:"보통", updated:"2026-05-28", afterRate:"만기 후 1개월: 1/2 | 1개월 초과: 1/4",
+    pros:["조건 수 5개로 14개 은행 중 가장 심플한 구조","급여이체 +1.2%p로 단일 조건 효율 높음"],
+    cons:["카드 결제 24회 달성에 최소 2년 필요","만기 후 금리가 1개월 초과 시 급격히 낮아짐"],
+    prefs:[{rate:"+1.2%p",text:"하나은행 입출금통장 급여 또는 가맹점 입금 24회 이상"},{rate:"+0.6%p",text:"하나카드 결제실적 24회 이상"},{rate:"+0.5%p",text:"직전 1년간 예적금 미보유 (청년도약계좌 등 제외)"},{rate:"+0.5%p",text:"소득 요건 충족 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"청년재무상담 이수 (만기 전전월말까지)"}] },
+  { name:"카카오뱅크", color:"#FFF9E6", tc:"#7c5a00", initials:"카카", base:5.0, max:7.0, difficulty:"보통", updated:"2026-05-28", afterRate:"만기 후 1개월: 50% | 3개월: 30% | 3개월 초과: 0.2%",
+    pros:["100% 앱으로 가입·관리 가능, 접근성 최고","입출금 통장 개설 후 2개월 내 가입하면 +0.7%p 손쉽게 확보"],
+    cons:["체크카드 월 50만원×24개월 조건은 실질적으로 부담","카드 조건 미충족 시 최고 6.4%에 그침"],
+    prefs:[{rate:"+0.5%p",text:"소득 요건 충족 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"서민금융진흥원 청년재무상담 이수"},{rate:"+0.7%p",text:"카카오뱅크 입출금통장 최초 개설 후 2개월 이내 가입"},{rate:"+0.6%p",text:"체크카드 24개월 이상 월 50만원 이용 (30만원: 0.3%p)"}] },
+  { name:"BNK경남은행", color:"#EDE9FE", tc:"#4c1d95", initials:"경남", base:5.0, max:7.0, difficulty:"보통", updated:"2026-05-28", afterRate:"만기 후 1개월: 50% | 1개월 초과: 20%",
+    pros:["응원금리 +0.3%p는 모든 가입고객에게 자동 적용","카드 조건이 3개월 10만원으로 기준이 매우 낮음","만기 후 1개월 초과에도 20% 유지"],
+    cons:["경남 외 지역 접근성 낮음","최고금리 7%"],
+    prefs:[{rate:"+0.5%p",text:"소득 우대 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"재무상담 이수"},{rate:"+0.3%p",text:"청년미래응원금리 (모든 가입고객)"},{rate:"+0.1%p",text:"가입 전 마케팅동의 (모바일 메세지 동의)"},{rate:"+0.7%p",text:"급여이체 또는 BC·신한·삼성 카드사 가맹점 대금 입금 계약기간 1/2 이상 (건당 50만원 이상)"},{rate:"+0.2%p",text:"신용(체크)카드 3개월간 10만원 이상 사용"},{rate:"+0.2%p",text:"직전 1년 예적금 신규·해지 이력 없는 신규고객"}] },
+  { name:"전북은행", color:"#FCE7F3", tc:"#831843", initials:"전북", base:5.0, max:7.0, difficulty:"보통", updated:"2026-05-28", afterRate:"만기 후 1개월: 1/2 | 1개월 초과: 0.1%",
+    pros:["계약기간 1/2 기준이라 24개월 상품이면 12개월만 충족하면 됨","마케팅동의+재무상담으로 기본 +0.7%p 쉽게 확보"],
+    cons:["전북·전남 외 지역 접근성 낮음","만기 후 1개월 초과 시 0.1%로 급락"],
+    prefs:[{rate:"+0.5%p",text:"소득+ 우대 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"청년재무상담 이수"},{rate:"+0.5%p",text:"급여/가맹점 이체 계약기간 1/2 이상 (월 50만원 이상)"},{rate:"+0.3%p",text:"JB카드 사용실적 계약기간 1/2 이상"},{rate:"+0.3%p",text:"전북은행 계좌간 자동이체 계약기간 1/2 이상"},{rate:"+0.2%p",text:"신규 시 마케팅 동의"}] },
+  { name:"Sh수협은행", color:"#D1FAE5", tc:"#065f46", initials:"수협", base:5.0, max:7.0, difficulty:"보통", updated:"2026-05-29", afterRate:"만기 후 1개월: 1/2 | 3개월: 1/4 | 3개월 초과: 보통예금 기본금리",
+    pros:["카드 조건이 월 10만원으로 비교적 낮은 기준","소득·재무상담·마케팅동의로 기본 +0.9%p 손쉽게 확보"],
+    cons:["수협 주거래 고객 아닌 경우 급여이체 전환 부담","최고금리 7%로 8% 은행보다 1%p 낮음"],
+    prefs:[{rate:"+0.5%p",text:"소득+ 우대 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"청년재무상담 이수"},{rate:"+0.2%p",text:"마케팅 활용 안내수단 전체 동의 유지"},{rate:"+0.5%p",text:"수협은행 급여이체 20개월 이상 (건당 50만원 이상)"},{rate:"+0.6%p",text:"수협카드 결제 월 10만원 이상 20개월 이상"}] },
+  { name:"iM뱅크(대구은행)", color:"#FFF3CD", tc:"#7c5a00", initials:"iM", base:5.0, max:7.0, difficulty:"보통", updated:"2026-05-28", afterRate:"만기 후 1개월: 50% | 3개월: 25% | 3개월 초과: 10%",
+    pros:["만기 후 3개월 초과에도 10% 유지 — 만기 후 금리 가장 여유 있음","마케팅동의 +0.1%p 등 소소하게 쌓이는 구조"],
+    cons:["대구·경북 외 지역은 영업점 접근성 낮음","최고금리 7%로 8% 은행 대비 낮음"],
+    prefs:[{rate:"+0.3%p",text:"최초거래 (실명등록 3개월 이내 또는 직전 6개월 수신잔액 0원)"},{rate:"+0.1%p",text:"마케팅 활용 개인정보 전체 동의"},{rate:"+0.3%p",text:"자동이체 납입 24개월 이상"},{rate:"+0.3%p",text:"월 50만원 이상 급여이체 24개월 이상"},{rate:"+0.3%p",text:"iM BC카드 결제 월 10만원 이상 24개월 이상"},{rate:"+0.5%p",text:"소득+ 우대 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"청년재무상담 이수 (만기월 3개월 전 말일까지)"}] },
+  { name:"BNK부산은행", color:"#DBE9F8", tc:"#1e4d7b", initials:"부산", base:5.0, max:7.0, difficulty:"보통", updated:"2026-05-28", afterRate:"만기 후 1년: 1/2 | 1년 초과: 1/5",
+    pros:["카드 조건이 누적 300만원(2년 기준 월 12만5천원)으로 낮은 편","만기 후 1년까지 1/2 유지로 여유 있음"],
+    cons:["부산·경남 외 지역 접근성 낮음","청약통장 조건이 부산은행 한정"],
+    prefs:[{rate:"+0.5%p",text:"급여이체 18개월 이상"},{rate:"+0.5%p",text:"신용(체크)카드 누적 이용금액 300만원 이상"},{rate:"+0.3%p",text:"부산은행 주택청약종합저축 보유"},{rate:"+0.5%p",text:"소득 우대 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"청년재무상담 이수"}] },
+  { name:"광주은행", color:"#D8F3DC", tc:"#1B4332", initials:"광주", base:5.0, max:7.0, difficulty:"보통", updated:"2026-06-01", afterRate:"만기 후 1개월: 1/2 | 1개월 초과: 0.1%",
+    pros:["카드 조건 없음 — 14개 은행 중 유일","도약계좌 연계+첫거래로 +0.5%p 손쉽게 확보"],
+    cons:["급여이체 30회는 조건 중 가장 많은 횟수","정기예금 1천만원 조건은 자산 여유 없으면 불가","만기 후 1개월 초과 시 0.1%로 급락"],
+    prefs:[{rate:"+0.5%p",text:"연소득 3,600만원 이하"},{rate:"+0.2%p",text:"청년 재무상담 이수"},{rate:"+0.5%p",text:"첫거래 또는 KJB청년도약계좌 연계가입"},{rate:"+0.3%p",text:"급여이체 30회 이상 (만기 전전월말까지)"},{rate:"+0.2%p",text:"청년미래적금 자동이체 20회 이상"},{rate:"+0.3%p",text:"계약기간 중 원화정기예금 1천만원 이상 신규·만기해지"}] },
+  // ── 🔴 조건 어려움 ─────────────────────────────
+  { name:"IBK기업은행", color:"#FCE7F3", tc:"#831843", initials:"기업", base:5.0, max:8.0, difficulty:"어려움", updated:"2026-05-29", afterRate:"만기일 당시 정기적금 만기 후 금리 적용",
+    pros:["중소기업 재직자라면 자연스럽게 채워지는 조건 多","청약통장·도약계좌 등 이미 갖고 있으면 유리","최초 신규고객 조건(실명등록 3개월 이내 또는 수신평잔 0원) 충족 시 +0.5%p 추가"],
+    cons:["조건 수 9개로 14개 은행 중 가장 많고 복잡","급여이체 24개월 + 카드 연 360만원 동시 충족이 부담"],
+    prefs:[{rate:"+0.5%p",text:"소득 우대 (총급여 3,600만원 이하)"},{rate:"+0.2%p",text:"청년재무상담 이수 (만기월 3개월 전 말일까지)"},{rate:"+0.2%p",text:"중소기업 재직자 또는 신규취업자 유형 가입"},{rate:"+0.5%p",text:"월 50만원 이상 급여이체 24개월 이상"},{rate:"+0.3%p",text:"기업은행 신용(체크)카드 연 360만원 이상 사용 및 만기 시까지 보유"},{rate:"+0.2%p",text:"지로·공과금 월 2건 이상 24개월 이상 납부"},{rate:"+0.3%p",text:"기업은행 주택청약종합저축 (청년주택드림청약통장 포함) 만기 시점 보유"},{rate:"+0.5%p",text:"기업은행 청년도약계좌 보유 고객 연계가입"},{rate:"+0.5%p",text:"최초 신규고객 (실명등록 3개월 이내 또는 직전 6개월 수신평잔 0원)"}] },
+];
+
+let activeFilter = 'all';
+let openSet = new Set();
+
+function filterCards(type, btn) {
+  activeFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function toggle(idx) {
+  openSet.has(idx) ? openSet.delete(idx) : openSet.add(idx);
+  render();
+}
+
+function render() {
+  let list = banks;
+  if (activeFilter === '8') list = banks.filter(b => b.max === 8.0);
+  if (activeFilter === '7') list = banks.filter(b => b.max === 7.0);
+  if (activeFilter === 'salary') list = banks.filter(b => b.prefs.some(p => p.text.includes('급여이체')));
+
+  const el = document.getElementById('card-list');
+  const nr = document.getElementById('no-result');
+  if (!list.length) { el.innerHTML=''; nr.style.display='block'; return; }
+  nr.style.display='none';
+
+  el.innerHTML = list.map(bank => {
+    const idx = banks.indexOf(bank);
+    const open = openSet.has(idx);
+    const maxCls = bank.max === 8.0 ? 'badge-max8' : 'badge-max7';
+    const diffCls = bank.difficulty === '쉬움' ? 'diff-easy' : bank.difficulty === '어려움' ? 'diff-hard' : 'diff-mid';
+    const diffLabel = bank.difficulty === '쉬움' ? '🟢 조건 쉬움' : bank.difficulty === '어려움' ? '🔴 조건 까다로움' : '🟡 조건 보통';
+    return `<div class="bank-card">
+      <div class="bank-header" onclick="toggle(${idx})">
+        <div class="bank-avatar" style="background:${bank.color};color:${bank.tc}">${bank.initials}</div>
+        <div>
+          <p class="bank-name">${bank.name}</p>
+          <p class="bank-sub">우대조건 ${bank.prefs.length}개</p>
+          <span class="difficulty-badge ${diffCls}" style="margin-top:4px;display:inline-block;">${diffLabel}</span>
+        </div>
+        <div class="rate-badges">
+          <span class="badge badge-base">기본 ${bank.base}%</span>
+          <span class="badge ${maxCls}">최고 ${bank.max}%</span>
+          <span class="chevron ${open?'open':''}">▾</span>
+        </div>
+      </div>
+      <div class="details ${open?'open':''}">
+        <div class="detail-grid">
+          <div class="detail-item"><p class="label">우대금리 최대</p><p class="value">+${(bank.max-bank.base).toFixed(1)}%p</p></div>
+          <div class="detail-item"><p class="label">최종 제공일</p><p class="value">${bank.updated}</p></div>
+          <div class="detail-item"><p class="label">만기 후 금리</p><p class="value" style="font-size:12px;color:#888;">${bank.afterRate}</p></div>
+        </div>
+        <div class="pros-cons">
+          <div class="pros">
+            <p class="pros-cons-title">👍 장점</p>
+            <ul>${bank.pros.map(p=>`<li>${p}</li>`).join('')}</ul>
+          </div>
+          <div class="cons">
+            <p class="pros-cons-title">👎 단점</p>
+            <ul>${bank.cons.map(c=>`<li>${c}</li>`).join('')}</ul>
+          </div>
+        </div>
+        <p class="section-divider" style="margin-top:1rem;">우대조건 상세</p>
+        <ul class="pref-list">
+          ${bank.prefs.filter(p=>p.rate!=='필수').map((p,i)=>`<li><span class="pref-num">${i+1}</span><span>${p.text}</span><span class="pref-rate">${p.rate}</span></li>`).join('')}
+        </ul>
+        ${bank.prefs.filter(p=>p.rate==='필수').map(p=>`<div class="pref-mandatory">⚠️ ${p.text}</div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+render();
+</script>
+</body>
+</html>
