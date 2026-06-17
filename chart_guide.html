@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주식 초보가 가장 먼저 봐야 하는 것 | 차트 필수개념.ZIP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+
+  :root {
+    --bg: #FAFAF8;
+    --surface: #FFFFFF;
+    --red: #E84C4C;
+    --blue: #4C7BE8;
+    --yellow: #F5C842;
+    --green: #3DBF7A;
+    --text: #1A1A1A;
+    --text-sub: #555;
+    --text-light: #999;
+    --border: #EBEBEB;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--text);
+    color: #fff;
+    padding: 52px 20px 44px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    background: var(--red);
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+  .hero h1 {
+    font-size: clamp(24px, 7vw, 38px);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--red); }
+  .hero p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    margin: 0 auto 24px;
+    line-height: 1.8;
+  }
+  .hero-chips {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0 8px;
+  }
+  .hero-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px 80px;
+  }
+
+  /* AUTHOR NOTE */
+  .author-note {
+    background: var(--surface);
+    border-left: 4px solid var(--yellow);
+    border-radius: 0 12px 12px 0;
+    padding: 18px 18px;
+    margin: 24px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .author-note .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #C9960A;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  .author-note p {
+    font-size: 14px;
+    color: var(--text-sub);
+    line-height: 1.9;
+    word-break: keep-all;
+  }
+
+  /* SECTION */
+  .section { margin-top: 36px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-num {
+    background: var(--text);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text);
+    word-break: keep-all;
+    line-height: 1.4;
+  }
+  .section-title span { color: var(--red); }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    margin-bottom: 12px;
+  }
+
+  /* CALLOUT */
+  .callout {
+    border-radius: 12px;
+    padding: 15px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    word-break: keep-all;
+    line-height: 1.8;
+  }
+  .callout.yellow { background: #FFF8EC; border-left: 3px solid var(--yellow); }
+  .callout.green  { background: #F0FBF5; border-left: 3px solid var(--green); }
+  .callout.red    { background: #FFF3F3; border-left: 3px solid var(--red); }
+  .callout > strong:first-child { display: block; margin-bottom: 6px; font-size: 13px; }
+  .callout strong { font-weight: 700; }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #1A1A1A;
+    color: #E0E0E0;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    text-align: left;
+    word-break: keep-all;
+    white-space: pre-wrap;
+  }
+  .code-block .r { color: #E84C4C; }
+  .code-block .b { color: #4C7BE8; }
+  .code-block .y { color: #F5C842; }
+  .code-block .g { color: #3DBF7A; }
+
+  /* ── 캔들 그리드: 모바일 2열 ── */
+  .candle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .candle-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1.5px solid var(--border);
+  }
+  .candle-card .ctitle {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .candle-card .ctitle.red  { color: var(--red); }
+  .candle-card .ctitle.blue { color: var(--blue); }
+  .candle-card .csub {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .candle-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  /* ── 양봉/음봉 나란히 ── */
+  .bb-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    align-items: flex-end;
+    padding: 16px 0 20px;
+  }
+  .bb-col { text-align: center; }
+  .bb-label {
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+  .bb-sub {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+  .bb-info {
+    background: #F5F5F5;
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 12px;
+    color: var(--text-sub);
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  /* ── 이평선 rows ── */
+  .ma-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #FAFAFA;
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  .ma-line {
+    width: 36px; height: 4px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .ma-label { font-size: 13px; font-weight: 700; min-width: 48px; }
+  .ma-desc  { font-size: 13px; color: var(--text-sub); word-break: keep-all; }
+
+  /* ── 골든/데드크로스 ── */
+  .cross-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .cross-card {
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+  }
+  .cross-card.golden { background: #FFF8EC; border: 1.5px solid var(--yellow); }
+  .cross-card.dead   { background: #F0F4FF; border: 1.5px solid var(--blue); }
+  .cross-card h4 {
+    font-size: 14px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    word-break: keep-all;
+    line-height: 1.4;
+  }
+  .cross-card.golden h4 { color: #C9960A; }
+  .cross-card.dead   h4 { color: var(--blue); }
+  .cross-card p {
+    font-size: 12px;
+    color: var(--text-sub);
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+  .cross-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+  }
+  .golden .cross-badge { background: var(--yellow); color: #7A5A00; }
+  .dead   .cross-badge { background: #DCE4FF; color: var(--blue); }
+
+  /* ── 거래량 카드: 모바일 1열 ── */
+  .vol-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .vol-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .vol-card.c-red    { border-left-color: var(--red); }
+  .vol-card.c-yellow { border-left-color: var(--yellow); }
+  .vol-card.c-blue   { border-left-color: var(--blue); }
+  .vol-card.c-green  { border-left-color: var(--green); }
+  .vol-card h5 { font-size: 14px; font-weight: 700; margin-bottom: 3px; word-break: keep-all; }
+  .vol-card p  { font-size: 12px; color: var(--text-sub); }
+  .vol-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  /* ── 보조지표 카드형 (테이블 대신) ── */
+  .indicator-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 0; }
+  .indicator-card {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .indicator-card:last-child { border-bottom: none; padding-bottom: 0; }
+  .indicator-card .i-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .indicator-card .i-badge {
+    background: var(--text);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .indicator-card .i-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    word-break: keep-all;
+  }
+  .indicator-card .i-desc {
+    font-size: 13px;
+    color: var(--text-sub);
+    margin-bottom: 8px;
+    word-break: keep-all;
+    line-height: 1.7;
+  }
+  .indicator-card .i-points {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .indicator-card .i-point {
+    font-size: 12px;
+    color: var(--text-sub);
+    padding: 5px 10px;
+    background: #F7F7F7;
+    border-radius: 6px;
+    word-break: keep-all;
+    line-height: 1.6;
+  }
+
+  /* ── 체크리스트 ── */
+  .checklist {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 28px; height: 28px;
+    background: var(--red);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .check-box svg { width: 14px; height: 14px; }
+  .check-num   { font-size: 10px; font-weight: 700; color: var(--text-light); margin-bottom: 2px; letter-spacing: 0.04em; }
+  .check-title { font-size: 15px; font-weight: 700; word-break: keep-all; }
+  .check-desc  { font-size: 12px; color: var(--text-sub); margin-top: 3px; line-height: 1.6; word-break: keep-all; }
+
+  /* ── 요약 그리드: 모바일 1열 ── */
+  .summary-list { display: flex; flex-direction: column; gap: 8px; }
+  .summary-item {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .summary-item .sk {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--red);
+    min-width: 72px;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+  .summary-item .sv {
+    font-size: 13px;
+    color: var(--text-sub);
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    background: #F5F5F5;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 12px;
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-top: 12px;
+    word-break: keep-all;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--text);
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    line-height: 2;
+    word-break: keep-all;
+  }
+  .footer strong { color: rgba(255,255,255,0.9); }
+
+  /* 데스크탑에서는 일부 2열로 */
+  @media (min-width: 600px) {
+    .candle-grid { grid-template-columns: repeat(4, 1fr); }
+    .summary-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .summary-item { display: block; }
+    .summary-item .sk { min-width: unset; margin-bottom: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">차트 필수개념.ZIP</div>
+  <h1>주식 초보가<br><span>가장 먼저</span> 봐야 하는 것</h1>
+  <p>캔들 · 이평선 · 거래량<br>이 세 가지만 알아도 차트가 달라 보여요</p>
+  <div class="hero-chips">
+    <span class="hero-chip">🕯️ 캔들</span>
+    <span class="hero-chip">📈 이평선</span>
+    <span class="hero-chip">📊 거래량</span>
+    <span class="hero-chip">🔍 보조지표</span>
+    <span class="hero-chip">✅ 체크리스트</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- AUTHOR NOTE -->
+  <div class="author-note">
+    <div class="label">💌 작가의 한마디</div>
+    <p>뉴스 보고 샀는데 왜 나만 물리는 걸까요?<br>
+    같은 종목인데 누군 +15%, 나는 -12%…<br><br>
+    차트는 정답이 아니에요.<br>
+    하지만 <strong>확률을 높여주는 도구</strong>예요.<br>
+    저장해두고 주식 앱 열 때마다 꺼내보세요! 👀</p>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">차트를 봐야 하는 <span>이유</span></div>
+    </div>
+
+    <div class="code-block">
+<span class="y">같은 종목, 같은 회사인데...</span>
+
+5월에 매수  →  <span class="r">+15% 수익 😊</span>
+6월에 매수  →  <span class="b">-12% 손실 😱</span>
+
+<span class="g">언제 사느냐가 결과를 바꿔요</span></div>
+
+    <div class="callout yellow">
+      <strong>💡 차트란?</strong>
+      주가가 지나온 발자국이에요.<br>
+      과거 패턴을 보면서 지금이 좋은 자리인지,
+      나쁜 자리인지를 판단하는 참고 도구예요.
+    </div>
+    <div class="callout red">
+      <strong>⚠️ 중요</strong>
+      차트는 정답이 아니라 <strong>확률을 높이는 도구</strong>예요.<br>
+      아무것도 모르고 사는 것보다 훨씬 나은 선택을 할 수 있게 해줘요.
+    </div>
+  </div>
+
+  <!-- SECTION 2: 캔들 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">🕯️ 캔들 읽기 — <span>투자자 심리 파악</span></div>
+    </div>
+
+    <div class="callout yellow">
+      <strong>📖 캔들이란?</strong>
+      하루 동안의 주가 움직임(시가·고가·저가·종가)을
+      하나의 막대 모양으로 표현한 것이에요.<br>
+      캔들을 보면 투자자들의 감정을 알 수 있어요!
+    </div>
+
+    <!-- 양봉 음봉 -->
+    <div class="card">
+      <div class="bb-row">
+        <div class="bb-col">
+          <svg width="56" height="130" viewBox="0 0 56 130">
+            <line x1="28" y1="6" x2="28" y2="28" stroke="#E84C4C" stroke-width="3"/>
+            <rect x="12" y="28" width="32" height="66" fill="#E84C4C" rx="3"/>
+            <line x1="28" y1="94" x2="28" y2="122" stroke="#E84C4C" stroke-width="3"/>
+          </svg>
+          <div class="bb-label" style="color:#E84C4C;">양봉 📈</div>
+          <div class="bb-sub">오른 날 · 종가 &gt; 시가</div>
+        </div>
+        <div style="width:1px; height:90px; background:#eee; align-self:center;"></div>
+        <div class="bb-col">
+          <svg width="56" height="130" viewBox="0 0 56 130">
+            <line x1="28" y1="6" x2="28" y2="28" stroke="#4C7BE8" stroke-width="3"/>
+            <rect x="12" y="28" width="32" height="66" fill="#4C7BE8" rx="3"/>
+            <line x1="28" y1="94" x2="28" y2="122" stroke="#4C7BE8" stroke-width="3"/>
+          </svg>
+          <div class="bb-label" style="color:#4C7BE8;">음봉 📉</div>
+          <div class="bb-sub">내린 날 · 시가 &gt; 종가</div>
+        </div>
+      </div>
+      <div class="bb-info">
+        🟥 <strong>몸통</strong> = 시가~종가<br>
+        ─ <strong>위꼬리</strong> = 장중 최고가<br>
+        ─ <strong>아래꼬리</strong> = 장중 최저가
+      </div>
+    </div>
+
+    <!-- 캔들 모양 4종 -->
+    <div style="font-size:13px; font-weight:700; color:#555; margin-bottom:10px;">
+      캔들 모양으로 심리 읽기
+    </div>
+    <div class="candle-grid">
+      <div class="candle-card">
+        <div class="ctitle red">몸통 큼</div>
+        <div class="csub">힘이 강함</div>
+        <svg width="28" height="68" viewBox="0 0 28 68" style="display:block;margin:0 auto 6px;">
+          <line x1="14" y1="2" x2="14" y2="12" stroke="#E84C4C" stroke-width="2.5"/>
+          <rect x="4" y="12" width="20" height="44" fill="#E84C4C" rx="2"/>
+          <line x1="14" y1="56" x2="14" y2="66" stroke="#E84C4C" stroke-width="2.5"/>
+        </svg>
+        <div class="candle-badge" style="color:#555;">추세 강함</div>
+      </div>
+      <div class="candle-card">
+        <div class="ctitle blue">아래꼬리 김</div>
+        <div class="csub">저가 매수 유입</div>
+        <svg width="28" height="68" viewBox="0 0 28 68" style="display:block;margin:0 auto 6px;">
+          <line x1="14" y1="2" x2="14" y2="10" stroke="#4C7BE8" stroke-width="2.5"/>
+          <rect x="4" y="10" width="20" height="18" fill="#4C7BE8" rx="2"/>
+          <line x1="14" y1="28" x2="14" y2="66" stroke="#4C7BE8" stroke-width="2.5"/>
+        </svg>
+        <div class="candle-badge" style="color:#3DBF7A;">🟢 반등 기대</div>
+      </div>
+      <div class="candle-card">
+        <div class="ctitle red">위꼬리 김</div>
+        <div class="csub">고점에서 팔고 나감</div>
+        <svg width="28" height="68" viewBox="0 0 28 68" style="display:block;margin:0 auto 6px;">
+          <line x1="14" y1="2" x2="14" y2="40" stroke="#E84C4C" stroke-width="2.5"/>
+          <rect x="4" y="40" width="20" height="18" fill="#E84C4C" rx="2"/>
+          <line x1="14" y1="58" x2="14" y2="66" stroke="#E84C4C" stroke-width="2.5"/>
+        </svg>
+        <div class="candle-badge" style="color:#E84C4C;">🔴 하락 주의</div>
+      </div>
+      <div class="candle-card">
+        <div class="ctitle">도지</div>
+        <div class="csub">매수·매도 팽팽</div>
+        <svg width="28" height="68" viewBox="0 0 28 68" style="display:block;margin:0 auto 6px;">
+          <line x1="14" y1="2" x2="14" y2="32" stroke="#888" stroke-width="2.5"/>
+          <rect x="2" y="32" width="24" height="4" fill="#888" rx="1"/>
+          <line x1="14" y1="36" x2="14" y2="66" stroke="#888" stroke-width="2.5"/>
+        </svg>
+        <div class="candle-badge" style="color:#C9960A;">⚠️ 전환 가능</div>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>💡 꼬리 읽는 법</strong>
+      아래꼬리가 길다 → 여기서 사려는 사람이 많다 🟢<br>
+      위꼬리가 길다 → 여기서 팔려는 사람이 많다 🔴<br>
+      몸통이 크다 → 한 방향으로 강한 힘이 있다
+    </div>
+  </div>
+
+  <!-- SECTION 3: 이평선 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">📈 이평선 읽기 — <span>흐름 파악</span></div>
+    </div>
+
+    <div class="callout yellow">
+      <strong>📖 이동평균선이란?</strong>
+      일정 기간 주가 평균을 선으로 연결한 것이에요.<br>
+      시장 참여자들의 <strong style="display:inline;">평균 매수 가격</strong>이라고 생각하면 돼요.
+    </div>
+
+    <div class="card">
+      <div style="font-size:13px; font-weight:700; margin-bottom:14px;">이평선 한 줄 암기</div>
+      <div class="ma-row">
+        <div class="ma-line" style="background:#F5A623;"></div>
+        <div class="ma-label" style="color:#F5A623;">5일선</div>
+        <div class="ma-desc">최근 1주일 평균 = <strong>최근 분위기</strong></div>
+      </div>
+      <div class="ma-row">
+        <div class="ma-line" style="background:#3DBF7A;"></div>
+        <div class="ma-label" style="color:#3DBF7A;">20일선</div>
+        <div class="ma-desc">최근 1달 평균 = <strong>한 달 분위기</strong></div>
+      </div>
+      <div class="ma-row">
+        <div class="ma-line" style="background:#9B59B6;"></div>
+        <div class="ma-label" style="color:#9B59B6;">60일선</div>
+        <div class="ma-desc">최근 3달 평균 = <strong>중장기 흐름</strong></div>
+      </div>
+    </div>
+
+    <div style="font-size:13px; font-weight:700; color:#555; margin-bottom:10px;">
+      골든크로스 vs 데드크로스
+    </div>
+    <div class="cross-grid">
+      <div class="cross-card golden">
+        <h4>골든크로스 ✨</h4>
+        <p>단기선이 장기선을<br><strong>위로 돌파</strong>할 때</p>
+        <span class="cross-badge">🟢 상승 신호</span>
+      </div>
+      <div class="cross-card dead">
+        <h4>데드크로스 💀</h4>
+        <p>단기선이 장기선을<br><strong>아래로 이탈</strong>할 때</p>
+        <span class="cross-badge">🔴 하락 신호</span>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>💡 정배열 vs 역배열</strong>
+      정배열: 5일 &gt; 20일 &gt; 60일 → 상승 추세가 강한 상태<br>
+      역배열: 60일 &gt; 20일 &gt; 5일 → 하락 추세가 강한 상태
+    </div>
+  </div>
+
+  <!-- SECTION 4: 거래량 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">📊 거래량 읽기 — <span>신뢰도 확인</span></div>
+    </div>
+
+    <div class="callout yellow">
+      <strong>📖 거래량이란?</strong>
+      하루 동안 사고 팔린 주식 수량이에요.<br>
+      <strong style="display:inline;">얼마나 많은 사람이 참여했는지</strong>를 보여줘요.<br>
+      거래량은 차트의 신뢰도를 확인하는 열쇠예요!
+    </div>
+
+    <div class="vol-list">
+      <div class="vol-card c-red">
+        <div>
+          <h5>주가 상승 + 거래량 증가</h5>
+          <p>많은 사람이 사고 있어요</p>
+        </div>
+        <span class="vol-badge" style="background:#FFF0F0; color:#E84C4C;">✅ 신뢰도 높은 상승!</span>
+      </div>
+      <div class="vol-card c-yellow">
+        <div>
+          <h5>주가 상승 + 거래량 감소</h5>
+          <p>소수만 참여한 상승이에요</p>
+        </div>
+        <span class="vol-badge" style="background:#FFF8EC; color:#C9960A;">⚠️ 신중하게 보기</span>
+      </div>
+      <div class="vol-card c-blue">
+        <div>
+          <h5>주가 하락 + 거래량 증가</h5>
+          <p>많은 사람이 팔고 있어요</p>
+        </div>
+        <span class="vol-badge" style="background:#EEF2FF; color:#4C7BE8;">🔴 강한 하락 신호</span>
+      </div>
+      <div class="vol-card c-green">
+        <div>
+          <h5>주가 하락 + 거래량 감소</h5>
+          <p>관심이 식어가고 있어요</p>
+        </div>
+        <span class="vol-badge" style="background:#F0FBF5; color:#3DBF7A;">🟡 바닥 탐색 중</span>
+      </div>
+    </div>
+
+    <div class="callout red">
+      <strong>📣 거래량 급증 주의!</strong>
+      평소 대비 3~5배 이상 거래량 급증은<br>
+      세력 개입이나 뉴스 이슈일 수 있어요.<br>
+      따라가기보다 이유를 먼저 확인하세요!
+    </div>
+  </div>
+
+  <!-- SECTION 5: 추가 개념 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">➕ 알면 좋은 <span>추가 개념</span></div>
+    </div>
+
+    <!-- 지지/저항 -->
+    <div class="card" style="margin-bottom:12px;">
+      <div style="font-size:13px; font-weight:700; margin-bottom:12px;">지지선 &amp; 저항선</div>
+      <div class="ma-row">
+        <div style="width:10px; height:10px; background:#3DBF7A; border-radius:50%; flex-shrink:0;"></div>
+        <div style="font-size:13px;"><strong>지지선</strong> — 주가가 떨어지다 멈추는 가격대<br>
+        <span style="color:var(--text-light); font-size:12px;">여기서 사려는 사람이 많아 반등 기대 🟢</span></div>
+      </div>
+      <div class="ma-row" style="margin-bottom:0;">
+        <div style="width:10px; height:10px; background:#E84C4C; border-radius:50%; flex-shrink:0;"></div>
+        <div style="font-size:13px;"><strong>저항선</strong> — 주가가 오르다 막히는 가격대<br>
+        <span style="color:var(--text-light); font-size:12px;">여기서 팔려는 사람이 많아 하락 주의 🔴</span></div>
+      </div>
+    </div>
+
+    <!-- 보조지표 카드형 -->
+    <div class="card" style="padding:20px; margin-bottom:12px;">
+      <div style="font-size:13px; font-weight:700; margin-bottom:14px;">보조지표 3가지</div>
+      <div class="indicator-list">
+      <div class="indicator-card">
+        <div class="i-top">
+          <span class="i-badge">RSI</span>
+          <span class="i-title">상대강도지수 — 과열 여부 판단</span>
+        </div>
+        <div class="i-desc">0~100 사이 수치로 매수·매도 과열 상태를 보여줘요</div>
+        <div class="i-points">
+          <div class="i-point">🔴 <strong>70 이상</strong> → 과매수 상태, 조정 주의</div>
+          <div class="i-point">🟢 <strong>30 이하</strong> → 과매도 상태, 반등 기대</div>
+          <div class="i-point">⚪ <strong>50 근처</strong> → 중립, 방향 탐색 중</div>
+        </div>
+      </div>
+      <div class="indicator-card">
+        <div class="i-top">
+          <span class="i-badge">MACD</span>
+          <span class="i-title">추세 전환 타이밍 포착</span>
+        </div>
+        <div class="i-desc">단기·장기 이평선의 차이로 모멘텀 방향을 확인해요</div>
+        <div class="i-points">
+          <div class="i-point">🟢 MACD선이 시그널선 <strong>위로 돌파</strong> → 상승 신호</div>
+          <div class="i-point">🔴 MACD선이 시그널선 <strong>아래로 이탈</strong> → 하락 신호</div>
+          <div class="i-point">⚠️ 히스토그램이 0선 위에 있으면 상승 모멘텀 유지 중</div>
+        </div>
+      </div>
+      <div class="indicator-card">
+        <div class="i-top">
+          <span class="i-badge">볼린저밴드</span>
+          <span class="i-title">변동성 & 가격 범위 파악</span>
+        </div>
+        <div class="i-desc">20일 이평선 위아래에 밴드를 그려 가격 범위를 표시해요</div>
+        <div class="i-points">
+          <div class="i-point">🔴 주가가 <strong>상단 밴드 터치</strong> → 과열 주의</div>
+          <div class="i-point">🟢 주가가 <strong>하단 밴드 터치</strong> → 반등 기대</div>
+          <div class="i-point">⚡ <strong>밴드 폭이 좁아짐</strong> → 큰 움직임 임박 신호</div>
+        </div>
+      </div>
+      </div><!-- indicator-list 끝 -->
+    </div><!-- card 끝 -->
+
+    <div class="callout green">
+      <strong>💡 보조지표 활용 팁</strong>
+      보조지표는 혼자보다 <strong style="display:inline;">캔들 + 이평선 + 거래량과 함께</strong> 볼 때 훨씬 유효해요!<br>
+      RSI → <strong style="display:inline;">단기 과열 여부</strong> 확인<br>
+      MACD → <strong style="display:inline;">추세 전환 타이밍</strong> 포착<br>
+      볼린저밴드 → <strong style="display:inline;">변동성</strong> 파악
+    </div>
+  </div>
+
+  <!-- SECTION 6: 체크리스트 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">🍯 쭈미 체크리스트 — <span>매수 전 5가지</span></div>
+    </div>
+
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-box">
+          <svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="check-num">CHECK 01</div>
+          <div class="check-title">음봉인지, 양봉인지</div>
+          <div class="check-desc">지금 캔들이 올라가고 있는지 내려가고 있는지 확인</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box">
+          <svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="check-num">CHECK 02</div>
+          <div class="check-title">거래량이 늘었는지</div>
+          <div class="check-desc">많은 사람이 참여한 움직임인지 확인<br>거래량 없는 상승은 신중하게!</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box">
+          <svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="check-num">CHECK 03</div>
+          <div class="check-title">이평선 위인지 아래인지</div>
+          <div class="check-desc">주가가 이평선 위 = 강세<br>이평선 아래 = 약세</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box">
+          <svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="check-num">CHECK 04</div>
+          <div class="check-title">골든크로스인지</div>
+          <div class="check-desc">단기선이 장기선 위로 올라오는<br>상승 신호인지 확인</div>
+        </div>
+      </div>
+      <div class="check-item">
+        <div class="check-box">
+          <svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="check-num">CHECK 05</div>
+          <div class="check-title">데드크로스인지</div>
+          <div class="check-desc">단기선이 장기선 아래로 내려가는<br>하락 신호라면 매수 보류!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout yellow" style="margin-top:12px;">
+      <strong>📣 쭈미 기준</strong>
+      5개 중 3개 이상 긍정적이면 매수 고려,<br>
+      3개 이상 부정적이면 관망 추천!<br>
+      (어디까지나 초보용 기준이에요 😊)
+    </div>
+  </div>
+
+  <!-- SECTION 7: 최종 정리 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div class="section-title">📋 한눈에 <span>최종 정리</span></div>
+    </div>
+    <div class="summary-list">
+      <div class="summary-item"><div class="sk">캔들</div><div class="sv">하루 주가 움직임 + 투자자 심리 반영</div></div>
+      <div class="summary-item"><div class="sk">양봉/음봉</div><div class="sv">빨강 = 오른 날, 파랑 = 내린 날</div></div>
+      <div class="summary-item"><div class="sk">아래꼬리 김</div><div class="sv">저점 매수세 강함 → 반등 기대</div></div>
+      <div class="summary-item"><div class="sk">위꼬리 김</div><div class="sv">고점 매도세 강함 → 하락 주의</div></div>
+      <div class="summary-item"><div class="sk">이평선</div><div class="sv">평균 매수가 = 지금 비싼지 싼지 기준</div></div>
+      <div class="summary-item"><div class="sk">골든크로스</div><div class="sv">단기선 > 장기선 → 상승 신호</div></div>
+      <div class="summary-item"><div class="sk">데드크로스</div><div class="sv">단기선 < 장기선 → 하락 신호</div></div>
+      <div class="summary-item"><div class="sk">거래량 증가</div><div class="sv">상승과 함께면 신뢰도 높음</div></div>
+      <div class="summary-item"><div class="sk">RSI</div><div class="sv">70↑ 과매수 주의 / 30↓ 반등 기대</div></div>
+      <div class="summary-item"><div class="sk">MACD</div><div class="sv">시그널선 돌파 시 추세 전환 신호</div></div>
+      <div class="summary-item"><div class="sk">볼린저밴드</div><div class="sv">밴드 폭 좁아지면 큰 움직임 임박</div></div>
+    </div>
+
+    <div class="disclaimer">
+      ⚠️ 본 자료는 투자 교육 목적으로 제작되었으며,
+      특정 종목의 매수·매도를 권유하지 않습니다.
+      모든 투자의 판단과 책임은 본인에게 있으며,
+      투자 전 충분한 학습과 검토를 권장합니다.
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <strong>@jjumi_s2 쭈미</strong>가 마이쭈들을 위해 정성껏 정리했어요 💛<br>
+  저장해두고 주식 앱 열 때마다 꺼내보세요!
+</div>
+
+</body>
+</html>
