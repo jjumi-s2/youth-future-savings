@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>보조지표 기초.ZIP | @jjumi_s2</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+
+    :root {
+      --bg: #fffef9;
+      --card: #ffffff;
+      --yellow: #FFE566;
+      --yellow-light: #FFF8CC;
+      --red: #FF6B6B;
+      --red-light: #FFE8E8;
+      --blue: #6BAAFF;
+      --blue-light: #E8F2FF;
+      --green: #5DBE7A;
+      --green-light: #E6F7EC;
+      --pink: #FF9EB5;
+      --pink-light: #FFEEF3;
+      --purple: #A78BFA;
+      --purple-light: #F3F0FF;
+      --text: #222222;
+      --subtext: #666666;
+      --border: #E8E8E8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px 16px 60px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    .header {
+      text-align: center;
+      padding: 32px 0 24px;
+    }
+    .header .tag {
+      display: inline-block;
+      background: #FF6B6B;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .header h1 {
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.3;
+    }
+    .header h1 span { color: var(--red); }
+    .header .sub {
+      font-size: 13px;
+      color: var(--subtext);
+      margin-top: 8px;
+    }
+    .header .account {
+      font-size: 12px;
+      color: var(--subtext);
+      margin-top: 6px;
+      font-weight: 700;
+    }
+
+    /* SECTION LABEL */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 28px 0 12px;
+    }
+    .section-label .num {
+      background: var(--text);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-label h2 { font-size: 16px; font-weight: 900; }
+
+    /* BONUS LABEL */
+    .bonus-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--purple-light);
+      border: 1.5px solid var(--purple);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--purple);
+      margin-bottom: 8px;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      border: 2px solid var(--border);
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    /* CONCEPT CARD */
+    .concept-card {
+      background: var(--yellow-light);
+      border: 2px solid var(--yellow);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+    .concept-card .concept-title {
+      font-size: 14px;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+    .concept-card .concept-body {
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* BONUS CARD - 추가 정보 */
+    .bonus-card {
+      background: var(--purple-light);
+      border: 2px solid var(--purple);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-top: 10px;
+    }
+    .bonus-card .bonus-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--purple);
+      margin-bottom: 8px;
+    }
+    .bonus-card .bonus-body {
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    /* MISTAKE CARD - 자주 하는 실수 */
+    .mistake-card {
+      background: var(--pink-light);
+      border: 2px solid var(--pink);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-top: 10px;
+    }
+    .mistake-card .mistake-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: #E05080;
+      margin-bottom: 8px;
+    }
+    .mistake-item {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+    .mistake-item:last-child { margin-bottom: 0; }
+    .mistake-x {
+      color: var(--red);
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .mistake-o {
+      color: var(--green);
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* COMPARE ROW */
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .compare-box {
+      border-radius: 12px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .compare-box .cb-label { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+    .compare-box .cb-icon { font-size: 24px; margin-bottom: 4px; }
+    .compare-box .cb-text { font-size: 12px; line-height: 1.5; }
+    .compare-box.candle { background: #F5F5F5; }
+    .compare-box.indicator { background: var(--yellow-light); }
+
+    /* TABLE */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      background: var(--text);
+      color: #fff;
+      padding: 10px 8px;
+      text-align: center;
+      font-weight: 700;
+    }
+    th:first-child { border-radius: 8px 0 0 0; }
+    th:last-child { border-radius: 0 8px 0 0; }
+    td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      font-size: 12px;
+    }
+    tr:last-child td { border-bottom: none; }
+    .td-추세 { background: var(--red-light); font-weight: 700; color: var(--red); }
+    .td-모멘텀 { background: var(--green-light); font-weight: 700; color: var(--green); }
+    .td-변동성 { background: var(--blue-light); font-weight: 700; color: var(--blue); }
+
+    /* RSI */
+    .rsi-wrap {
+      display: flex;
+      gap: 16px;
+      align-items: stretch;
+      margin-top: 8px;
+    }
+    .thermo-labels {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--subtext);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 120px;
+    }
+    .thermo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .thermo-inner {
+      width: 28px;
+      height: 120px;
+      background: linear-gradient(to top, var(--red) 0%, #FFAAAA 60%, #FFE8E8 100%);
+      border-radius: 20px 20px 0 0;
+    }
+    .thermo-bulb {
+      width: 36px;
+      height: 36px;
+      background: var(--red);
+      border-radius: 50%;
+      margin-top: -4px;
+    }
+    .rsi-boxes {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: center;
+    }
+    .rsi-box { border-radius: 12px; padding: 12px 14px; }
+    .rsi-box.hot { background: var(--red-light); border: 1.5px solid var(--red); }
+    .rsi-box.cold { background: var(--blue-light); border: 1.5px solid var(--blue); }
+    .rsi-box .rsi-num { font-size: 20px; font-weight: 900; }
+    .rsi-box.hot .rsi-num { color: var(--red); }
+    .rsi-box.cold .rsi-num { color: var(--blue); }
+    .rsi-box .rsi-desc { font-size: 12px; margin-top: 2px; line-height: 1.5; }
+    .rsi-tip {
+      background: var(--yellow-light);
+      border: 1.5px solid var(--yellow);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+    /* RSI 구간 바 */
+    .rsi-range-bar {
+      margin: 12px 0;
+    }
+    .rsi-range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--subtext);
+      margin-bottom: 4px;
+    }
+    .rsi-bar {
+      height: 16px;
+      border-radius: 8px;
+      background: linear-gradient(to right, var(--blue) 0%, var(--blue) 30%, var(--green-light) 30%, var(--green-light) 70%, var(--red-light) 70%, var(--red) 100%);
+      position: relative;
+    }
+    .rsi-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    .rsi-bar-labels .l-cold { color: var(--blue); }
+    .rsi-bar-labels .l-mid { color: var(--green); text-align: center; flex: 1; }
+    .rsi-bar-labels .l-hot { color: var(--red); }
+
+    /* BOLLINGER */
+    .band-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4px 0;
+      font-size: 13px;
+    }
+    .band-dot { width: 14px; height: 4px; border-radius: 2px; flex-shrink: 0; }
+    .band-boxes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .band-box {
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+    .band-box.top { background: var(--red-light); border: 1.5px solid var(--red); }
+    .band-box.bottom { background: var(--blue-light); border: 1.5px solid var(--blue); }
+    .band-box .bband-label { font-weight: 900; font-size: 13px; margin-bottom: 4px; }
+    .narrow-box {
+      background: var(--yellow-light);
+      border: 1.5px solid var(--yellow);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    /* MACD */
+    .macd-item {
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 8px;
+    }
+    .macd-item.up { background: var(--red-light); border: 1.5px solid var(--red); }
+    .macd-item.down { background: var(--blue-light); border: 1.5px solid var(--blue); }
+    .macd-item .macd-title { font-size: 13px; font-weight: 900; margin-bottom: 6px; }
+    .macd-item.up .macd-title { color: var(--red); }
+    .macd-item.down .macd-title { color: var(--blue); }
+    .macd-item .macd-desc { font-size: 12px; line-height: 1.6; }
+    .macd-note {
+      font-size: 12px;
+      color: var(--subtext);
+      background: #F5F5F5;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    /* COMBO TABLE - 조합 추천 */
+    .combo-wrap { margin-top: 8px; }
+    .combo-item {
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .combo-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 80px;
+    }
+    .combo-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .combo-badge.rsi { background: var(--green-light); color: var(--green); }
+    .combo-badge.bb { background: var(--blue-light); color: var(--blue); }
+    .combo-badge.macd { background: var(--red-light); color: var(--red); }
+    .combo-badge.ma { background: var(--yellow-light); color: #B8860B; }
+    .combo-content { flex: 1; }
+    .combo-title { font-size: 13px; font-weight: 900; margin-bottom: 4px; }
+    .combo-desc { font-size: 12px; line-height: 1.6; color: var(--subtext); }
+
+    /* WARNING */
+    .warning-list { display: flex; flex-direction: column; gap: 8px; }
+    .warning-item {
+      background: var(--yellow-light);
+      border: 1.5px solid var(--yellow);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .warning-item .w-title { font-weight: 900; margin-bottom: 2px; }
+    .warning-item .w-desc { color: var(--subtext); font-size: 12px; }
+
+    /* CHECKLIST */
+    .checklist {
+      background: var(--yellow-light);
+      border: 2px solid var(--yellow);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .checklist-title { font-size: 15px; font-weight: 900; margin-bottom: 14px; text-align: center; }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px dashed #E0CC44;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-box {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .check-box svg { width: 14px; height: 14px; fill: none; stroke: white; stroke-width: 2.5; }
+    .check-sub { font-size: 11px; font-weight: 400; color: var(--subtext); margin-top: 1px; }
+
+    /* CTA */
+    .cta-box {
+      background: var(--text);
+      color: #fff;
+      border-radius: 16px;
+      padding: 24px 20px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .cta-box .cta-title { font-size: 16px; font-weight: 900; line-height: 1.5; margin-bottom: 8px; }
+    .cta-box .cta-sub { font-size: 13px; color: #ccc; margin-bottom: 16px; line-height: 1.6; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--text);
+      font-weight: 900;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 30px;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--subtext);
+      margin-top: 32px;
+      line-height: 1.8;
+    }
+
+    /* DIVIDER */
+    .section-divider {
+      border: none;
+      border-top: 2px dashed var(--border);
+      margin: 6px 0 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="tag">보조지표 기초.ZIP</div>
+    <h1>차트 볼 줄 아는데도<br /><span>물리는 이유</span> 있었어</h1>
+    <p class="sub">보조지표 한 번에 끝내는 자료집</p>
+    <p class="account">@jjumi_s2</p>
+  </div>
+
+  <!-- 작가의 한마디 -->
+  <div style="border-left: 4px solid var(--red); background: #fff; border-radius: 0 12px 12px 0; padding: 16px 18px; margin-bottom: 24px;">
+    <div style="font-size: 13px; font-weight: 900; color: var(--red); margin-bottom: 10px;">🐜 쭈미의 한마디</div>
+    <div style="font-size: 13px; line-height: 1.9; color: var(--text);">
+      보조지표 공부하다가 깨달은 게 있어.<br />
+      차트는 열심히 봤는데 신호등은 안 봤던 거야 🚦<br /><br />
+      이거 알고 나서 '아 지금 과열이구나'<br />
+      최소한 이건 알고 들어갈 수 있게 됐어 🗺️<br /><br />
+      저장해두고 주식 앱 열 때마다 꺼내봐!
+    </div>
+  </div>
+
+  <!-- 1. 보조지표란? -->
+  <div class="section-label">
+    <div class="num">1</div>
+    <h2>보조지표가 뭐야?</h2>
+  </div>
+  <div class="concept-card">
+    <div class="concept-title">📍 차트에 붙이는 내비게이션이야</div>
+    <div class="concept-body">캔들만 보면 "지나온 길"만 알 수 있어.<br />보조지표는 <strong>"앞으로 갈 방향 힌트"</strong>를 줘!<br />100% 맞진 않지만, 없는 것보단 훨씬 나아.</div>
+  </div>
+  <div class="compare-row">
+    <div class="compare-box candle">
+      <div class="cb-icon">🕯️</div>
+      <div class="cb-label">캔들</div>
+      <div class="cb-text">주가가 지나온 길<br />(이미 일어난 일)</div>
+    </div>
+    <div class="compare-box indicator">
+      <div class="cb-icon">🗺️</div>
+      <div class="cb-label">보조지표</div>
+      <div class="cb-text">갈 방향 힌트<br />(참고용 신호)</div>
+    </div>
+  </div>
+  <div class="bonus-card" style="margin-top:10px;">
+    <div class="bonus-title">💜 보조지표가 왜 필요한지 한 줄 요약</div>
+    <div class="bonus-body">
+      캔들은 "무슨 일이 있었는지", 보조지표는 "지금 분위기가 어떤지"를 알려줘.<br />
+      둘을 같이 봐야 그나마 전체 그림이 보여.<br /><br />
+      예를 들면 캔들이 올라가고 있어도<br />→ RSI가 80이면? 이미 너무 많이 오른 거야 ⚠️<br />
+      → 볼린저 상단 밴드면? 슬슬 꺾일 수 있다는 신호야
+    </div>
+  </div>
+
+  <!-- 2. 종류 -->
+  <div class="section-label">
+    <div class="num">2</div>
+    <h2>보조지표 종류 한눈에</h2>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>종류</th>
+            <th>알 수 있는 것</th>
+            <th>대표 지표</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-추세">추세 지표 📈</td>
+            <td>지금 방향이 어디인지</td>
+            <td>이평선, MACD</td>
+          </tr>
+          <tr>
+            <td class="td-모멘텀">모멘텀 지표 🌡️</td>
+            <td>과열이냐 침체냐</td>
+            <td>RSI</td>
+          </tr>
+          <tr>
+            <td class="td-변동성">변동성 지표 〰️</td>
+            <td>얼마나 출렁이냐</td>
+            <td>볼린저밴드</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bonus-card" style="margin-top:12px;">
+      <div class="bonus-title">💜 보는 순서 추천</div>
+      <div class="bonus-body">
+        ① 추세 지표로 <strong>방향 먼저 확인</strong> (지금 오르는 중? 내리는 중?)<br />
+        ② 모멘텀 지표로 <strong>과열 여부 체크</strong> (너무 많이 오른 건 아닌지)<br />
+        ③ 변동성 지표로 <strong>움직임 범위 확인</strong> (얼마나 출렁일지)<br /><br />
+        이 순서대로 보면 헷갈릴 일이 훨씬 줄어들어!
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. RSI -->
+  <div class="section-label">
+    <div class="num">3</div>
+    <h2>RSI — 주식의 체온계 🌡️</h2>
+  </div>
+  <div class="card">
+    <div class="concept-card" style="margin-bottom:12px;">
+      <div class="concept-title">RSI = 0~100 숫자로 과열 / 침체 표시</div>
+      <div class="concept-body">최근 가격이 얼마나 빠르게 올랐는지 or 내렸는지를 숫자로 보여줘.</div>
+    </div>
+    <div class="rsi-wrap">
+      <div style="display:flex;gap:6px;align-items:flex-start;">
+        <div class="thermo-labels">
+          <span>100</span>
+          <span>70</span>
+          <span style="margin-top:auto;">30</span>
+          <span>0</span>
+        </div>
+        <div class="thermo">
+          <div class="thermo-inner"></div>
+          <div class="thermo-bulb"></div>
+        </div>
+      </div>
+      <div class="rsi-boxes">
+        <div class="rsi-box hot">
+          <div class="rsi-num">70 이상</div>
+          <div class="rsi-desc">→ 과매수 구간<br /><strong>과열 가능성</strong> ⚠️</div>
+        </div>
+        <div class="rsi-box cold">
+          <div class="rsi-num">30 이하</div>
+          <div class="rsi-desc">→ 과매도 구간<br /><strong>침체 가능성</strong> 💙</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RSI 구간바 -->
+    <div class="rsi-range-bar" style="margin-top:14px;">
+      <div class="rsi-range-labels"><span>0</span><span>30</span><span>50</span><span>70</span><span>100</span></div>
+      <div class="rsi-bar"></div>
+      <div class="rsi-bar-labels">
+        <span class="l-cold">침체구간</span>
+        <span class="l-mid">중립</span>
+        <span class="l-hot">과열구간</span>
+      </div>
+    </div>
+
+    <div class="rsi-tip">
+      💡 RSI는 단독으로 쓰기보다<br /><strong>추세 확인 + 다른 보조지표와 함께</strong> 보면 더 정확해!
+    </div>
+
+    <!-- RSI 추가 정보 -->
+    <div class="bonus-card">
+      <div class="bonus-title">💜 RSI 더 깊이 이해하기</div>
+      <div class="bonus-body">
+        <strong>기본 설정값</strong>은 14일 (14개 캔들 기준)<br />
+        → 설정값을 짧게 하면 신호가 자주 오지만 노이즈도 많아<br />
+        → 설정값을 길게 하면 신호가 느리지만 더 믿을 만해<br /><br />
+        <strong>50 기준</strong>도 중요해!<br />
+        → RSI 50 이상 = 매수세가 우세한 상태<br />
+        → RSI 50 이하 = 매도세가 우세한 상태
+      </div>
+    </div>
+
+    <!-- RSI 실수 -->
+    <div class="mistake-card">
+      <div class="mistake-title">🚨 RSI로 자주 하는 실수</div>
+      <div class="mistake-item">
+        <span class="mistake-x">✗</span>
+        <span>"RSI 70 넘었으니까 무조건 팔아야 해"<br /><span style="color:var(--subtext);">→ 강한 상승장에선 RSI가 70 넘어도 계속 오를 수 있어</span></span>
+      </div>
+      <div class="mistake-item">
+        <span class="mistake-o">✓</span>
+        <span>"RSI 70 넘었고, 볼린저 상단 밴드도 터치했네. 신중하게 보자"<br /><span style="color:var(--subtext);">→ 2가지 이상 신호가 겹칠 때 더 신뢰도가 높아</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 볼린저밴드 -->
+  <div class="section-label">
+    <div class="num">4</div>
+    <h2>볼린저밴드 — 주가 움직임 범위 〰️</h2>
+  </div>
+  <div class="card">
+    <div class="concept-card" style="margin-bottom:12px;">
+      <div class="concept-title">이평선 위아래로 띠가 생기는 지표야</div>
+      <div class="concept-body">주가가 보통 이 띠 안에서 움직여. 띠를 벗어나면 신호!</div>
+    </div>
+    <div style="margin:8px 0 12px;">
+      <div class="band-line"><div class="band-dot" style="background:var(--red);"></div> 상단 밴드 (빨강) — 저항 구간</div>
+      <div class="band-line"><div class="band-dot" style="background:var(--green);"></div> 이평선 중심선 (초록) — 기준선</div>
+      <div class="band-line"><div class="band-dot" style="background:var(--blue);"></div> 하단 밴드 (파랑) — 지지 구간</div>
+    </div>
+    <div class="band-boxes">
+      <div class="band-box top">
+        <div class="bband-label">상단 밴드 터치</div>
+        <div>과열 가능성<br />⬇️ 하락 주의</div>
+      </div>
+      <div class="band-box bottom">
+        <div class="bband-label">하단 밴드 터치</div>
+        <div>과매도 가능성<br />⬆️ 반등 기대</div>
+      </div>
+    </div>
+    <div class="narrow-box">
+      ⛈️ <strong>밴드가 좁아지면?</strong><br />
+      급등, 급락 같은 큰 움직임이 나올 수 있어!<br />
+      <span style="font-size:11px;color:var(--subtext);">방향은 모르니까 양쪽 다 대비해야 해</span>
+    </div>
+
+    <!-- 볼린저 추가 -->
+    <div class="bonus-card">
+      <div class="bonus-title">💜 볼린저밴드 더 깊이 이해하기</div>
+      <div class="bonus-body">
+        볼린저밴드는 <strong>이평선 ± 2 표준편차</strong>로 계산해<br />
+        → 쉽게 말하면 "주가가 이 범위 안에 있을 확률이 95%"<br /><br />
+        <strong>밴드 폭으로 시장 분위기 파악 가능!</strong><br />
+        → 밴드 넓음 = 변동성 큼 (시장이 불안정)<br />
+        → 밴드 좁음 = 변동성 작음 (곧 큰 움직임 예고)<br /><br />
+        <strong>스퀴즈(Squeeze)</strong>라고 불리는 밴드가 극도로 좁아지는 구간 이후에 큰 추세가 시작되는 경우가 많아!
+      </div>
+    </div>
+
+    <!-- 볼린저 실수 -->
+    <div class="mistake-card">
+      <div class="mistake-title">🚨 볼린저밴드로 자주 하는 실수</div>
+      <div class="mistake-item">
+        <span class="mistake-x">✗</span>
+        <span>"하단 밴드 터치했으니 무조건 반등하겠지"<br /><span style="color:var(--subtext);">→ 강한 하락장에선 밴드 아래로 계속 뚫고 내려갈 수 있어</span></span>
+      </div>
+      <div class="mistake-item">
+        <span class="mistake-o">✓</span>
+        <span>"하단 밴드 터치 + RSI 30 이하 겹치면 반등 가능성 체크"<br /><span style="color:var(--subtext);">→ 단독보다 다른 지표와 함께 볼 때 신뢰도 올라가</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. MACD -->
+  <div class="section-label">
+    <div class="num">5</div>
+    <h2>MACD — 주가 흐름 변화 📊</h2>
+  </div>
+  <div class="card">
+    <div class="concept-card" style="margin-bottom:12px;">
+      <div class="concept-title">두 이평선이 교차할 때 신호가 와</div>
+      <div class="concept-body">
+        <strong>MACD선</strong> (주가 흐름) vs <strong>시그널선</strong> (흐름의 평균)<br />
+        이 두 선이 교차하는 순간을 주목해!
+      </div>
+    </div>
+    <div class="macd-item up">
+      <div class="macd-title">📈 MACD선이 시그널선 위로 뚫으면</div>
+      <div class="macd-desc">→ <strong>상승 신호</strong><br />주가 흐름이 바뀔 수 있다는 힌트</div>
+    </div>
+    <div class="macd-item down">
+      <div class="macd-title">📉 MACD선이 시그널선 아래로 뚫으면</div>
+      <div class="macd-desc">→ <strong>하락 신호</strong><br />주가 흐름이 꺾일 수 있다는 힌트</div>
+    </div>
+    <div class="macd-note">
+      💡 MACD선(주가 흐름) / 시그널선(흐름의 평균)<br />두 선이 교차할 때 흐름이 바뀔 수 있다는 신호야!
+    </div>
+
+    <!-- MACD 추가 -->
+    <div class="bonus-card">
+      <div class="bonus-title">💜 MACD 히스토그램도 봐봐</div>
+      <div class="bonus-body">
+        MACD에는 선 말고도 <strong>히스토그램(막대그래프)</strong>이 있어<br /><br />
+        → 막대가 0선 위에서 커지면 = 상승 모멘텀 강해지는 중<br />
+        → 막대가 0선 위에서 작아지면 = 상승 힘이 약해지는 중<br />
+        → 막대가 0선 아래에서 커지면 = 하락 모멘텀 강해지는 중<br /><br />
+        <strong>선 교차 전에 히스토그램이 먼저 신호를 줄 때도 있어!</strong><br />
+        <span style="color:var(--subtext);">선 교차만 보지 말고 막대 크기 변화도 같이 봐봐</span>
+      </div>
+    </div>
+
+    <!-- MACD 실수 -->
+    <div class="mistake-card">
+      <div class="mistake-title">🚨 MACD로 자주 하는 실수</div>
+      <div class="mistake-item">
+        <span class="mistake-x">✗</span>
+        <span>"교차 신호 나왔으니까 바로 매수!"<br /><span style="color:var(--subtext);">→ MACD는 후행지표라 신호가 늦게 와. 이미 많이 올랐을 수 있어</span></span>
+      </div>
+      <div class="mistake-item">
+        <span class="mistake-o">✓</span>
+        <span>"교차 신호 + 거래량 증가 같이 확인하고 판단"<br /><span style="color:var(--subtext);">→ 거래량이 받쳐줄 때 신호 신뢰도가 올라가</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 보조지표 조합 추천 (추가 섹션) -->
+  <div class="section-label">
+    <div class="num">6</div>
+    <h2>초보자 추천 조합 💜</h2>
+  </div>
+  <div class="combo-wrap">
+    <div class="combo-item">
+      <div class="combo-badges">
+        <div class="combo-badge rsi">RSI</div>
+        <div class="combo-badge bb">볼린저밴드</div>
+      </div>
+      <div class="combo-content">
+        <div class="combo-title">🔰 기초 조합 (입문자용)</div>
+        <div class="combo-desc">RSI로 과열/침체 확인하고<br />볼린저밴드로 위치 체크.<br />둘 다 같은 신호면 신뢰도 UP!</div>
+      </div>
+    </div>
+    <div class="combo-item">
+      <div class="combo-badges">
+        <div class="combo-badge macd">MACD</div>
+        <div class="combo-badge rsi">RSI</div>
+      </div>
+      <div class="combo-content">
+        <div class="combo-title">📊 추세 + 모멘텀 조합</div>
+        <div class="combo-desc">MACD로 방향 전환 신호 포착,<br />RSI로 과열 여부 확인.<br />추세 확인할 때 많이 써.</div>
+      </div>
+    </div>
+    <div class="combo-item">
+      <div class="combo-badges">
+        <div class="combo-badge ma">이평선</div>
+        <div class="combo-badge bb">볼린저밴드</div>
+        <div class="combo-badge rsi">RSI</div>
+      </div>
+      <div class="combo-content">
+        <div class="combo-title">🏆 3종 세트 (가장 많이 씀)</div>
+        <div class="combo-desc">이평선으로 큰 방향,<br />볼린저밴드로 현재 위치,<br />RSI로 과열 체크.<br />세 개가 같은 방향 가리킬 때만 움직여!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 주의사항 -->
+  <div class="section-label">
+    <div class="num">7</div>
+    <h2>보조지표만 믿으면 큰일 나! ⚠️</h2>
+  </div>
+  <div class="warning-list">
+    <div class="warning-item">
+      <div class="w-title">📌 후행지표야!</div>
+      <div class="w-desc">과거 데이터를 기반으로 계산해. 미래를 먼저 알려주는 게 아니야.</div>
+    </div>
+    <div class="warning-item">
+      <div class="w-title">📌 조합해서 봐!</div>
+      <div class="w-desc">2~3개 보조지표를 함께 봐야 더 신뢰도가 높아져.</div>
+    </div>
+    <div class="warning-item">
+      <div class="w-title">📌 확정 신호가 아니야!</div>
+      <div class="w-desc">참고용으로만 활용하자. 내비도 가끔 길 잘못 알려줄 때 있잖아 🙃</div>
+    </div>
+    <div class="warning-item">
+      <div class="w-title">📌 시장 상황에 따라 달라!</div>
+      <div class="w-desc">강한 상승장에선 RSI 70 넘어도 계속 오를 수 있고, 강한 하락장에선 RSI 30 아래도 계속 떨어질 수 있어. 지표만 보지 말고 시장 흐름도 같이 봐야 해.</div>
+    </div>
+  </div>
+
+  <!-- 8. 체크리스트 -->
+  <div class="section-label">
+    <div class="num">8</div>
+    <h2>보조지표 볼 때 쭈미 체크리스트</h2>
+  </div>
+  <div class="checklist">
+    <div class="checklist-title">📝 주식 살 때 이것만 체크해!</div>
+    <div class="check-item">
+      <div class="check-box"><svg viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+      <div>
+        <div>RSI 70 이상인지 확인</div>
+        <div class="check-sub">과열 구간 — 신중하게!</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"><svg viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+      <div>
+        <div>RSI 30 이하인지 확인</div>
+        <div class="check-sub">침체 구간 — 반등 기대 가능</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"><svg viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+      <div>
+        <div>볼린저밴드 상/하단 터치 여부</div>
+        <div class="check-sub">밴드 끝에 닿으면 반전 신호</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"><svg viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+      <div>
+        <div>볼린저밴드 폭이 좁아지는지</div>
+        <div class="check-sub">큰 움직임 예고 신호</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"><svg viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+      <div>
+        <div>MACD선 교차 여부</div>
+        <div class="check-sub">흐름 전환 신호 확인</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-box"><svg viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+      <div>
+        <div>2개 이상 지표가 같은 신호 주는지</div>
+        <div class="check-sub">신호 겹칠수록 신뢰도 UP!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box" style="margin-top:24px;">
+    <div class="cta-title">차트는 미래를 맞추는 도구가 아니라<br />확률을 높여주는 도구야! 📈</div>
+    <div class="cta-sub">차트 공부하다 머리 터질 것 같은 마이쭈를 위해<br />보기 쉽게 정리했어 🎁<br />꿀정보 놓치고 싶지 않다면 쭈미 팔로우 ➤</div>
+    <span class="cta-btn">@jjumi_s2 팔로우하기 🐜</span>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    본 자료는 투자 권유가 아닌 교육 목적으로 제작되었습니다.<br />
+    투자 판단은 본인 책임이며 과거 수익률이 미래를 보장하지 않습니다.<br /><br />
+    📎 @jjumi_s2 | 보조지표 기초.ZIP
+  </div>
+
+</body>
+</html>
