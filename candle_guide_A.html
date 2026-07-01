@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>캔들차트 9가지 패턴 실전 적용법 | 쭈미의 찐자료집</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root{
+    --bg:#FBF6EF;
+    --surface:#FFFFFF;
+    --ink:#2B2620;
+    --muted:#948B7D;
+    --line:#EFE7DA;
+    --red:#F0384B;
+    --red-soft:#FDE1E4;
+    --blue:#3C5FE8;
+    --blue-soft:#DEE6FB;
+    --purple:#8B7CF6;
+    --purple-soft:#EAE2FC;
+    --gold:#E8A33D;
+    --gold-soft:#FBEBD2;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Pretendard Variable','Pretendard',-apple-system,'Malgun Gothic',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:100px;
+  }
+  .wrap{max-width:480px;margin:0 auto;position:relative;}
+
+  /* progress candle bar */
+  .progress-shell{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,246,239,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:10px 16px 8px;
+  }
+  .progress-track{
+    display:flex; gap:6px; height:26px; align-items:flex-end;
+  }
+  .progress-candle{
+    flex:1; position:relative; background:var(--line); border-radius:4px;
+    height:100%; overflow:hidden; transition:background .3s;
+  }
+  .progress-candle .fill{
+    position:absolute; bottom:0; left:0; right:0; height:0%;
+    background:linear-gradient(180deg,var(--red),var(--gold));
+    transition:height .25s ease;
+  }
+  .progress-candle.active{background:#F1E9DC;}
+  .progress-labels{
+    display:flex; gap:6px; margin-top:6px;
+  }
+  .progress-labels span{
+    flex:1; text-align:center; font-size:10.5px; font-weight:700; color:var(--muted);
+  }
+  .progress-labels span.on{color:var(--ink);}
+
+  /* hero */
+  .hero{padding:34px 20px 22px;text-align:center;}
+  .hero .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--purple-soft); color:var(--purple);
+    font-size:12.5px; font-weight:800; padding:6px 14px;
+    border-radius:999px; margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:30px; line-height:1.28; margin:0 0 10px; font-weight:900;
+    letter-spacing:-0.5px;
+  }
+  .hero h1 .hl{
+    background:linear-gradient(180deg,transparent 62%, var(--gold-soft) 62%);
+  }
+  .hero p{font-size:14.5px;color:var(--muted);line-height:1.6;margin:0;}
+  .hero .stamp{
+    margin-top:20px; display:inline-block; font-size:12px; font-weight:700;
+    color:var(--red); background:var(--red-soft); padding:5px 12px; border-radius:999px;
+  }
+
+  section{padding:10px 18px 46px;}
+  .part-head{margin-bottom:18px;}
+  .part-head .num{
+    font-size:13px; font-weight:800; color:var(--gold); letter-spacing:1px;
+  }
+  .part-head h2{font-size:22px;font-weight:900;margin:4px 0 6px;letter-spacing:-0.4px;}
+  .part-head .desc{font-size:13.5px;color:var(--muted);line-height:1.55;}
+
+  /* pattern cards - part 1 */
+  .pattern-grid{display:flex;flex-direction:column;gap:12px;}
+  .pattern-card{
+    background:var(--surface); border-radius:var(--radius); padding:16px 16px 14px;
+    border:1px solid var(--line);
+  }
+  .pattern-card .top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .pattern-card .badge{
+    font-size:12.5px;font-weight:800;padding:5px 11px;border-radius:999px;white-space:nowrap;
+  }
+  .badge.up{background:var(--red-soft);color:var(--red);}
+  .badge.down{background:var(--blue-soft);color:var(--blue);}
+  .badge.neutral{background:var(--purple-soft);color:var(--purple);}
+  .pattern-card .name{font-size:15.5px;font-weight:800;}
+  .pattern-card .body{display:flex;gap:14px;align-items:center;}
+  .pattern-card svg{flex-shrink:0;}
+  .pattern-card .txt{flex:1;}
+  .pattern-card .txt .def{font-size:13px;color:var(--ink);line-height:1.55;margin-bottom:6px;}
+  .pattern-card .tip{
+    font-size:12.5px; color:var(--muted); line-height:1.55;
+    background:#FAF6EE; border-radius:12px; padding:9px 11px; margin-top:8px;
+    border-left:3px solid var(--gold);
+  }
+  .pattern-card .tip b{color:var(--ink);}
+
+  /* subsection headers within part1 */
+  .subhead{
+    display:flex; align-items:center; gap:11px;
+    margin:22px 0 2px;
+  }
+  .subhead:first-of-type{margin-top:2px;}
+  .subhead .chip{
+    flex-shrink:0; width:32px; height:32px; border-radius:10px;
+    background:var(--ink); color:#fff; font-size:13px; font-weight:900;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .subhead .st{font-size:15px;font-weight:900;}
+  .subhead .sd{font-size:11.5px;color:var(--muted);margin-top:1px;}
+
+  /* basics card */
+  .basics-card h3{font-size:15.5px;font-weight:900;margin:0 0 4px;}
+  .basics-card .sub{font-size:12.5px;color:var(--muted);line-height:1.5;margin-bottom:14px;}
+  .basics-row{display:flex;gap:22px;justify-content:center;margin-bottom:14px;}
+  .basics-col{text-align:center;}
+  .basics-col .lbl{font-size:11px;color:var(--muted);font-weight:700;margin-top:4px;}
+  .basics-legend{display:flex;flex-direction:column;gap:8px;}
+  .basics-legend .lg{display:flex;gap:6px;font-size:12.5px;line-height:1.55;}
+  .basics-legend .lg .lgtext{flex:1;min-width:0;}
+  .basics-legend .lg b{color:var(--ink);}
+
+  /* comparison summary card */
+  .compare-card{
+    background:var(--ink); color:#fff; border-radius:var(--radius);
+    padding:20px 18px; margin-top:2px;
+  }
+  .compare-card h3{font-size:16px;font-weight:900;margin:0 0 6px;color:#fff;}
+  .compare-card .sub{font-size:12.5px;color:#C9C2B4;line-height:1.6;margin-bottom:16px;}
+  .compare-card .sub b{color:#fff;}
+  .compare-row{display:flex;gap:9px;margin-bottom:12px;}
+  .compare-item{
+    flex:1; background:rgba(255,255,255,0.08); border-radius:14px;
+    padding:12px 6px 10px; text-align:center;
+  }
+  .compare-item svg{display:block;margin:0 auto 6px;}
+  .compare-item .cname{font-size:12px;font-weight:800;}
+  .compare-item .cpos{font-size:10.5px;color:#C9C2B4;margin-top:2px;line-height:1.4;}
+  .compare-note{
+    font-size:12px; color:#F3E4C2; line-height:1.65;
+    background:rgba(232,163,61,0.16); border-radius:10px; padding:11px 12px;
+  }
+
+  /* indicators - part 2 */
+  .ind-card{
+    background:var(--surface); border-radius:var(--radius); padding:18px;
+    border:1px solid var(--line); margin-bottom:14px;
+  }
+  .ind-card .ihead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .ind-card h3{font-size:16.5px;font-weight:900;margin:0;}
+  .ind-card .tag{font-size:11.5px;font-weight:700;color:var(--muted);}
+  .ind-card table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.8px;}
+  .ind-card td{padding:7px 0;border-bottom:1px dashed var(--line);vertical-align:top;}
+  .ind-card td:first-child{color:var(--muted);font-weight:700;width:74px;white-space:nowrap;}
+  .ind-card .signal-row{display:flex;gap:8px;margin-top:10px;}
+  .signal-pill{flex:1;border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.5;}
+  .signal-pill.buy{background:var(--red-soft);}
+  .signal-pill.sell{background:var(--blue-soft);}
+  .signal-pill b{display:block;font-size:12px;margin-bottom:3px;}
+  .signal-pill.buy b{color:var(--red);}
+  .signal-pill.sell b{color:var(--blue);}
+
+  /* step cards - part 2 practical application */
+  .step-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px; margin-bottom:14px;
+  }
+  .step-card .shead{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .step-card .schip{
+    width:30px;height:30px;border-radius:50%;background:var(--gold);color:#fff;
+    font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .step-card h4{font-size:15.5px;font-weight:900;margin:0;}
+  .step-card .sbody{font-size:13px;line-height:1.6;color:var(--ink);}
+  .step-card .saction{
+    margin-top:10px; font-size:12.5px; color:var(--muted); line-height:1.55;
+    background:#FAF6EE; border-left:3px solid var(--gold); border-radius:12px; padding:9px 11px;
+  }
+  .step-card .saction b{color:var(--ink);}
+
+  /* checklist part 3 */
+  .check-card{
+    background:var(--surface); border-radius:var(--radius); border:1px solid var(--line);
+    padding:8px 6px; margin-bottom:14px;
+  }
+  .check-card .chead{
+    padding:10px 12px 6px; font-size:13.5px; font-weight:800; color:var(--purple);
+  }
+  .check-item{
+    display:flex; gap:10px; align-items:flex-start; padding:11px 12px;
+    border-radius:14px; cursor:pointer;
+  }
+  .check-item:active{background:#F7F1E6;}
+  .check-item input{
+    appearance:none; -webkit-appearance:none; width:20px; height:20px; flex-shrink:0;
+    border:2px solid var(--line); border-radius:7px; margin-top:1px; position:relative;
+    background:#fff; cursor:pointer;
+  }
+  .check-item input:checked{background:var(--gold);border-color:var(--gold);}
+  .check-item input:checked::after{
+    content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:13px; font-weight:900;
+  }
+  .check-item .ctext{font-size:13.5px;line-height:1.5;}
+  .check-item .ctext b{font-weight:800;}
+  .check-item input:checked ~ .ctext{color:var(--muted); text-decoration:line-through;}
+  .progress-note{
+    text-align:center; font-size:12.5px; color:var(--muted); margin-top:6px; font-weight:700;
+  }
+  .reset-btn{
+    display:block; margin:14px auto 0; background:none; border:1px solid var(--line);
+    color:var(--muted); font-size:12px; font-weight:700; padding:7px 16px; border-radius:999px;
+  }
+
+  /* part 4 chart examples */
+  .example-card{
+    background:var(--surface); border-radius:var(--radius); border:1px solid var(--line);
+    padding:16px; margin-bottom:18px;
+  }
+  .example-card .etitle{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+  .example-card .etitle .n{
+    width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;
+    font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .example-card h4{font-size:15px;font-weight:900;margin:0;}
+  .example-card .scenario{font-size:12.5px;color:var(--muted);margin:6px 0 12px;line-height:1.55;}
+  .example-card svg{width:100%;height:auto;display:block;background:#FCFAF5;border-radius:14px;}
+  .example-card .readout{
+    display:flex;flex-direction:column;gap:7px;margin-top:12px;
+  }
+  .readout .r{
+    display:flex; gap:8px; font-size:12.5px; line-height:1.5; align-items:flex-start;
+  }
+  .readout .rtext{flex:1;min-width:0;}
+  .readout .dot{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+  .dot.r1{background:var(--red);} .dot.r2{background:var(--gold);} .dot.r3{background:var(--purple);}
+  .caution{
+    margin-top:10px; font-size:12px; color:var(--muted); background:#FAF6EE;
+    border-radius:10px; padding:9px 11px;
+  }
+
+  /* footer */
+  .footer{
+    padding:30px 24px 10px; text-align:center;
+  }
+  .footer .mascot{font-size:34px;margin-bottom:10px;}
+  .footer p{font-size:13px;color:var(--muted);line-height:1.7;margin:0 0 4px;}
+  .footer .handle{font-weight:800;color:var(--ink);}
+  .disclaimer{
+    font-size:11px; color:#B8AF9F; line-height:1.6; margin-top:18px; padding:0 8px;
+  }
+
+  .fixed-cta{
+    position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:60;
+    width:calc(100% - 32px); max-width:448px;
+    background:var(--ink); color:#fff; border-radius:999px;
+    padding:14px 18px; font-size:13.5px; font-weight:800;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    box-shadow:0 10px 26px rgba(43,38,32,0.25);
+  }
+  .fixed-cta span.arrow{color:var(--gold);}
+
+  ::selection{background:var(--gold-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="progress-shell">
+    <div class="progress-track" id="progressTrack">
+      <div class="progress-candle" data-part="1"><div class="fill"></div></div>
+      <div class="progress-candle" data-part="2"><div class="fill"></div></div>
+      <div class="progress-candle" data-part="3"><div class="fill"></div></div>
+    </div>
+    <div class="progress-labels">
+      <span data-p="1">캔들 정리</span>
+      <span data-p="2">실전 적용</span>
+      <span data-p="3">실전 예시</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">🕯️ 쭈미의 찐자료집</div>
+    <h1>캔들차트, 이제<br><span class="hl">진짜로 써먹어보자</span></h1>
+    <p>패턴 외우기 말고 실전 적용법. 9가지 모양 + 어디서 나왔을 때 뭘 해야 하는지까지 정리했어요.</p>
+    <div class="stamp">저장 필수 📌 두고두고 꺼내보기</div>
+  </div>
+
+  <!-- PART 1 -->
+  <section id="part1">
+    <div class="part-head">
+      <div class="num">PART 1</div>
+      <h2>캔들차트 핵심 정리</h2>
+      <div class="desc">번호 순서 말고 <b>캔들 개수</b> 순서로 정리했어요. 1개 → 2개 → 3개+ → 구조, 이 순서로 보면 훨씬 잘 쌓여요.</div>
+    </div>
+
+    <div class="pattern-grid">
+
+      <div class="pattern-card basics-card">
+        <h3>🕯️ 캔들 하나, 제대로 읽기</h3>
+        <div class="sub">9개 패턴 외우기 전에 이것부터. 캔들 하나엔 이 4가지 가격이 다 들어있어요.</div>
+        <div class="basics-row">
+          <div class="basics-col">
+            <svg width="88" height="90" viewBox="0 0 88 90">
+              <line x1="24" y1="6" x2="24" y2="84" stroke="#2B2620" stroke-width="1.5"/>
+              <rect x="10" y="26" width="28" height="38" fill="#F0384B" rx="3"/>
+              <line x1="40" y1="14" x2="46" y2="14" stroke="#B8AF9F" stroke-width="1" stroke-dasharray="2,2"/>
+              <text x="47" y="17" font-size="8.5" fill="#948B7D">고가</text>
+              <line x1="40" y1="26" x2="46" y2="26" stroke="#B8AF9F" stroke-width="1" stroke-dasharray="2,2"/>
+              <text x="47" y="29" font-size="8.5" fill="#948B7D">종가</text>
+              <line x1="40" y1="64" x2="46" y2="64" stroke="#B8AF9F" stroke-width="1" stroke-dasharray="2,2"/>
+              <text x="47" y="67" font-size="8.5" fill="#948B7D">시가</text>
+              <line x1="40" y1="80" x2="46" y2="80" stroke="#B8AF9F" stroke-width="1" stroke-dasharray="2,2"/>
+              <text x="47" y="83" font-size="8.5" fill="#948B7D">저가</text>
+            </svg>
+            <div class="lbl">양봉 (종가&gt;시가)</div>
+          </div>
+          <div class="basics-col">
+            <svg width="88" height="90" viewBox="0 0 88 90">
+              <line x1="24" y1="6" x2="24" y2="84" stroke="#2B2620" stroke-width="1.5"/>
+              <rect x="10" y="26" width="28" height="38" fill="#3C5FE8" rx="3"/>
+              <line x1="40" y1="14" x2="46" y2="14" stroke="#B8AF9F" stroke-width="1" stroke-dasharray="2,2"/>
+              <text x="47" y="17" font-size="8.5" fill="#948B7D">고가</text>
+              <line x1="40" y1="26" x2="46" y2="26" stroke="#B8AF9F" stroke-width="1" stroke-dasharray="2,2"/>
+              <text x="47" y="29" font-size="8.5" fill="#948B7D">시가</text>
+              <line x1="40" y1="64" x2="46" y2="64" stroke="#B8AF9F" stroke-width="1" stroke-dasharray="2,2"/>
+              <text x="47" y="67" font-size="8.5" fill="#948B7D">종가</text>
+              <line x1="40" y1="80" x2="46" y2="80" stroke="#B8AF9F" stroke-width="1" stroke-dasharray="2,2"/>
+              <text x="47" y="83" font-size="8.5" fill="#948B7D">저가</text>
+            </svg>
+            <div class="lbl">음봉 (종가&lt;시가)</div>
+          </div>
+        </div>
+        <div class="basics-legend">
+          <div class="lg">🔺<span class="lgtext"><b>몸통</b> 시가~종가 사이 두꺼운 부분. 매수·매도 힘의 차이가 클수록 몸통이 길어져요.</span></div>
+          <div class="lg">🔻<span class="lgtext"><b>꼬리(그림자)</b> 몸통 위아래 얇은 선. 고가·저가까지 갔다가 밀려난 흔적이에요.</span></div>
+          <div class="lg">🎨<span class="lgtext"><b>양봉·음봉</b> 빨강(양봉)은 시가보다 종가가 높게 마감, 파랑(음봉)은 반대예요.</span></div>
+        </div>
+      </div>
+
+      <div class="subhead">
+        <div class="chip">1</div>
+        <div><div class="st">캔들 1개짜리 패턴</div><div class="sd">몸통·꼬리 비율만 봐도 힘의 방향이 보여요</div></div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="top"><span class="badge neutral">전환 신호</span><span class="name">도지 (십자형)</span></div>
+        <div class="body">
+          <svg width="70" height="60" viewBox="0 0 70 60">
+            <line x1="35" y1="8" x2="35" y2="48" stroke="#2B2620" stroke-width="2"/>
+            <line x1="18" y1="27" x2="52" y2="27" stroke="#2B2620" stroke-width="2.5"/>
+          </svg>
+          <div class="txt">
+            <div class="def">시가와 종가가 거의 같음. 매수·매도 힘이 팽팽하다는 뜻.</div>
+          </div>
+        </div>
+        <div class="tip"><b>실전 TIP</b> 도지 하나만으론 방향 못 잡아요. <b>다음 캔들</b>이 위로 뚫는지 아래로 뚫는지 꼭 확인. 추세 끝자락에서 나오면 전환 예고편일 확률 ↑</div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="top"><span class="badge up">반전 신호</span><span class="name">망치형</span></div>
+        <div class="body">
+          <svg width="70" height="60" viewBox="0 0 70 60">
+            <line x1="35" y1="8" x2="35" y2="50" stroke="#2B2620" stroke-width="2"/>
+            <rect x="25" y="8" width="20" height="14" fill="#F0384B" rx="2"/>
+          </svg>
+          <div class="txt">
+            <div class="def">아래꼬리 길고 몸통은 위에 작게. 밑에서 강하게 반등한 흔적.</div>
+          </div>
+        </div>
+        <div class="tip"><b>실전 TIP</b> <b>하락 추세 끝</b>에서 나와야 진짜 망치. 아래꼬리는 몸통 2배 이상이어야 신뢰도 있음. 다음날 갭상승으로 확인되면 매수 근거 강화.</div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="top"><span class="badge down">반전 신호</span><span class="name">교수형</span></div>
+        <div class="body">
+          <svg width="70" height="60" viewBox="0 0 70 60">
+            <line x1="35" y1="8" x2="35" y2="50" stroke="#2B2620" stroke-width="2"/>
+            <rect x="25" y="8" width="20" height="14" fill="#3C5FE8" rx="2"/>
+          </svg>
+          <div class="txt">
+            <div class="def">망치형이랑 똑같이 생겼지만 위치가 다름 — <b>고점</b>에서 등장.</div>
+          </div>
+        </div>
+        <div class="tip"><b>실전 TIP</b> 모양은 망치형과 동일해서 <b>위치로 구분</b>해야 해요. 상승 추세 끝, 특히 신고가 근처에서 나오면 하락 전환 경고등.</div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="top"><span class="badge down">반전 신호</span><span class="name">유성형</span></div>
+        <div class="body">
+          <svg width="70" height="60" viewBox="0 0 70 60">
+            <line x1="35" y1="8" x2="35" y2="50" stroke="#2B2620" stroke-width="2"/>
+            <rect x="25" y="36" width="20" height="14" fill="#3C5FE8" rx="2"/>
+          </svg>
+          <div class="txt">
+            <div class="def">윗꼬리 길고 몸통은 아래 작게. 위로 찔러봤다가 밀린 흔적.</div>
+          </div>
+        </div>
+        <div class="tip"><b>실전 TIP</b> 급등 이후 <b>고점</b>에서 나오면 매도세 유입 신호. 다음 캔들이 음봉으로 마무리되면 하락 전환 신뢰도가 더 올라가요.</div>
+      </div>
+
+      <div class="subhead">
+        <div class="chip">2</div>
+        <div><div class="st">캔들 2개짜리 패턴</div><div class="sd">작은 걸 큰 게 덮어버리는 "장악"의 원리</div></div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="top"><span class="badge up">상승 신호</span><span class="name">상승 장악형</span></div>
+        <div class="body">
+          <svg width="70" height="60" viewBox="0 0 70 60">
+            <line x1="18" y1="10" x2="18" y2="20" stroke="#3C5FE8" stroke-width="2"/>
+            <rect x="10" y="20" width="16" height="18" fill="#3C5FE8" rx="2"/>
+            <line x1="47" y1="6" x2="47" y2="18" stroke="#F0384B" stroke-width="2"/>
+            <rect x="37" y="18" width="20" height="30" fill="#F0384B" rx="2"/>
+            <line x1="47" y1="48" x2="47" y2="52" stroke="#F0384B" stroke-width="2"/>
+          </svg>
+          <div class="txt">
+            <div class="def">작은 음봉(하락)을 큰 양봉(상승)이 완전히 덮어버리는 모양.</div>
+          </div>
+        </div>
+        <div class="tip"><b>실전 TIP</b> 하락 추세 <b>바닥권</b>에서 나와야 의미 있어요. 거래량이 평소보다 확 늘었으면 신뢰도 UP. 상승장 중간에 나오면 그냥 노이즈일 수도 있음.</div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="top"><span class="badge down">하락 신호</span><span class="name">하락 장악형</span></div>
+        <div class="body">
+          <svg width="70" height="60" viewBox="0 0 70 60">
+            <line x1="18" y1="6" x2="18" y2="18" stroke="#F0384B" stroke-width="2"/>
+            <rect x="10" y="18" width="16" height="16" fill="#F0384B" rx="2"/>
+            <line x1="47" y1="8" x2="47" y2="14" stroke="#3C5FE8" stroke-width="2"/>
+            <rect x="37" y="14" width="20" height="30" fill="#3C5FE8" rx="2"/>
+            <line x1="47" y1="44" x2="47" y2="50" stroke="#3C5FE8" stroke-width="2"/>
+          </svg>
+          <div class="txt">
+            <div class="def">작은 양봉(상승)을 큰 음봉(하락)이 덮어버리는 모양.</div>
+          </div>
+        </div>
+        <div class="tip"><b>실전 TIP</b> <b>고점권</b>에서 나오면 차익실현 매물 신호. 특히 저항선(전고점) 근처에서 뜨면 더 조심. 익절 타이밍 잡을 때 참고하기 좋아요.</div>
+      </div>
+
+      <div class="subhead">
+        <div class="chip">3</div>
+        <div><div class="st">캔들 3개+짜리 패턴</div><div class="sd">큰 거 → 쉬어가기 → 큰 거, 추세 지속의 문법</div></div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="top"><span class="badge up">지속 신호</span><span class="name">상승 삼법</span></div>
+        <div class="body">
+          <svg width="70" height="60" viewBox="0 0 70 60">
+            <rect x="8" y="14" width="14" height="26" fill="#F0384B" rx="2"/>
+            <rect x="28" y="24" width="12" height="14" fill="#3C5FE8" rx="2"/>
+            <rect x="46" y="8" width="14" height="32" fill="#F0384B" rx="2"/>
+          </svg>
+          <div class="txt">
+            <div class="def">큰 양봉 → 작은 조정 캔들 여러 개 → 다시 큰 양봉.</div>
+          </div>
+        </div>
+        <div class="tip"><b>실전 TIP</b> 중간 조정 캔들들이 첫 양봉 몸통 범위 <b>안에서</b> 움직여야 진짜예요. 조정 구간에서 거래량 줄고, 마지막 양봉에서 다시 늘면 추세 지속 신뢰↑</div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="top"><span class="badge down">지속 신호</span><span class="name">하락 삼법</span></div>
+        <div class="body">
+          <svg width="70" height="60" viewBox="0 0 70 60">
+            <rect x="8" y="8" width="14" height="32" fill="#3C5FE8" rx="2"/>
+            <rect x="28" y="20" width="12" height="14" fill="#F0384B" rx="2"/>
+            <rect x="46" y="14" width="14" height="26" fill="#3C5FE8" rx="2"/>
+          </svg>
+          <div class="txt">
+            <div class="def">큰 음봉 → 작은 반등 캔들 여러 개 → 다시 큰 음봉.</div>
+          </div>
+        </div>
+        <div class="tip"><b>실전 TIP</b> "반등하나?" 싶을 때 나오는 함정 패턴. 중간 반등 캔들에서 섣불리 매수 진입하면 안 돼요. 거래량 줄어드는 반등은 그냥 숨고르기.</div>
+      </div>
+
+      <div class="subhead">
+        <div class="chip">4</div>
+        <div><div class="st">여러 캔들이 만드는 구조 패턴</div><div class="sd">낱개가 아니라 "형태"로 봐야 하는 신호</div></div>
+      </div>
+
+      <div class="pattern-card">
+        <div class="top"><span class="badge neutral">추세 전환</span><span class="name">쌍바닥 / 쌍봉</span></div>
+        <div class="body">
+          <svg width="70" height="60" viewBox="0 0 70 60">
+            <rect x="6" y="14" width="10" height="20" fill="#3C5FE8" rx="2"/>
+            <rect x="20" y="30" width="10" height="16" fill="#F0384B" rx="2"/>
+            <rect x="34" y="14" width="10" height="20" fill="#3C5FE8" rx="2"/>
+            <polyline points="6,24 20,38 34,24" fill="none" stroke="#8B7CF6" stroke-width="1.5" stroke-dasharray="2,2"/>
+          </svg>
+          <div class="txt">
+            <div class="def">W(쌍바닥)는 바닥, M(쌍봉)은 꼭대기가 두 번 형성.</div>
+          </div>
+        </div>
+        <div class="tip"><b>실전 TIP</b> 두 바닥/꼭대기의 <b>높이가 비슷</b>할수록 신뢰도 높음. 목선(넥라인)을 거래량 실리면서 돌파해야 진짜 전환 신호예요.</div>
+      </div>
+
+      <div class="compare-card">
+        <h3>💡 모양보다 위치가 진짜 포인트</h3>
+        <div class="sub">망치형·교수형은 <b>모양이 완전히 똑같아요.</b> 유성형도 몸통 위치만 반대일 뿐 톤은 비슷하죠. 결국 <b>"어디서 나왔는지"</b>가 신호를 정반대로 바꿔놔요.</div>
+        <div class="compare-row">
+          <div class="compare-item">
+            <svg width="36" height="46" viewBox="0 0 36 46"><line x1="18" y1="4" x2="18" y2="42" stroke="#fff" stroke-width="1.5" opacity="0.45"/><rect x="9" y="4" width="18" height="11" fill="#F0384B" rx="2"/></svg>
+            <div class="cname">망치형</div>
+            <div class="cpos">하락 끝<br>→ 상승 반전</div>
+          </div>
+          <div class="compare-item">
+            <svg width="36" height="46" viewBox="0 0 36 46"><line x1="18" y1="4" x2="18" y2="42" stroke="#fff" stroke-width="1.5" opacity="0.45"/><rect x="9" y="4" width="18" height="11" fill="#3C5FE8" rx="2"/></svg>
+            <div class="cname">교수형</div>
+            <div class="cpos">상승 끝<br>→ 하락 반전</div>
+          </div>
+          <div class="compare-item">
+            <svg width="36" height="46" viewBox="0 0 36 46"><line x1="18" y1="4" x2="18" y2="42" stroke="#fff" stroke-width="1.5" opacity="0.45"/><rect x="9" y="31" width="18" height="11" fill="#3C5FE8" rx="2"/></svg>
+            <div class="cname">유성형</div>
+            <div class="cpos">상승 끝<br>→ 하락 반전</div>
+          </div>
+        </div>
+        <div class="compare-note">똑같이 생긴 캔들도 하락 끝에 있으면 매수 신호, 상승 끝에 있으면 매도 신호로 완전히 달라져요. 모양 외우기보다 "지금 추세의 어느 지점인가"를 먼저 보세요.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PART 2 -->
+  <!-- PART 2 -->
+  <section id="part2">
+    <div class="part-head">
+      <div class="num">PART 2</div>
+      <h2>실전에서 진짜 써먹는 법</h2>
+      <div class="desc">패턴 9개 외웠으면 이제 뭘 해야 하냐고요? <b>3단계</b>면 충분해요.</div>
+    </div>
+
+    <div class="step-card">
+      <div class="shead"><div class="schip">1</div><h4>지금 위치부터 본다</h4></div>
+      <div class="sbody">패턴 하나가 눈에 들어오면, 그 캔들만 보지 말고 <b>최근 5~10개 캔들 흐름</b>부터 훑어보세요. 계속 내려왔으면 바닥권 후보, 계속 올라왔으면 고점권 후보예요.</div>
+      <div class="saction"><b>왜 중요하냐면</b> 위치를 안 보고 모양만 보면 망치형인지 교수형인지, 헷갈려서 반대로 해석하는 실수가 제일 많이 나와요.</div>
+    </div>
+
+    <div class="step-card">
+      <div class="shead"><div class="schip">2</div><h4>패턴으로 행동을 좁힌다</h4></div>
+      <div class="sbody">위치 파악이 끝났으면, Part1에서 본 패턴이 지금 이 자리에 맞는 신호인지 확인하고 행동 후보를 좁혀요. 아래 표 하나로 정리했어요.</div>
+    </div>
+
+    <div class="ind-card">
+      <div class="ihead"><h3>📋 상황별 행동 가이드</h3><span class="tag">빠르게 훑어보기</span></div>
+      <table>
+        <tr><td>바닥권</td><td>망치형·상승장악형 등장 → <b>매수 후보권</b>. 다음 캔들 확인 후 분할 진입 고려</td></tr>
+        <tr><td>고점권</td><td>교수형·유성형·하락장악형 등장 → <b>매도·익절 후보권</b>. 보유 중이면 일부 정리 고려</td></tr>
+        <tr><td>추세 중간</td><td>도지 등장 → <b>판단 보류</b>. 다음 캔들이 방향 잡아줄 때까지 대기</td></tr>
+        <tr><td>조정 구간</td><td>상승·하락 삼법 형성 중 → <b>기존 추세 지속 베팅</b>. 조정 캔들에서 섣부른 역매매 금지</td></tr>
+      </table>
+    </div>
+
+    <div class="step-card">
+      <div class="shead"><div class="schip">3</div><h4>다음 캔들로 확정한다</h4></div>
+      <div class="sbody">패턴 하나 나왔다고 바로 사거나 팔지 마세요. <b>다음 캔들이 그 방향을 확인</b>해줘야 진짜예요. 예를 들어 망치형이 나온 다음 날 양봉으로 갭상승하면 매수 근거가 훨씬 단단해져요.</div>
+      <div class="saction"><b>실전 습관</b> "패턴 발견 → 다음날 시가 확인 → 방향 맞으면 진입" 이 순서를 지키는 것만으로 헛발질이 확 줄어요.</div>
+    </div>
+
+    <div class="check-card" id="checklist">
+      <div class="chead">✅ 진입 전 미니 체크</div>
+      <label class="check-item"><input type="checkbox" data-k="c1"><span class="ctext"><b>위치</b> 확인했나? (바닥권 / 고점권 / 중간)</span></label>
+      <label class="check-item"><input type="checkbox" data-k="c2"><span class="ctext"><b>패턴</b>이 그 위치에서 의미 있는 자리인가?</span></label>
+      <label class="check-item"><input type="checkbox" data-k="c3"><span class="ctext"><b>몸통·꼬리 비율</b>이 뚜렷한가? (애매하면 패스)</span></label>
+      <label class="check-item"><input type="checkbox" data-k="c4"><span class="ctext"><b>다음 캔들</b>로 방향이 확인됐는가?</span></label>
+      <div class="progress-note" id="progressNote">0 / 4 체크 완료</div>
+      <button class="reset-btn" id="resetBtn">체크 초기화</button>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section id="part3">
+    <div class="part-head">
+      <div class="num">PART 3</div>
+      <h2>실전 차트 예시</h2>
+      <div class="desc">패턴이 실제 차트에서 어떻게 나오고, 그때 <b>뭘 해야 하는지</b>까지 예시로 볼게요. (가상 시나리오)</div>
+    </div>
+
+    <div class="example-card">
+      <div class="etitle"><span class="n">1</span><h4>바닥권 반전 조합</h4></div>
+      <div class="scenario">하락 추세가 이어지다 저점 부근에서 반전 조짐이 나오는 상황이에요.</div>
+      <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="150" x2="310" y2="150" stroke="#EFE7DA" stroke-width="1"/>
+        <line x1="24" y1="20" x2="24" y2="40" stroke="#3C5FE8" stroke-width="1.5"/><rect x="18" y="20" width="12" height="20" fill="#3C5FE8" rx="1.5"/>
+        <line x1="48" y1="35" x2="48" y2="58" stroke="#3C5FE8" stroke-width="1.5"/><rect x="42" y="35" width="12" height="23" fill="#3C5FE8" rx="1.5"/>
+        <line x1="72" y1="52" x2="72" y2="78" stroke="#3C5FE8" stroke-width="1.5"/><rect x="66" y="55" width="12" height="20" fill="#3C5FE8" rx="1.5"/>
+        <line x1="96" y1="70" x2="96" y2="98" stroke="#3C5FE8" stroke-width="1.5"/><rect x="90" y="73" width="12" height="22" fill="#3C5FE8" rx="1.5"/>
+        <line x1="120" y1="90" x2="120" y2="130" stroke="#3C5FE8" stroke-width="1.5"/><rect x="114" y="95" width="12" height="20" fill="#3C5FE8" rx="1.5"/>
+        <line x1="144" y1="95" x2="144" y2="138" stroke="#2B2620" stroke-width="1.5"/><rect x="138" y="95" width="12" height="10" fill="#F0384B" rx="1.5"/>
+        <line x1="168" y1="88" x2="168" y2="98" stroke="#3C5FE8" stroke-width="1.5"/><rect x="162" y="88" width="12" height="9" fill="#3C5FE8" rx="1.5"/>
+        <line x1="198" y1="55" x2="198" y2="102" stroke="#F0384B" stroke-width="1.5"/><rect x="188" y="60" width="20" height="38" fill="#F0384B" rx="1.5"/>
+        <line x1="228" y1="35" x2="228" y2="62" stroke="#F0384B" stroke-width="1.5"/><rect x="220" y="38" width="16" height="24" fill="#F0384B" rx="1.5"/>
+        <line x1="258" y1="18" x2="258" y2="42" stroke="#F0384B" stroke-width="1.5"/><rect x="250" y="20" width="16" height="20" fill="#F0384B" rx="1.5"/>
+        <rect x="138" y="160" width="12" height="8" fill="#E8D9BE"/>
+        <rect x="162" y="158" width="12" height="10" fill="#E8D9BE"/>
+        <rect x="188" y="145" width="20" height="23" fill="#E8A33D"/>
+        <rect x="220" y="152" width="16" height="16" fill="#E8A33D"/>
+        <path d="M144 92 L144 78" stroke="#8B7CF6" stroke-width="1.2" stroke-dasharray="2,2"/>
+        <text x="112" y="72" font-size="9" fill="#8B7CF6" font-weight="700">① 망치형</text>
+        <path d="M198 53 L198 40" stroke="#8B7CF6" stroke-width="1.2" stroke-dasharray="2,2"/>
+        <text x="176" y="35" font-size="9" fill="#8B7CF6" font-weight="700">② 상승장악형</text>
+        <text x="200" y="180" font-size="8.5" fill="#B8AF9F">거래량 급증 ↑</text>
+      </svg>
+      <div class="readout">
+        <div class="r"><span class="dot r1"></span><span class="rtext">하락 끝자락에서 <b>망치형</b> 등장 → 저점 지지 시도</span></div>
+        <div class="r"><span class="dot r2"></span><span class="rtext">바로 다음 캔들이 <b>상승장악형</b>으로 확정 + 거래량 급증</span></div>
+        <div class="r"><span class="dot r3"></span><span class="rtext">이 두 캔들이 연속으로 나오면 매수 후보권으로 판단</span></div>
+      </div>
+      <div class="caution">💰 <b>그래서 뭘 해야 하나</b> 상승장악형 확정 캔들 종가 부근에서 분할 매수 고려. 손절가는 망치형의 <b>저점 아래</b>로 잡아두면 리스크가 제한돼요.</div>
+    </div>
+
+    <div class="example-card">
+      <div class="etitle"><span class="n">2</span><h4>고점권 반전 조합</h4></div>
+      <div class="scenario">상승 랠리 이후 고점에서 매도 압력이 나타나는 상황이에요.</div>
+      <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="150" x2="310" y2="150" stroke="#EFE7DA" stroke-width="1"/>
+        <line x1="24" y1="110" x2="24" y2="132" stroke="#F0384B" stroke-width="1.5"/><rect x="18" y="112" width="12" height="18" fill="#F0384B" rx="1.5"/>
+        <line x1="48" y1="90" x2="48" y2="112" stroke="#F0384B" stroke-width="1.5"/><rect x="42" y="92" width="12" height="18" fill="#F0384B" rx="1.5"/>
+        <line x1="72" y1="70" x2="72" y2="92" stroke="#F0384B" stroke-width="1.5"/><rect x="66" y="72" width="12" height="18" fill="#F0384B" rx="1.5"/>
+        <line x1="96" y1="48" x2="96" y2="72" stroke="#F0384B" stroke-width="1.5"/><rect x="90" y="50" width="12" height="20" fill="#F0384B" rx="1.5"/>
+        <line x1="120" y1="26" x2="120" y2="52" stroke="#F0384B" stroke-width="1.5"/><rect x="114" y="28" width="12" height="22" fill="#F0384B" rx="1.5"/>
+        <line x1="144" y1="10" x2="144" y2="40" stroke="#2B2620" stroke-width="1.5"/><rect x="138" y="30" width="12" height="8" fill="#3C5FE8" rx="1.5"/>
+        <line x1="168" y1="24" x2="168" y2="34" stroke="#F0384B" stroke-width="1.5"/><rect x="162" y="26" width="12" height="8" fill="#F0384B" rx="1.5"/>
+        <line x1="198" y1="18" x2="198" y2="62" stroke="#3C5FE8" stroke-width="1.5"/><rect x="188" y="22" width="20" height="36" fill="#3C5FE8" rx="1.5"/>
+        <line x1="228" y1="50" x2="228" y2="82" stroke="#3C5FE8" stroke-width="1.5"/><rect x="220" y="52" width="16" height="26" fill="#3C5FE8" rx="1.5"/>
+        <line x1="258" y1="76" x2="258" y2="108" stroke="#3C5FE8" stroke-width="1.5"/><rect x="250" y="78" width="16" height="26" fill="#3C5FE8" rx="1.5"/>
+        <rect x="138" y="160" width="12" height="8" fill="#E8D9BE"/>
+        <rect x="162" y="158" width="12" height="10" fill="#E8D9BE"/>
+        <rect x="188" y="142" width="20" height="26" fill="#3C5FE8"/>
+        <rect x="220" y="150" width="16" height="18" fill="#3C5FE8"/>
+        <path d="M144 8 L144 -2" stroke="#8B7CF6" stroke-width="1.2" stroke-dasharray="2,2" transform="translate(0,4)"/>
+        <text x="106" y="8" font-size="9" fill="#8B7CF6" font-weight="700">① 유성형</text>
+        <path d="M198 16 L198 6" stroke="#8B7CF6" stroke-width="1.2" stroke-dasharray="2,2"/>
+        <text x="176" y="8" font-size="9" fill="#8B7CF6" font-weight="700" transform="translate(4,10)">② 하락장악형</text>
+        <text x="200" y="180" font-size="8.5" fill="#B8AF9F">거래량 실린 이탈 ↓</text>
+      </svg>
+      <div class="readout">
+        <div class="r"><span class="dot r1"></span><span class="rtext">신고가 근처에서 <b>유성형</b> 등장 → 위꼬리 길게, 매도세 유입</span></div>
+        <div class="r"><span class="dot r2"></span><span class="rtext">다음 캔들이 <b>하락장악형</b>으로 확정 + 거래량 실린 하락</span></div>
+        <div class="r"><span class="dot r3"></span><span class="rtext">이 조합이 뜨면 익절·매도 후보권으로 전환</span></div>
+      </div>
+      <div class="caution">💰 <b>그래서 뭘 해야 하나</b> 보유 중이라면 하락장악형 확정 시점에 일부 익절 고려. 신규 매수는 이 구간에서 보류하는 게 안전해요.</div>
+    </div>
+
+    <div class="example-card">
+      <div class="etitle"><span class="n">3</span><h4>쌍바닥(W) 돌파 예시</h4></div>
+      <div class="scenario">바닥을 두 번 다지고 목선(넥라인)을 돌파하는 상황이에요.</div>
+      <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="150" x2="310" y2="150" stroke="#EFE7DA" stroke-width="1"/>
+        <line x1="10" y1="55" x2="300" y2="55" stroke="#8B7CF6" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <text x="12" y="32" font-size="9" fill="#8B7CF6" font-weight="700">목선(넥라인)</text>
+        <line x1="24" y1="35" x2="24" y2="60" stroke="#3C5FE8" stroke-width="1.5"/><rect x="18" y="38" width="12" height="18" fill="#3C5FE8" rx="1.5"/>
+        <line x1="48" y1="55" x2="48" y2="85" stroke="#3C5FE8" stroke-width="1.5"/><rect x="42" y="58" width="12" height="22" fill="#3C5FE8" rx="1.5"/>
+        <line x1="72" y1="90" x2="72" y2="118" stroke="#3C5FE8" stroke-width="1.5"/><rect x="66" y="93" width="12" height="20" fill="#3C5FE8" rx="1.5"/>
+        <line x1="96" y1="70" x2="96" y2="95" stroke="#F0384B" stroke-width="1.5"/><rect x="90" y="72" width="12" height="18" fill="#F0384B" rx="1.5"/>
+        <line x1="120" y1="50" x2="120" y2="72" stroke="#F0384B" stroke-width="1.5"/><rect x="114" y="53" width="12" height="16" fill="#F0384B" rx="1.5"/>
+        <line x1="144" y1="60" x2="144" y2="82" stroke="#3C5FE8" stroke-width="1.5"/><rect x="138" y="62" width="12" height="16" fill="#3C5FE8" rx="1.5"/>
+        <line x1="168" y1="88" x2="168" y2="112" stroke="#3C5FE8" stroke-width="1.5"/><rect x="162" y="90" width="12" height="18" fill="#3C5FE8" rx="1.5"/>
+        <line x1="192" y1="65" x2="192" y2="90" stroke="#F0384B" stroke-width="1.5"/><rect x="186" y="68" width="12" height="18" fill="#F0384B" rx="1.5"/>
+        <line x1="222" y1="20" x2="222" y2="60" stroke="#F0384B" stroke-width="1.5"/><rect x="212" y="24" width="20" height="30" fill="#F0384B" rx="1.5"/>
+        <line x1="252" y1="6" x2="252" y2="28" stroke="#F0384B" stroke-width="1.5"/><rect x="244" y="8" width="16" height="18" fill="#F0384B" rx="1.5"/>
+        <rect x="66" y="158" width="12" height="10" fill="#E8D9BE"/>
+        <rect x="162" y="156" width="12" height="12" fill="#E8D9BE"/>
+        <rect x="212" y="140" width="20" height="28" fill="#E8A33D"/>
+        <rect x="244" y="148" width="16" height="20" fill="#E8A33D"/>
+        <text x="60" y="132" font-size="9" fill="#8B7CF6" font-weight="700">첫 바닥</text>
+        <text x="150" y="132" font-size="9" fill="#8B7CF6" font-weight="700">두번째 바닥</text>
+        <path d="M222 18 L222 8" stroke="#8B7CF6" stroke-width="1.2" stroke-dasharray="2,2"/>
+        <text x="196" y="8" font-size="9" fill="#8B7CF6" font-weight="700">목선 돌파</text>
+        <text x="200" y="180" font-size="8.5" fill="#B8AF9F">돌파 구간 거래량 증가 ↑</text>
+      </svg>
+      <div class="readout">
+        <div class="r"><span class="dot r1"></span><span class="rtext">두 바닥의 <b>높이가 비슷</b>하게 형성 → 저점 지지력 확인</span></div>
+        <div class="r"><span class="dot r2"></span><span class="rtext">목선까지 반등했다가 재차 지지받으면 <b>매수 대기 구간</b></span></div>
+        <div class="r"><span class="dot r3"></span><span class="rtext">목선을 <b>거래량 실리며 돌파</b>하는 캔들이 진짜 신호</span></div>
+      </div>
+      <div class="caution">💰 <b>그래서 뭘 해야 하나</b> 목선 돌파 전에 미리 들어가면 가짜 돌파(페이크아웃)에 걸릴 수 있어요. <b>돌파가 확정된 다음</b>에 진입하는 게 안전해요.</div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <div class="mascot">🕯️✨</div>
+    <p><span class="handle">@jjumi_s2</span> 쭈미가 직접 정리한 찐자료</p>
+    <p>패턴 하나로 100% 정답은 아니에요. 위치와 다음 캔들 확인, 잊지 마세요.</p>
+    <div class="disclaimer">본 자료는 투자 판단을 돕기 위한 교육용 정보이며, 특정 종목의 매수·매도를 권유하지 않습니다. 투자의 최종 책임과 판단은 본인에게 있습니다.</div>
+  </div>
+
+</div>
+
+<div class="fixed-cta" id="fixedCta">저장해서 두고두고 보기 <span class="arrow">→</span></div>
+
+<script>
+  // scroll progress across 4 candle segments
+  const sections = ['part1','part2','part3'].map(id=>document.getElementById(id));
+  const candles = document.querySelectorAll('.progress-candle');
+  const labels = document.querySelectorAll('.progress-labels span');
+
+  function updateProgress(){
+    const scrollY = window.scrollY + window.innerHeight*0.35;
+    sections.forEach((sec,i)=>{
+      const top = sec.offsetTop;
+      const bottom = top + sec.offsetHeight;
+      const candle = candles[i];
+      const fill = candle.querySelector('.fill');
+      let pct = 0;
+      if(scrollY > bottom) pct = 100;
+      else if(scrollY > top) pct = ((scrollY-top)/(bottom-top))*100;
+      fill.style.height = Math.max(0,Math.min(100,pct))+'%';
+      candle.classList.toggle('active', pct>0 && pct<100);
+      labels[i].classList.toggle('on', pct>0);
+    });
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  // checklist persistence
+  const boxes = document.querySelectorAll('#checklist input[type=checkbox]');
+  const noteEl = document.getElementById('progressNote');
+  function loadState(){
+    try{
+      const saved = JSON.parse(localStorage.getItem('candleChecklist')||'{}');
+      boxes.forEach(b=>{ if(saved[b.dataset.k]) b.checked = true; });
+    }catch(e){}
+    updateNote();
+  }
+  function saveState(){
+    const state = {};
+    boxes.forEach(b=>{ state[b.dataset.k] = b.checked; });
+    try{ localStorage.setItem('candleChecklist', JSON.stringify(state)); }catch(e){}
+  }
+  function updateNote(){
+    const checked = Array.from(boxes).filter(b=>b.checked).length;
+    noteEl.textContent = checked + ' / ' + boxes.length + ' 체크 완료';
+  }
+  boxes.forEach(b=> b.addEventListener('change', ()=>{ saveState(); updateNote(); }));
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    boxes.forEach(b=> b.checked=false);
+    saveState(); updateNote();
+  });
+  loadState();
+
+  // cta scroll to top part1 quick nav (tap labels)
+  document.querySelectorAll('.progress-labels span').forEach((el,i)=>{
+    el.style.cursor='pointer';
+    el.addEventListener('click', ()=> sections[i].scrollIntoView({behavior:'smooth', block:'start'}));
+  });
+  document.getElementById('fixedCta').addEventListener('click', ()=>{
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+</script>
+</body>
+</html>
