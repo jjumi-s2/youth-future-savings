@@ -330,6 +330,32 @@
     font-weight:800;
   }
 
+  .tel-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    width:100%;
+  }
+  .tel-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:8px 10px;
+  }
+  .tel-item span{
+    font-size:11px;
+    font-weight:700;
+    color:var(--ink-soft);
+  }
+  .tel-item b{
+    font-size:12px;
+    font-weight:800;
+    color:var(--coral-deep);
+  }
+
   .gg-card{
     margin-top:14px;
     background:var(--white);
@@ -789,6 +815,35 @@
       <div class="gg-row">
         <span class="gg-label">🔔 알림 받는 법</span>
         <span class="gg-val">카카오톡 <b>'경기도평생교육이용권'</b> 채널 친구 추가 → 추가 모집 시 카톡 알림</span>
+      </div>
+      <div class="gg-row">
+        <span class="gg-label">☎️ 상담센터</span>
+        <span class="gg-val">경기도평생교육이용권 상담센터 <b>1544-6500</b></span>
+      </div>
+    </div>
+
+    <div class="region-note" style="flex-direction:column; gap:8px;">
+      <div style="display:flex; gap:10px; align-items:flex-start;">
+        <div class="ic">☎️</div>
+        <div>경기도 외 다른 지역에 거주 중이라면, 아래에서 본인 거주지 상담센터로 직접 문의해보세요.</div>
+      </div>
+      <div class="tel-grid">
+        <div class="tel-item"><span>서울</span><b>1551-4777</b></div>
+        <div class="tel-item"><span>부산</span><b>051-120</b></div>
+        <div class="tel-item"><span>대구</span><b>053-210-5683</b></div>
+        <div class="tel-item"><span>인천</span><b>032-722-7220</b></div>
+        <div class="tel-item"><span>광주</span><b>062-600-5248</b></div>
+        <div class="tel-item"><span>대전</span><b>042-250-2700</b></div>
+        <div class="tel-item"><span>울산</span><b>052-120</b></div>
+        <div class="tel-item"><span>세종</span><b>044-120</b></div>
+        <div class="tel-item"><span>충북</span><b>1533-0266</b></div>
+        <div class="tel-item"><span>충남</span><b>1551-3599</b></div>
+        <div class="tel-item"><span>전남</span><b>061-285-9474</b></div>
+        <div class="tel-item"><span>경북</span><b>053-850-9601</b></div>
+        <div class="tel-item"><span>경남</span><b>055-239-6188</b></div>
+        <div class="tel-item"><span>제주</span><b>064-726-0955</b></div>
+        <div class="tel-item"><span>강원</span><b>1551-7234</b></div>
+        <div class="tel-item"><span>전북</span><b>1899-8301</b></div>
       </div>
     </div>
   </div>
