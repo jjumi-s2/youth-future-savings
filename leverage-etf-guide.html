@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>레버리지 ETF 초보 행동 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A1424; --bg-deep:#060D19; --surface:#111E33; --surface-2:#16253E;
+    --line:#223351; --line-soft:#1A2740; --text:#EEF3FA; --text-dim:#8FA2C0; --text-faint:#5E7295;
+    --accent:#FF7A3D; --accent-dim:#5A3822; --danger:#FF5C6C; --danger-dim:#3A1E28;
+    --safe:#3FD3A7; --safe-dim:#153B33; --warn:#FFC94B;
+    --font-display:'Pretendard','-apple-system',sans-serif; --font-mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg-deep);font-family:var(--font-display);color:var(--text);display:flex;justify-content:center;-webkit-font-smoothing:antialiased;}
+  .page{width:100%;max-width:430px;background:var(--bg);min-height:100vh;position:relative;overflow:hidden;}
+  .page::before{content:"";position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:520px;height:420px;background:radial-gradient(circle, rgba(255,122,61,0.16), transparent 70%);pointer-events:none;}
+
+  .header{position:relative;padding:36px 24px 26px;border-bottom:1px solid var(--line-soft);}
+  .tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(255,122,61,0.35);padding:5px 10px;border-radius:100px;margin-bottom:16px;}
+  .header h1{font-size:25px;font-weight:800;line-height:1.38;letter-spacing:-0.01em;}
+  .header .accent-word{color:var(--accent);}
+  .header p.sub{margin-top:10px;font-size:13.5px;color:var(--text-dim);line-height:1.6;}
+  .header .handle{margin-top:18px;font-family:var(--font-mono);font-size:11px;color:var(--text-faint);}
+
+  .section{padding:28px 24px;border-bottom:1px solid var(--line-soft);position:relative;}
+  .eyebrow{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);letter-spacing:0.08em;margin-bottom:7px;}
+  .section h2{font-size:18px;font-weight:700;line-height:1.35;margin-bottom:14px;letter-spacing:-0.01em;}
+  .lede{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin-bottom:16px;}
+
+  /* SECTION 1 — concept, icon-first */
+  .concept-row{display:flex;gap:10px;margin-bottom:10px;}
+  .concept-row:last-child{margin-bottom:0;}
+  .concept-icon{
+    flex-shrink:0;width:44px;height:44px;border-radius:10px;
+    background:var(--surface-2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .concept-body{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+  .concept-body .k-label{font-size:11px;font-weight:700;color:var(--danger);margin-bottom:3px;display:block;}
+  .concept-body h3{font-size:13.5px;font-weight:700;margin-bottom:4px;line-height:1.4;}
+  .concept-body p{font-size:12px;color:var(--text-dim);line-height:1.55;}
+
+  /* SECTION 2 — bar chart */
+  .chart-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;}
+  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .bar-row:last-child{margin-bottom:0;}
+  .bar-label{width:38px;flex-shrink:0;font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--text-dim);text-align:right;}
+  .bar-track{flex:1;height:20px;background:var(--bg-deep);border-radius:5px;overflow:hidden;position:relative;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,#FF9257,var(--danger));border-radius:5px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;}
+  .bar-fill span{font-family:var(--font-mono);font-size:10.5px;font-weight:700;color:#0A1424;}
+  .extreme-strip{display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:2px;}
+  .extreme-chip{flex-shrink:0;background:var(--danger-dim);border:1px solid rgba(255,92,108,0.35);border-radius:10px;padding:8px 12px;text-align:center;min-width:66px;}
+  .extreme-chip .loss{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);}
+  .extreme-chip .need{font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--danger);margin-top:2px;}
+  .callout{margin-top:14px;display:flex;gap:9px;background:var(--danger-dim);border:1px solid rgba(255,92,108,0.3);border-radius:12px;padding:12px 13px;font-size:12px;line-height:1.55;color:#FFD3D8;}
+  .callout .mark{color:var(--danger);font-weight:800;}
+
+  /* SECTION 3 — grouped mini bars */
+  .case-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;}
+  .case-card:last-child{margin-bottom:0;}
+  .case-title{font-size:12.5px;font-weight:700;color:var(--text-dim);margin-bottom:12px;}
+  .mini-chart{display:flex;align-items:flex-end;gap:18px;height:110px;padding:0 6px;}
+  .mini-bar-group{flex:1;display:flex;align-items:flex-end;gap:8px;height:100%;}
+  .mini-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+  .mini-bar .bar{width:100%;border-radius:5px 5px 0 0;position:relative;}
+  .mini-bar .bar.own{background:linear-gradient(180deg,#7C93BE,#4E6690);}
+  .mini-bar .bar.lev{background:linear-gradient(180deg,#FF8F62,var(--danger));}
+  .mini-bar .val{font-family:var(--font-mono);font-size:11.5px;font-weight:700;margin-bottom:5px;}
+  .mini-bar .val.own{color:var(--text-dim);}
+  .mini-bar .val.lev{color:var(--danger);}
+  .mini-bar .glabel{margin-top:6px;font-size:10px;color:var(--text-faint);text-align:center;}
+  .legend{display:flex;gap:14px;justify-content:center;margin-top:10px;}
+  .legend .item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text-dim);}
+  .legend .dot{width:8px;height:8px;border-radius:2px;}
+  .legend .dot.own{background:#7C93BE;}
+  .legend .dot.lev{background:var(--danger);}
+  .amount-line{margin-top:12px;font-size:12px;color:var(--text-dim);line-height:1.6;border-top:1px dashed var(--line);padding-top:11px;}
+  .amount-line b{color:var(--warn);font-weight:700;}
+  .source{margin-top:7px;font-family:var(--font-mono);font-size:10px;color:var(--text-faint);}
+
+  /* SECTION 4 — icon grid */
+  .icon-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .icon-tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 12px;}
+  .icon-tile .ico{font-size:20px;margin-bottom:8px;display:block;}
+  .icon-tile h4{font-size:12.5px;font-weight:700;margin-bottom:5px;line-height:1.35;}
+  .icon-tile p{font-size:11px;color:var(--text-dim);line-height:1.5;}
+  .icon-tile .site{display:inline-block;margin-top:6px;font-family:var(--font-mono);font-size:9.5px;color:var(--safe);background:var(--safe-dim);padding:2px 6px;border-radius:5px;}
+
+  /* SECTION 5 */
+  .brand-flag{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:12px;}
+  .brand-flag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  .product-card{background:linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);border:1px solid var(--line);border-radius:13px;padding:13px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:center;}
+  .product-card:last-child{margin-bottom:0;}
+  .p-badge{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--accent-dim);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;font-weight:800;}
+  .p-body{flex:1;}
+  .p-body .p-name{font-size:13px;font-weight:700;margin-bottom:3px;line-height:1.35;}
+  .p-body .p-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
+  .p-body .p-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;}
+  .p-body .p-tag{font-size:9.5px;color:var(--text-dim);border:1px solid var(--line);padding:2px 6px;border-radius:100px;}
+
+  /* SECTION 6 — checklist condensed */
+  .check-grid{display:flex;flex-direction:column;gap:9px;}
+  .check-item{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:11px 13px;}
+  .check-box{flex-shrink:0;width:18px;height:18px;border:1.5px solid var(--accent);border-radius:5px;margin-top:1px;}
+  .check-body h4{font-size:12.5px;font-weight:700;margin-bottom:3px;line-height:1.4;}
+  .check-body p{font-size:11px;color:var(--text-dim);line-height:1.5;}
+
+  .footer{padding:32px 24px 40px;text-align:center;}
+  .footer .heart{font-size:19px;margin-bottom:9px;}
+  .footer p{font-size:13px;color:var(--text-dim);line-height:1.65;margin-bottom:13px;}
+  .footer .handle-cta{display:inline-block;font-family:var(--font-mono);font-size:12.5px;font-weight:600;color:var(--accent);border:1px solid rgba(255,122,61,0.4);padding:7px 15px;border-radius:100px;}
+  .disclaimer{padding:18px 24px 28px;font-size:10px;color:var(--text-faint);line-height:1.65;border-top:1px solid var(--line-soft);}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <span class="tag">📋 레버리지 ETF 자료집</span>
+    <h1>레버리지 ETF<br><span class="accent-word">초보 행동 가이드</span></h1>
+    <p class="sub">2배 수익 노리고 들어갔다가 -34% 찍고 놀랐던 그 이야기, 원리부터 실전 체크리스트까지 한눈에 정리했쭈.</p>
+    <div class="handle">@jjumi_s2 · 쭈미의 재테크</div>
+  </header>
+
+  <!-- SECTION 1 -->
+  <section class="section">
+    <div class="eyebrow">01 · CONCEPT</div>
+    <h2>왜 레버리지는 위험할까</h2>
+
+    <div class="concept-row">
+      <div class="concept-icon">🔁</div>
+      <div class="concept-body">
+        <span class="k-label">음의 복리효과</span>
+        <h3>제자리여도 손실이 난다</h3>
+        <p>매일 2배로 리밸런싱하다 보니 오르내림만 반복해도 원금이 깎여나가.</p>
+      </div>
+    </div>
+    <div class="concept-row">
+      <div class="concept-icon">📉</div>
+      <div class="concept-body">
+        <span class="k-label">변동성 잠식</span>
+        <h3>흔들릴수록 더 깎인다</h3>
+        <p>등락 폭이 클수록 손실 누적 속도도 빨라져. 횡보장이 제일 위험해.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="section">
+    <div class="eyebrow">02 · RECOVERY RATE</div>
+    <h2>몇 % 벌어야 본전일까</h2>
+    <p class="lede">손실이 커질수록 복구 수익률은 산술이 아니라 기하급수적으로 늘어나.</p>
+
+    <div class="chart-card">
+      <div class="bar-row">
+        <span class="bar-label">-10%</span>
+        <div class="bar-track"><div class="bar-fill" style="width:11%;"><span>+11%</span></div></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">-20%</span>
+        <div class="bar-track"><div class="bar-fill" style="width:25%;"><span>+25%</span></div></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">-30%</span>
+        <div class="bar-track"><div class="bar-fill" style="width:43%;"><span>+43%</span></div></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">-40%</span>
+        <div class="bar-track"><div class="bar-fill" style="width:67%;"><span>+67%</span></div></div>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">-50%</span>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;"><span>+100%</span></div></div>
+      </div>
+
+      <div class="extreme-strip">
+        <div class="extreme-chip"><div class="loss">-60%</div><div class="need">+150%</div></div>
+        <div class="extreme-chip"><div class="loss">-70%</div><div class="need">+233%</div></div>
+        <div class="extreme-chip"><div class="loss">-80%</div><div class="need">+400%</div></div>
+        <div class="extreme-chip"><div class="loss">-90%</div><div class="need">+900%</div></div>
+      </div>
+    </div>
+
+    <div class="callout"><span class="mark">!</span><span>-50%부턴 원금 100% 수익을 다시 내야 본전. 레버리지는 하락장에서 이 구간까지 순식간에 갈 수 있어.</span></div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="section">
+    <div class="eyebrow">03 · REAL CASE</div>
+    <h2>실제로 얼마나 빠졌을까</h2>
+    <p class="lede">"딱 2배만 더 빠지겠지"는 오산. 실제 데이터는 훨씬 크게 벌어졌어.</p>
+
+    <div class="case-card">
+      <div class="case-title">본주 vs 단일종목 레버리지 (2026 기준)</div>
+      <div class="mini-chart">
+        <div class="mini-bar-group">
+          <div class="mini-bar">
+            <div class="val own">-12%</div>
+            <div class="bar own" style="height:35%;"></div>
+            <div class="glabel">삼성전자<br>본주</div>
+          </div>
+          <div class="mini-bar">
+            <div class="val lev">-34%</div>
+            <div class="bar lev" style="height:100%;"></div>
+            <div class="glabel">삼성전자<br>레버리지</div>
+          </div>
+        </div>
+        <div class="mini-bar-group">
+          <div class="mini-bar">
+            <div class="val own">-7%</div>
+            <div class="bar own" style="height:20%;"></div>
+            <div class="glabel">SK하이닉스<br>본주</div>
+          </div>
+          <div class="mini-bar">
+            <div class="val lev">-34%</div>
+            <div class="bar lev" style="height:100%;"></div>
+            <div class="glabel">SK하이닉스<br>레버리지</div>
+          </div>
+        </div>
+      </div>
+      <div class="legend"><span class="item"><span class="dot own"></span>본주</span><span class="item"><span class="dot lev"></span>레버리지</span></div>
+      <div class="amount-line">본주 수익률의 <b>2배</b>를 따라가는 상품인데 실제 손실률은 <b>최대 5배</b> 차이. 상장 이후 보유 투자자 대부분이 아직 손실 구간.</div>
+    </div>
+
+    <div class="case-card">
+      <div class="case-title">SK하이닉스 1억원 투자 시뮬레이션 (5/27~7/14)</div>
+      <div class="mini-chart" style="height:90px;">
+        <div class="mini-bar-group">
+          <div class="mini-bar">
+            <div class="val own">9,323만</div>
+            <div class="bar own" style="height:93%;"></div>
+            <div class="glabel">본주</div>
+          </div>
+          <div class="mini-bar">
+            <div class="val lev">6,621만</div>
+            <div class="bar lev" style="height:66%;"></div>
+            <div class="glabel">레버리지</div>
+          </div>
+        </div>
+      </div>
+      <div class="amount-line">같은 종목인데도 <b>2,700만원 넘게</b> 손실액이 벌어졌어. (-6.77% vs -33.79%)</div>
+      <div class="source">출처: 서울신문 「2배 노렸는데… 하닉 7% 빠질 때 34% 녹았다」</div>
+    </div>
+
+    <div class="case-card">
+      <div class="case-title">최근 1개월 하락장 성과 (6/22~7/21)</div>
+      <p style="font-size:11.5px;color:var(--text-dim);line-height:1.6;">같은 반도체 테마라도 종목이 <b style="color:var(--safe);">분산된 레버리지</b>는 <b style="color:var(--danger);">단일종목 레버리지</b>보다 하락폭이 상대적으로 완만했어. 변동성 장에서 버티려면 분산이 필수.</p>
+      <div class="source">출처: ETF CHECK, 2026.07.21 기준</div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="section">
+    <div class="eyebrow">04 · HOW TO CHECK</div>
+    <h2>뭘 담고 있는지 확인하는 법</h2>
+
+    <div class="icon-grid">
+      <div class="icon-tile">
+        <span class="ico">🏷️</span>
+        <h4>이름부터 뜯어보기</h4>
+        <p>[운용사]+[테마]+[레버리지]. 종목명이 하나면 단일종목형.</p>
+      </div>
+      <div class="icon-tile">
+        <span class="ico">📄</span>
+        <h4>공식 PDF 확인</h4>
+        <p>구성종목·비중을 매일 공개. 종목 10개 이상 분산인지 체크.</p>
+        <span class="site">홈페이지 → PDF</span>
+      </div>
+      <div class="icon-tile">
+        <span class="ico">📱</span>
+        <h4>증권사 앱 비교</h4>
+        <p>구성종목 TOP10을 바로 확인, 여러 ETF 한눈에 비교.</p>
+        <span class="site">네이버페이 증권</span>
+      </div>
+      <div class="icon-tile">
+        <span class="ico">📊</span>
+        <h4>변동성 데이터</h4>
+        <p>최근 1·3개월 변동성, 괴리율로 출렁임 정도 미리 확인.</p>
+        <span class="site">ETF CHECK</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="section">
+    <div class="eyebrow">05 · DIVERSIFIED OPTIONS</div>
+    <span class="brand-flag">TIGER ETF 라인업</span>
+    <h2>분산 레버리지로 변동성 줄이기</h2>
+
+    <div class="product-card">
+      <div class="p-badge">TOP10</div>
+      <div class="p-body">
+        <div class="p-name">TIGER 반도체TOP10레버리지</div>
+        <p class="p-desc">삼성전자·SK하이닉스 포함 국내 반도체 10종목 분산.</p>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="p-badge">IT</div>
+      <div class="p-body">
+        <div class="p-name">TIGER 200IT레버리지</div>
+        <p class="p-desc">반도체 포함 국내 IT 업종 전반으로 분산 범위 확대.</p>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="p-badge">US</div>
+      <div class="p-body">
+        <div class="p-name">TIGER 미국필라델피아반도체레버리지(합성)</div>
+        <p class="p-desc">글로벌 반도체 분산 + 환율 방어효과까지 기대.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="section">
+    <div class="eyebrow">06 · FINAL CHECKLIST</div>
+    <h2>매수 전 마지막 체크</h2>
+
+    <div class="check-grid">
+      <div class="check-item"><span class="check-box"></span><div class="check-body"><h4>단기 투자 목적이 맞나?</h4><p>며칠~몇 주 단위 매매용. 장기 보유 목적이면 부적합.</p></div></div>
+      <div class="check-item"><span class="check-box"></span><div class="check-body"><h4>분산 ETF와 비교했나?</h4><p>단일종목 사기 전 같은 테마 분산 상품부터 확인.</p></div></div>
+      <div class="check-item"><span class="check-box"></span><div class="check-body"><h4>기초자산을 확인했나?</h4><p>PDF·앱에서 TOP3 종목 비중까지 직접 눈으로.</p></div></div>
+      <div class="check-item"><span class="check-box"></span><div class="check-body"><h4>손실 감당 범위를 정했나?</h4><p>-30%, -50% 같은 구체적 손절 기준을 미리 정하기.</p></div></div>
+      <div class="check-item"><span class="check-box"></span><div class="check-body"><h4>"2배 수익"만 보고 있진 않나?</h4><p>떨어질 때도 똑같이 2배로 떨어진다는 걸 기억.</p></div></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="heart">❤️</div>
+    <p>레버리지 투자, 무섭다고 피하기보다<br>제대로 알고 접근하면 충분히 활용할 수 있어.<br>다음에도 알찬 재테크 정보로 찾아올게 쭈!</p>
+    <span class="handle-cta">@jjumi_s2 팔로우하기</span>
+  </footer>
+
+  <div class="disclaimer">본 자료는 투자 판단에 참고할 수 있는 일반 정보 제공을 목적으로 하며, 특정 종목·상품의 매수를 권유하는 것이 아닙니다. 투자 판단과 그 결과에 대한 책임은 투자자 본인에게 있습니다. 수치는 표기된 기준일 기준이며 이후 변동될 수 있습니다.</div>
+
+</div>
+</body>
+</html>
