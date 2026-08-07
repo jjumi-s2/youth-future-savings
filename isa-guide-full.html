@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISA 개편 대응 자료집</title>
+<style>
+  :root{
+    --cream:#FFF8F0;
+    --cream-deep:#FBEFDE;
+    --coral:#FF7A6E;
+    --coral-soft:#FFE3DF;
+    --lavender:#B8A9DB;
+    --lavender-soft:#EDE7F8;
+    --ink:#3A3A3A;
+    --ink-soft:#7A7A7A;
+    --line:#EEE2D3;
+    --good:#4CAF7D;
+    --gold:#E0A736;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:#E9E1D3;
+    font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:24px 0;
+  }
+  .page{
+    width:390px;
+    max-width:100%;
+    background:var(--cream);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 8px 24px rgba(0,0,0,0.08);
+  }
+  .hero{
+    background:linear-gradient(135deg,var(--coral) 0%, #FF9B8F 100%);
+    padding:34px 24px 26px;
+    color:#fff;
+  }
+  .hero .eyebrow{
+    font-size:12px;
+    font-weight:700;
+    background:rgba(255,255,255,0.25);
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    margin-bottom:12px;
+  }
+  .hero h1{font-size:23px;line-height:1.4;font-weight:800;}
+  .hero p{margin-top:8px;font-size:13.5px;opacity:0.9;}
+
+  .navbar{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:12px 14px;
+    background:var(--cream-deep);
+    border-bottom:1px solid var(--line);
+  }
+  .navbar a{
+    flex:0 0 auto;
+    font-size:11.5px;
+    font-weight:700;
+    color:#8A6A4F;
+    background:#fff;
+    padding:6px 10px;
+    border-radius:20px;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+
+  .section{padding:22px 20px;border-bottom:8px solid var(--cream-deep);}
+  .section:last-of-type{border-bottom:none;}
+
+  .sec-label{
+    font-size:11.5px;
+    font-weight:800;
+    color:#B8A9DB;
+    letter-spacing:0.5px;
+    margin-bottom:4px;
+  }
+  h2.sec-title{font-size:18px;font-weight:800;margin-bottom:14px;line-height:1.4;}
+
+  /* ① summary */
+  .summary-row{
+    display:flex;
+    gap:10px;
+    background:#fff;
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:13px 14px;
+    margin-bottom:10px;
+    align-items:center;
+  }
+  .summary-row .num{
+    width:26px;height:26px;
+    background:var(--coral);
+    color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;
+    flex:0 0 auto;
+  }
+  .summary-row .txt{font-size:14px;line-height:1.5;}
+  .summary-row .txt b{color:var(--coral);}
+
+  /* case tags */
+  .case-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:13px;font-weight:800;color:#fff;
+    background:var(--coral);padding:5px 12px;border-radius:20px;
+    margin-bottom:10px;
+  }
+  .case-tag.b{background:#E8836F;}
+  .case-tag.c{background:#C9A9DE;}
+  .case-tag.d{background:#8FBFA6;}
+
+  .conclusion-box{
+    background:var(--coral-soft);border-radius:14px;padding:13px 15px;
+    margin-bottom:12px;font-size:14px;font-weight:700;color:#C64A3B;
+    display:flex;gap:8px;align-items:flex-start;
+  }
+  .conclusion-box .main-line{display:block;}
+  .conclusion-box .sub-line{display:block;font-size:12.5px;font-weight:600;margin-top:4px;color:#D67A6C;}
+
+  table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:12.5px;border-radius:10px;overflow:hidden;}
+  th{background:var(--lavender-soft);color:#5A4E7A;font-weight:800;padding:8px 7px;text-align:left;border-bottom:1px solid var(--line);}
+  td{padding:9px 7px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;}
+  tr:last-child td{border-bottom:none;}
+  td.label{font-weight:700;white-space:nowrap;width:32%;}
+
+  .action-box{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:13px 15px;}
+  .action-box .action-title{font-size:13px;font-weight:800;color:var(--good);margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+  .action-box ul{list-style:none;}
+  .action-box li{font-size:13px;line-height:1.55;padding-left:15px;position:relative;margin-bottom:6px;}
+  .action-box li:before{content:"—";position:absolute;left:0;color:var(--coral);font-weight:800;}
+  .action-box li:last-child{margin-bottom:0;}
+
+  .warn-box{background:#FFF4E0;border-radius:14px;padding:13px 15px;margin-top:10px;font-size:12.5px;line-height:1.55;}
+  .warn-box .warn-title{font-weight:800;color:#B8791A;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+  .warn-box div + div{margin-top:5px;}
+
+  .highlight-callout{
+    background:linear-gradient(135deg, var(--lavender-soft), #F3EEFB);
+    border:1.5px solid var(--lavender);border-radius:16px;padding:15px;margin-top:12px;
+  }
+  .highlight-callout .h-title{font-size:13.5px;font-weight:800;color:#5A4E7A;margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+  .highlight-callout p{font-size:12.5px;line-height:1.6;}
+  .highlight-callout p + p{margin-top:6px;}
+  .highlight-callout strong{color:var(--coral);}
+
+  .impact-low{color:var(--good);font-weight:800;}
+  .impact-high{color:var(--coral);font-weight:800;}
+
+  /* ③ checklist */
+  .check-table td{font-size:13px;}
+  .check-item{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:8px;}
+  .check-item .box{width:20px;height:20px;border:2px solid var(--coral);border-radius:6px;flex:0 0 auto;}
+  .check-item .txt{font-size:13.5px;font-weight:600;}
+  .check-item .txt small{display:block;font-size:11.5px;color:var(--ink-soft);font-weight:400;margin-top:2px;}
+
+  /* ④ 증권사 table */
+  .broker-table th{background:var(--coral-soft);color:#C64A3B;}
+
+  /* ⑤ FAQ */
+  .faq-item{background:#fff;border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;}
+  .faq-q{
+    display:flex;gap:8px;padding:12px 14px;font-size:13.5px;font-weight:800;
+    background:var(--cream-deep);align-items:flex-start;
+  }
+  .faq-q .q-mark{color:var(--coral);flex:0 0 auto;}
+  .faq-a{display:flex;gap:8px;padding:12px 14px;font-size:12.5px;line-height:1.55;}
+  .faq-a .a-mark{color:var(--lavender);font-weight:800;flex:0 0 auto;}
+
+  /* ⑥ chatgpt */
+  .gpt-card{background:#1E1E2E;border-radius:16px;padding:15px 16px;margin-bottom:12px;}
+  .gpt-card .gpt-label{
+    font-size:11.5px;font-weight:800;color:#8FE0C8;margin-bottom:8px;
+    display:flex;align-items:center;gap:5px;
+  }
+  .gpt-card .gpt-prompt{
+    font-size:12px;line-height:1.65;color:#E8E8F0;
+    font-family:'Courier New',monospace;
+    white-space:pre-wrap;
+  }
+  .gpt-card .gpt-fill{color:#8FE0C8;font-weight:700;}
+
+  .footer-note{padding:20px;text-align:center;font-size:12px;color:var(--ink-soft);background:var(--cream-deep);}
+  .footer-note b{color:var(--coral);}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <span class="eyebrow">🎁 ISA 개편 대응 자료집</span>
+    <h1>내 상황에 맞는<br>대응법 한 번에 정리</h1>
+    <p>@jjumi_s2 · 쭈미의 재테크</p>
+  </div>
+
+  <div class="navbar">
+    <a href="#s1">① 요약</a>
+    <a href="#s2">② Case별</a>
+    <a href="#s3">③ 체크리스트</a>
+    <a href="#s4">④ 증권사</a>
+    <a href="#s5">⑤ FAQ</a>
+    <a href="#s6">⑥ GPT활용</a>
+  </div>
+
+  <!-- ① 요약 -->
+  <div class="section" id="s1">
+    <div class="sec-label">SECTION ①</div>
+    <h2 class="sec-title">핵심 변경사항, 3줄 요약</h2>
+
+    <div class="summary-row">
+      <div class="num">1</div>
+      <div class="txt">계약기간 <b>최대 5년</b> 제한 (2027.1.1~)</div>
+    </div>
+    <div class="summary-row">
+      <div class="num">2</div>
+      <div class="txt">납입 <b>이월 제도 폐지</b> — 몰빵 납입 불가</div>
+    </div>
+    <div class="summary-row">
+      <div class="num">3</div>
+      <div class="txt">연 납입한도는 <b>2,000만원</b>으로 고정</div>
+    </div>
+  </div>
+
+  <!-- ② Case -->
+  <div class="section" id="s2">
+    <div class="sec-label">SECTION ②</div>
+    <h2 class="sec-title">그래서 나는<br>어떻게 해야 할까?</h2>
+
+    <!-- Case A -->
+    <span class="case-tag">CASE A</span>
+    <h3 style="font-size:15px;font-weight:800;margin-bottom:12px;">아직 ISA 계좌가 없는 사람</h3>
+    <div class="conclusion-box">📌 2026년 안에 무조건 개설하세요</div>
+    <table>
+      <tr><th>구분</th><th>내용</th></tr>
+      <tr><td class="label">만기 5년 제한</td><td>2027년부터 신규 가입자는 최대 5년 제한 적용</td></tr>
+      <tr><td class="label">지금 만들면?</td><td>2026년 안 개설분은 개정 전 조건(만기 무제한)으로 인정될 가능성 높음</td></tr>
+      <tr><td class="label">서둘러야 하는 이유</td><td>"연말에 천천히" 미루다간 개정 후 조건으로 넘어갈 수 있음</td></tr>
+    </table>
+    <div class="action-box">
+      <div class="action-title">✅ 실전 액션</div>
+      <ul>
+        <li>만기는 반드시 최대치로 설정 (선택 가능한 증권사 다수)</li>
+        <li>초기 납입액이 적어도 상관없음 — 계좌부터 여는 게 핵심</li>
+        <li>비대면 개설 가능한 증권사면 오늘 바로 진행 가능</li>
+      </ul>
+    </div>
+
+    <div style="height:20px;"></div>
+
+    <!-- Case B -->
+    <span class="case-tag b">CASE B</span>
+    <h3 style="font-size:15px;font-weight:800;margin-bottom:12px;">계좌 있고, 만기 2026년 안<br>(~2027년 2월까지 포함)</h3>
+    <div class="conclusion-box">📌 <span><span class="main-line">만기 3개월 전부터 연장 신청 가능</span><span class="sub-line">— 지금부터 고민 시작</span></span></div>
+    <table>
+      <tr><th>선택지</th><th>유리한 상황</th></tr>
+      <tr><td class="label">만기 연장<br>(최대치로)</td><td>투자금 많고 장기투자 계획 있음 / 기존 투자금 계속 운용 원함</td></tr>
+      <tr><td class="label">해지 후<br>신규 가입</td><td>누적 수익 비과세 한도(200/400만원) 근접·초과 / 결혼·주택자금 인출 계획 있음</td></tr>
+    </table>
+    <div class="warn-box">
+      <div class="warn-title">⚠️ 확인 필수</div>
+      <table style="margin-bottom:0;">
+        <tr><td class="label" style="width:26%;">신청 시점</td><td>만기일로부터 3개월 이전부터 변경 가능 — 증권사 앱에서 신청 가능일 확인</td></tr>
+        <tr><td class="label">신규 한도</td><td>해지 후 재가입 시 납입한도는 2천만원부터 재시작 (기존 금액 이월 안 됨)</td></tr>
+        <tr><td class="label">3년 미만 주의</td><td>가입 3년 미만이면 해지 시 세제혜택 반환 대상 — 가입일 먼저 확인</td></tr>
+      </table>
+    </div>
+    <div class="highlight-callout">
+      <div class="h-title">💡 기존 계좌 보유자도 해당돼요</div>
+      <ul style="list-style:none;">
+        <li style="font-size:12.5px;line-height:1.6;padding-left:16px;position:relative;margin-bottom:8px;"><span style="position:absolute;left:0;color:var(--lavender);font-weight:800;">•</span>납입이월 폐지는 <strong>신규뿐 아니라 기존 계좌에도</strong> 그대로 적용돼요.<br>2027년부턴 쌓인 이월 한도를 한 번에 몰아 넣을 수 없어요.</li>
+        <li style="font-size:12.5px;line-height:1.6;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--lavender);font-weight:800;">•</span><strong>2026년 안에 최대한 2천만원에 가깝게</strong> 채워 넣는 걸 추천해요.<br>여유자금 있다면 이월 한도부터 우선 소진하세요.</li>
+      </ul>
+    </div>
+
+    <div style="height:20px;"></div>
+
+    <!-- Case C -->
+    <span class="case-tag c">CASE C</span>
+    <h3 style="font-size:15px;font-weight:800;margin-bottom:12px;">계좌 있고, 만기 2027년 이후</h3>
+    <div class="conclusion-box">📌 <span><span class="main-line">지금은 대기</span><span class="sub-line">— 법안 확정 여부만 주기적으로 체크</span></span></div>
+    <div class="action-box">
+      <div class="action-title">✅ 실전 액션</div>
+      <ul>
+        <li>개정안 아직 국회 통과 전 — 성급하게 움직일 필요 없음</li>
+        <li>확정 시점에 맞춰 연장·해지 재검토</li>
+        <li>정확한 만기일 캘린더 저장 + 3개월 전 알림 설정</li>
+      </ul>
+    </div>
+
+    <div style="height:20px;"></div>
+
+    <!-- Case D -->
+    <span class="case-tag d">CASE D</span>
+    <h3 style="font-size:15px;font-weight:800;margin-bottom:12px;">이월한도 폐지 영향 자가진단</h3>
+    <table>
+      <tr><th>유형</th><th>영향도</th><th>설명</th></tr>
+      <tr><td class="label">연 2천만원<br>미만 투자</td><td class="impact-low">낮음</td><td>원래도 한도 다 안 썼으니 체감 적음</td></tr>
+      <tr><td class="label">연 2천만원 이상<br>/ 목돈 유입 예정</td><td class="impact-high">높음</td><td>"몰아 넣기" 옵션 사라짐 — 2026년 안 이월한도 소진 고려</td></tr>
+      <tr><td class="label">프리랜서·<br>자영업자</td><td class="impact-high">높음</td><td>비수기·성수기 몰아넣기 방식 막힘 — 꾸준히 나눠 넣기로 전환 필요</td></tr>
+    </table>
+    <div class="action-box">
+      <div class="action-title">✅ 실전 액션</div>
+      <ul>
+        <li>증권사 앱에서 "현재까지 쌓인 이월 가능 한도" 조회</li>
+        <li>2026년 안에 여유자금 있으면 이월한도부터 우선 소진</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ③ 체크리스트 -->
+  <div class="section" id="s3">
+    <div class="sec-label">SECTION ③</div>
+    <h2 class="sec-title">지금 확인해야 할 체크리스트</h2>
+
+    <div class="check-item"><div class="box"></div><div class="txt">만기일<small>정확한 날짜, 3개월 전부터 연장 신청 가능</small></div></div>
+    <div class="check-item"><div class="box"></div><div class="txt">의무가입 3년 채웠는지<small>미채움 시 해지 시 세제혜택 반환</small></div></div>
+    <div class="check-item"><div class="box"></div><div class="txt">현재 수익<small>비과세 한도(200/400만원) 근접 여부</small></div></div>
+    <div class="check-item"><div class="box"></div><div class="txt">올해 추가 납입 가능금액<small>연 2천만원 한도 중 남은 금액</small></div></div>
+    <div class="check-item"><div class="box"></div><div class="txt">이월 한도<small>지금까지 쌓인 이월 가능 금액</small></div></div>
+    <div class="check-item"><div class="box"></div><div class="txt">증권사 연장 가능일<small>내 증권사 앱에서 정확한 신청일 확인</small></div></div>
+  </div>
+
+  <!-- ④ 증권사별 확인사항 -->
+  <div class="section" id="s4">
+    <div class="sec-label">SECTION ④</div>
+    <h2 class="sec-title">증권사별로 꼭 확인할 것</h2>
+    <table class="broker-table">
+      <tr><th>항목</th><th>확인 포인트</th></tr>
+      <tr><td class="label">만기일 확인</td><td>앱 내 ISA 계좌 상세 → 정확한 만기 연월일</td></tr>
+      <tr><td class="label">연장 신청일</td><td>만기 몇 개월 전부터 신청 가능한지 (증권사별 상이)</td></tr>
+      <tr><td class="label">신규가입 가능 여부</td><td>비대면 개설 가능 여부, 서류 필요 여부</td></tr>
+      <tr><td class="label">만기 후 처리 방식</td><td>자동 연장인지, 별도 신청 필요한지</td></tr>
+    </table>
+  </div>
+
+  <!-- ⑤ FAQ -->
+  <div class="section" id="s5">
+    <div class="sec-label">SECTION ⑤</div>
+    <h2 class="sec-title">자주 묻는 질문</h2>
+
+    <div class="faq-item">
+      <div class="faq-q"><span class="q-mark">Q.</span>지금 해지해야 하나요?</div>
+      <div class="faq-a"><span class="a-mark">A.</span>아직 국회 통과 전이라 성급한 해지는 금물이에요. 3년 미만이면 세제혜택 반환 위험도 있어요.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="q-mark">Q.</span>기존 ISA 그대로 유지하면?</div>
+      <div class="faq-a"><span class="a-mark">A.</span>비과세·분리과세 혜택은 그대로예요. 다만 연장 시점부터는 5년 제한·이월 폐지가 적용될 수 있어요.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="q-mark">Q.</span>새로 만들면 한도는?</div>
+      <div class="faq-a"><span class="a-mark">A.</span>연 2,000만원, 총 납입한도 1억원은 동일해요. 다만 이월이 안 되니 매년 채워 넣어야 해요.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="q-mark">Q.</span>3년 안 됐는데 해지하면?</div>
+      <div class="faq-a"><span class="a-mark">A.</span>그동안 받은 비과세·분리과세 혜택을 반환해야 해요. 가입일부터 꼭 확인하세요.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span class="q-mark">Q.</span>ETF는 계속 살 수 있나요?</div>
+      <div class="faq-a"><span class="a-mark">A.</span>국내상장 해외ETF 등 기존 투자 대상은 계속 담을 수 있어요.</div>
+    </div>
+  </div>
+
+  <!-- ⑥ ChatGPT -->
+  <div class="section" id="s6">
+    <div class="sec-label">SECTION ⑥</div>
+    <h2 class="sec-title">🤖 ChatGPT 활용 예시</h2>
+    <p style="font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;line-height:1.6;">이 자료집을 ChatGPT에 함께 올리고 아래처럼 질문해보세요. <span class="gpt-fill" style="color:var(--coral);">굵은 글씨</span> 부분만 내 상황에 맞게 바꾸면 돼요.</p>
+
+    <div class="gpt-card">
+      <div class="gpt-label">① 가장 추천 👍 유지 vs 해지 판단</div>
+      <div class="gpt-prompt">2026년 ISA 개편안을 기준으로 내 상황에 맞는 선택을 알려줘.
+현재 ISA 만기는 <span class="gpt-fill">○○년 ○월</span>이고, 투자금은 <span class="gpt-fill">○○만원</span>, 수익은 <span class="gpt-fill">○○만원</span>이야.
+매달 <span class="gpt-fill">○○만원</span>씩 투자 중이고, <span class="gpt-fill">○○년</span>에 결혼자금(또는 주택자금)으로 사용할 계획도 있어.
+기존 ISA를 유지하는 게 좋을지, 해지 후 신규 가입하는 게 좋을지 이유까지 설명해줘.</div>
+    </div>
+
+    <div class="gpt-card">
+      <div class="gpt-label">② 만기 임박 3년 미만 체크</div>
+      <div class="gpt-prompt">내 ISA는 <span class="gpt-fill">○○년 ○월</span>에 가입했고, 가입한 지 아직 3년이 안 됐어.
+지금 해지하면 어떤 불이익이 있는지, 3년 채울 때까지 기다리는 게 나은지 판단해줘.</div>
+    </div>
+  </div>
+
+  <div class="footer-note">저장해두고 <b>내 만기일부터</b> 확인해보세요<br>@jjumi_s2 · 쭈미의 재테크</div>
+
+</div>
+</body>
+</html>
