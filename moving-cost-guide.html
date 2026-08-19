@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 이사비 아끼는 현실 꿀팁 | 쭈미의 재테크</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Gaegu:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF5EC;
+    --cream-deep:#F1E8D8;
+    --paper:#FFFFFF;
+    --ink:#2D2A26;
+    --ink-soft:#6B655C;
+    --coral:#FF6B52;
+    --coral-deep:#E8532F;
+    --coral-pale:#FFE4DA;
+    --lavender:#8C7FC4;
+    --lavender-pale:#EAE5F7;
+    --tape:#F2C744;
+    --line:#E5DCC9;
+    --radius:16px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--cream-deep);}
+  body{
+    font-family:'Pretendard','Noto Sans KR',sans-serif;
+    color:var(--ink);
+    display:flex; justify-content:center;
+  }
+  .page{
+    width:100%; max-width:430px;
+    background:var(--cream);
+    min-height:100vh;
+    position:relative;
+    box-shadow:0 0 40px rgba(0,0,0,0.08);
+    padding-bottom:64px;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    padding:38px 22px 30px;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.10) 0 10px, transparent 10px 20px),
+      linear-gradient(160deg, var(--coral) 0%, var(--coral-deep) 100%);
+    color:#fff;
+    overflow:hidden;
+  }
+  .tape-strip{
+    position:absolute; top:14px; right:-30px;
+    width:150px; height:26px;
+    background:var(--tape);
+    transform:rotate(45deg);
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12px; font-weight:700; letter-spacing:0.04em;
+    background:rgba(255,255,255,0.18);
+    padding:5px 12px; border-radius:100px;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:26px; line-height:1.35; font-weight:900; margin:0 0 8px;
+    word-break:keep-all;
+  }
+  .hero p.sub{
+    font-size:14.5px; line-height:1.55; margin:0; opacity:0.94; word-break:keep-all;
+  }
+  .hero .date{
+    margin-top:16px; font-size:11.5px; opacity:0.8; font-weight:500;
+  }
+
+  .intro-box{
+    margin:-16px 18px 0; position:relative; z-index:2;
+    background:var(--paper);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    box-shadow:0 8px 24px rgba(60,40,20,0.10);
+    font-size:14px; line-height:1.7; color:var(--ink);
+    word-break:keep-all;
+  }
+  .intro-box b{color:var(--coral-deep);}
+
+  /* ===== NAV ===== */
+  .navwrap{position:sticky; top:0; z-index:50; background:var(--cream); padding:16px 0 8px; border-bottom:1px solid var(--line);}
+  .navrow{display:flex; gap:6px; overflow-x:auto; padding:0 18px; scrollbar-width:none;}
+  .navrow::-webkit-scrollbar{display:none;}
+  .navchip{
+    flex:0 0 auto;
+    font-size:12.5px; font-weight:700; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line);
+    padding:8px 13px; border-radius:100px; white-space:nowrap;
+    text-decoration:none;
+  }
+  .navchip.active, .navchip:active{background:var(--ink); color:#fff; border-color:var(--ink);}
+
+  /* ===== SECTIONS ===== */
+  .section{padding:34px 20px 6px;}
+  .sec-head{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .sec-num{
+    font-family:'Pretendard'; font-weight:900; font-size:13px;
+    color:#fff; background:var(--ink); width:26px; height:26px;
+    border-radius:8px; display:flex; align-items:center; justify-content:center;
+    flex:0 0 auto;
+  }
+  .sec-title{font-size:18.5px; font-weight:800; line-height:1.4; word-break:keep-all;}
+  .sec-desc{font-size:13.5px; color:var(--ink-soft); line-height:1.65; margin:0 0 16px; word-break:keep-all;}
+
+  .card{
+    background:var(--paper); border-radius:var(--radius);
+    padding:18px; margin-bottom:14px;
+    box-shadow:0 3px 14px rgba(60,40,20,0.05);
+    border:1px solid var(--line);
+  }
+
+  /* CTA button (affiliate) */
+  .cta-card{
+    background:linear-gradient(135deg,#3A3530,#232019);
+    border-radius:var(--radius);
+    padding:20px; margin:18px 0; color:#fff;
+    position:relative; overflow:hidden;
+  }
+  .cta-card .cta-tag{
+    font-size:11px; font-weight:800; color:var(--tape);
+    letter-spacing:0.03em; margin-bottom:6px; display:block;
+  }
+  .cta-card h3{font-size:16px; margin:0 0 6px; font-weight:800; word-break:keep-all;}
+  .cta-card p{font-size:12.5px; color:#D8D2C6; line-height:1.6; margin:0 0 14px; word-break:keep-all;}
+  .cta-btn{
+    display:block; text-align:center;
+    background:var(--coral); color:#fff;
+    font-weight:800; font-size:14.5px;
+    padding:13px; border-radius:12px;
+    text-decoration:none;
+  }
+  .affiliate-note{font-size:10.5px; color:var(--ink-soft); opacity:0.75; margin-top:10px; line-height:1.5;}
+  .affiliate-note.on-dark{color:#B7B0A2;}
+
+  /* Table (지원금) */
+  .support-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  .support-table th{
+    background:var(--lavender-pale); color:var(--ink);
+    font-weight:800; padding:9px 6px; text-align:center;
+    border-bottom:2px solid var(--lavender);
+  }
+  .support-table td{
+    padding:11px 6px; text-align:center; border-bottom:1px solid var(--line);
+    vertical-align:middle; word-break:keep-all;
+  }
+  .support-table td.region{font-weight:800; color:var(--coral-deep);}
+  .support-table td.amount{font-weight:700;}
+  .badge{
+    display:inline-block; font-size:10.5px; font-weight:700;
+    padding:3px 8px; border-radius:100px; background:var(--coral-pale); color:var(--coral-deep);
+  }
+  .badge.deadline{background:var(--lavender-pale); color:var(--lavender);}
+
+  /* 지원금 리스트 (지역별 카드 + 링크) */
+  .support-list{list-style:none; margin:0; padding:0;}
+  .support-list li{
+    padding:12px 4px; border-bottom:1px solid var(--line);
+  }
+  .support-list li:last-child{border-bottom:none;}
+  .sl-top{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:8px;
+  }
+  .sl-region{font-size:14.5px; font-weight:800; color:var(--ink);}
+  .sl-amount{font-size:13px; font-weight:700; color:var(--coral-deep);}
+  .sl-bottom{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .sl-link{
+    font-size:12px; font-weight:700; color:var(--lavender);
+    text-decoration:none; white-space:nowrap;
+  }
+  .sl-link:active{opacity:0.7;}
+
+  .tip-box{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--lavender-pale); border-radius:12px; padding:14px 16px;
+    font-size:13px; line-height:1.6; color:#4B4372; margin-top:12px; word-break:keep-all;
+  }
+  .tip-box .tip-icon{font-size:16px; flex:0 0 auto;}
+  .tip-box b{color:var(--lavender);}
+
+  .warn-box{
+    background:#FFF6E8; border:1px dashed #E5B54D; border-radius:12px;
+    padding:13px 15px; font-size:12.5px; color:#7A5A18; line-height:1.6;
+    margin-top:12px; word-break:keep-all;
+  }
+
+  /* Checklist */
+  .checklist{list-style:none; margin:0; padding:0;}
+  .checklist li{
+    display:flex; align-items:flex-start; gap:10px;
+    padding:10px 0; border-bottom:1px solid var(--line);
+    font-size:13.5px; line-height:1.5; word-break:keep-all;
+  }
+  .checklist li:last-child{border-bottom:none;}
+  .checklist .chk{
+    flex:0 0 auto; width:20px; height:20px; border-radius:6px;
+    border:2px solid var(--coral); margin-top:1px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; color:var(--coral); font-weight:900;
+  }
+
+  /* Flow steps (07 step summary) */
+  .flow{display:flex; flex-direction:column; gap:0;}
+  .flow-item{
+    display:flex; align-items:center; gap:12px;
+    background:var(--paper); border-radius:12px; padding:13px 15px;
+    border:1px solid var(--line);
+  }
+  .flow-num{
+    flex:0 0 auto; width:30px; height:30px; border-radius:50%;
+    background:var(--coral); color:#fff; font-weight:900; font-size:13px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .flow-text{font-size:13.5px; font-weight:700; word-break:keep-all;}
+  .flow-arrow{
+    text-align:center; color:var(--lavender); font-size:14px; padding:2px 0;
+  }
+
+  /* Region highlight callout when not listed */
+  .search-hint{
+    background:var(--coral); color:#fff; border-radius:12px; padding:14px 16px;
+    font-size:13px; line-height:1.6; margin-top:12px; word-break:keep-all;
+  }
+  .search-hint code{
+    display:inline-block; background:rgba(255,255,255,0.22); padding:2px 8px;
+    border-radius:6px; font-weight:800; margin:2px 0;
+  }
+
+  /* footer */
+  .footer{
+    margin:36px 20px 0; padding:18px 18px 20px;
+    background:var(--cream-deep); border-radius:var(--radius);
+    font-size:11.5px; color:var(--ink-soft); line-height:1.7; word-break:keep-all;
+  }
+  .footer b{color:var(--ink);}
+  .brand-tag{
+    text-align:center; margin-top:22px; font-size:12px; color:var(--ink-soft); font-weight:600;
+  }
+  .brand-tag span{color:var(--coral-deep); font-weight:800;}
+
+  .divider-tape{
+    height:14px; margin:8px 20px 0;
+    background:repeating-linear-gradient(-45deg, var(--tape) 0 8px, #E8B93A 8px 16px);
+    opacity:0.55; border-radius:3px;
+  }
+</style>
+</head>
+<body>
+<div class="page" id="top">
+
+  <div class="hero">
+    <div class="tape-strip"></div>
+    <span class="eyebrow">📦 쭈미의 재테크 자료집</span>
+    <h1>2026 이사비 아끼는<br>현실 꿀팁</h1>
+    <p class="sub">지원금부터 견적 비교, 이사 후 할 일까지 한 번에!</p>
+    <div class="date">2026.08.19 기준</div>
+  </div>
+
+  <div class="intro-box">
+    이사 준비 중이라면 저장해둬! <b>받을 수 있는 이사비 지원금</b>부터 <b>이사비 아끼는 방법</b>, <b>이사 후 해야 할 일</b>까지 싹 정리했어 💸
+  </div>
+
+  <div class="navwrap">
+    <div class="navrow">
+      <a href="#sec-support" class="navchip">💰 지원금</a>
+      <a href="#sec-quote" class="navchip">🚚 견적비교</a>
+      <a href="#sec-prep" class="navchip">📦 짐정리</a>
+      <a href="#sec-after" class="navchip">🏠 이사 후</a>
+    </div>
+  </div>
+
+  <!-- 01 지원금 -->
+  <section class="section" id="sec-support">
+    <div class="sec-head"><div class="sec-num">01</div><div class="sec-title">이사했다면 지원금부터 확인</div></div>
+    <p class="sec-desc">지역에 따라 청년에게 실제로 지출한 이사비·부동산 중개보수 등을 지원해주는 사업이 있어.<br>서울뿐 아니라 경기·인천 일부 지역에서도 운영 중이니 내가 해당되는지 먼저 확인해봐!</p>
+
+    <div class="card" style="padding:14px;">
+      <ul class="support-list">
+        <li>
+          <div class="sl-top">
+            <span class="sl-region">서울</span>
+            <span class="sl-amount">최대 40만원</span>
+          </div>
+          <div class="sl-bottom">
+            <span class="badge deadline">~8/31 마감</span>
+            <a href="https://youth.seoul.go.kr/infoData/plcyInfo/view.do?key=2309150002&plcyBizId=V202600006&utm_source=chatgpt.com" target="_blank" rel="noopener" class="sl-link">신청·조건 확인 →</a>
+          </div>
+        </li>
+        <li>
+          <div class="sl-top">
+            <span class="sl-region">경기 남양주</span>
+            <span class="sl-amount">최대 40만원</span>
+          </div>
+          <div class="sl-bottom">
+            <span class="badge deadline">~12/31 마감</span>
+            <a href="https://youth.gg.go.kr/gg/info/housing-welfare.do?arcNo=10328&mode=view&pager.offset=0&pagerLimit=8&utm_source=chatgpt.com" target="_blank" rel="noopener" class="sl-link">공식 공고 보기 →</a>
+          </div>
+        </li>
+        <li>
+          <div class="sl-top">
+            <span class="sl-region">경기 안성</span>
+            <span class="sl-amount">최대 50만원</span>
+          </div>
+          <div class="sl-bottom">
+            <span class="badge deadline">~12/31 마감</span>
+            <a href="https://youth.gg.go.kr/gg/info/housing-welfare.do?mode=view&arcNo=10327&pager.offset=0&pagerLimit=8&srSearchVal=%EC%9D%B4%EC%82%AC%EB%B9%84&utm_source=chatgpt.com" target="_blank" rel="noopener" class="sl-link">공식 공고 보기 →</a>
+          </div>
+        </li>
+        <li>
+          <div class="sl-top">
+            <span class="sl-region">경기 의왕</span>
+            <span class="sl-amount">최대 40만원</span>
+          </div>
+          <div class="sl-bottom">
+            <span class="badge deadline">~12/11 마감</span>
+            <a href="https://youth.gg.go.kr/gg/archive-policy-search.do?arcNo=10238&mode=view&utm_source=chatgpt.com" target="_blank" rel="noopener" class="sl-link">공식 공고 보기 →</a>
+          </div>
+        </li>
+        <li>
+          <div class="sl-top">
+            <span class="sl-region">인천 제물포구</span>
+            <span class="sl-amount">최대 40만원</span>
+          </div>
+          <div class="sl-bottom">
+            <span class="badge deadline">~11/30 마감</span>
+            <a href="https://youth.incheon.go.kr/youthpolicy/youthPolicyInfoDetail.do?menudiv=dwelling&poly_seq=403&utm_source=chatgpt.com" target="_blank" rel="noopener" class="sl-link">공식 공고 보기 →</a>
+          </div>
+        </li>
+        <li>
+          <div class="sl-top">
+            <span class="sl-region">인천 영종구</span>
+            <span class="sl-amount">최대 40만원</span>
+          </div>
+          <div class="sl-bottom">
+            <span class="badge deadline">예산 소진 시 마감</span>
+            <a href="https://youth.incheon.go.kr/youthpolicy/youthPolicyInfoDetail.do?acptrun=ing&pgno=4&poly_seq=395&utm_source=chatgpt.com" target="_blank" rel="noopener" class="sl-link">공식 공고 보기 →</a>
+          </div>
+        </li>
+      </ul>
+      <div class="tip-box">
+        <span class="tip-icon">📋</span>
+        <div>경기청년포털에는 남양주·안성·의왕 사업이 <b>진행중</b>으로, 인천청년포털에는 제물포구·영종구 사업이 <b>접수중</b>으로 표시돼 있어.</div>
+      </div>
+    </div>
+
+    <div class="search-hint">
+      💡 <b>우리 지역이 표에 없다면?</b> 끝이 아니야! 지자체마다 별도 운영 사업이 있을 수 있으니<br>
+      <code>지역명 + 청년 이사비 지원</code><br>
+      으로 한 번 더 검색해봐.
+    </div>
+
+    <div class="warn-box">
+      ⚠️ 지역마다 연령·소득·주택·전입일·무주택 여부 등 조건이 달라. 신청 전 공식 공고에서 내가 대상인지 꼭 확인하기!
+    </div>
+  </section>
+
+  <div class="divider-tape"></div>
+
+  <!-- 02-03 견적비교 -->
+  <section class="section" id="sec-quote">
+    <div class="sec-head"><div class="sec-num">02</div><div class="sec-title">이사 견적, 한 곳만 받고 결정하지 않기</div></div>
+    <p class="sec-desc">업체 찾기 → 연락하기 → 일정 잡기 → 견적받기 → 비교하기, 이 과정이 생각보다 진짜 피곤해🥲<br>짐량이나 작업환경에 따라 견적이 달라질 수 있으니 한 곳만 보고 바로 결정하지 말고 비교해보는 게 좋아.</p>
+
+    <div class="cta-card">
+      <span class="cta-tag">🚚 한 번의 방문으로 4곳 이상 비교</span>
+      <h3>미소 이사 무료 견적</h3>
+      <p>전담 플래너가 방문해 짐량을 확인하고, 여러 업체의 견적을 한 번에 비교할 수 있어.</p>
+      <a href="https://get.miso.kr/BkmU9hsVQ2b?~channel=InfluencerProgram&~campaign=MV&~feature=Instagram&~keyword=260813_jjumi_s2&~tags=%EB%82%A8%ED%98%9C%EB%A6%B0" target="_blank" rel="noopener" class="cta-btn">무료 이사 견적 받아보기</a>
+    </div>
+
+    <div class="sec-head" style="margin-top:26px;"><div class="sec-num">03</div><div class="sec-title">가장 싼 견적만 보고 결정하지 않기</div></div>
+    <p class="sec-desc"><b>95만원 vs 105만원</b> — 숫자만 보면 당연히 95만원이 좋아 보이지?<br>그런데 가격만큼 중요한 게 '어디까지 포함된 가격인지'야.</p>
+
+    <div class="card">
+      <div style="font-size:13px; font-weight:800; margin-bottom:10px; color:var(--coral-deep);">견적 받을 때 CHECK ✔️</div>
+      <ul class="checklist">
+        <li><span class="chk">✓</span>사다리차 비용</li>
+        <li><span class="chk">✓</span>엘리베이터 관련 비용</li>
+        <li><span class="chk">✓</span>추가 인력 비용</li>
+        <li><span class="chk">✓</span>특수 가구·가전 이전</li>
+        <li><span class="chk">✓</span>이동거리 관련 비용</li>
+        <li><span class="chk">✓</span>파손·분실 보상 기준</li>
+        <li><span class="chk">✓</span>기타 추가요금 발생 조건</li>
+      </ul>
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <div><b>쭈미 TIP</b><br>처음 받은 가격만 비교하지 말고, 최종 금액 + 서비스 범위까지 같이 비교하기!</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-tape"></div>
+
+  <!-- 04-05 짐정리/촬영 -->
+  <section class="section" id="sec-prep">
+    <div class="sec-head"><div class="sec-num">04</div><div class="sec-title">견적 받기 전에 버릴 짐부터 정리</div></div>
+    <p class="sec-desc">가져갈 물건과 버릴 물건부터 미리 구분해두자.<br>특히 버릴 예정인 큰 가구·가전이 있다면 견적 받을 때 미리 이야기해두는 게 좋아.</p>
+    <div class="card">
+      <div style="font-size:13px; font-weight:800; margin-bottom:10px; color:var(--coral-deep);">미리 정리하면 좋은 것 ✔️</div>
+      <ul class="checklist">
+        <li><span class="chk">✓</span>대형폐기물 신고</li>
+        <li><span class="chk">✓</span>폐가전 수거 신청</li>
+        <li><span class="chk">✓</span>중고 판매·나눔</li>
+        <li><span class="chk">✓</span>새집에 가져가지 않을 가구 결정</li>
+      </ul>
+      <div class="warn-box">이사 직전에는 할 일이 한꺼번에 몰리니까 견적받기 전에 최대한 정리해두기!</div>
+    </div>
+
+    <div class="sec-head" style="margin-top:26px;"><div class="sec-num">05</div><div class="sec-title">이사 전 사진·영상 찍어두기</div></div>
+    <p class="sec-desc">TV·냉장고·세탁기·식탁처럼 비싸거나 파손 우려가 있는 물건은 이사 전 상태를 촬영해두자.<br>특히 <b>액정 / 모서리 / 유리 / 기존 스크래치·찍힘</b> 부분은 가까이 찍어두기!</p>
+    <div class="tip-box">
+      <span class="tip-icon">📸</span>
+      <div>혹시 파손 문제가 생겼을 때 이사 전 상태를 확인할 수 있는 자료로 활용할 수 있어.</div>
+    </div>
+
+  </section>
+
+  <div class="divider-tape"></div>
+
+  <!-- 07-09 이사 후 -->
+  <section class="section" id="sec-after">
+    <div class="sec-head"><div class="sec-num">07</div><div class="sec-title">우편물 주소, 하나씩 바꾸지 않아도 돼</div></div>
+    <p class="sec-desc">이사하고 나면 예전 주소로 오는 우편물 때문에 은근히 신경 쓰이지?<br>우정사업본부의 '주거이전 우편물 전송서비스'를 이용하면 기존 주소로 오는 우편물을 일정 기간 새 주소로 전송받을 수 있어.</p>
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:700; justify-content:center; padding:8px 0;">
+        <span style="color:var(--ink-soft);">기존 주소로 온 우편물</span>
+        <span style="color:var(--coral-deep);">➜</span>
+        <span style="color:var(--coral-deep);">새 주소로 전송</span>
+      </div>
+      <div class="warn-box">
+        ⚠️ 주의! 각 기관에 등록된 주소 자체가 자동으로 변경되는 건 아니야.<br>우편물을 새 주소로 전송해주는 서비스이기 때문에, 카드사·보험사·금융기관 등에 등록된 주소는 하나씩 별도로 변경해야 해.
+      </div>
+    </div>
+
+    <div class="sec-head" style="margin-top:26px;"><div class="sec-num">08</div><div class="sec-title">이사 후 전입신고도 잊지 않기</div></div>
+    <p class="sec-desc">거주지를 옮겼다면 새로운 거주지에 전입한 날부터 <b>14일 이내</b>에 전입신고를 해야 해.<br>주민센터 방문뿐 아니라 온라인 신청도 가능하고 수수료는 없어.</p>
+    <div class="card">
+      <ul class="checklist">
+        <li><span class="chk">✓</span>① 주민센터 방문</li>
+        <li><span class="chk">✓</span>② 정부24 온라인 신청</li>
+      </ul>
+      <div class="tip-box">
+        <span class="tip-icon">🏠</span>
+        <div><b>전월세라면 이것도 체크!</b><br>전입신고뿐 아니라 확정일자·임대차 신고 등 내가 챙겨야 할 주거 관련 절차도 함께 확인해두자.</div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="divider-tape"></div>
+
+  <!-- 7 STEP 요약 -->
+  <section class="section">
+    <div class="sec-head"><div class="sec-num">✔</div><div class="sec-title">마지막으로 이것만 기억해! 이사비 아끼는 7 STEP</div></div>
+    <div class="flow">
+      <div class="flow-item"><div class="flow-num">1</div><div class="flow-text">💰 받을 수 있는 이사비 지원금 확인</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item"><div class="flow-num">2</div><div class="flow-text">🚚 여러 업체 견적 비교</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item"><div class="flow-num">3</div><div class="flow-text">🔍 추가비용·서비스 범위 확인</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item"><div class="flow-num">4</div><div class="flow-text">📦 견적 전에 버릴 짐 정리</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item"><div class="flow-num">5</div><div class="flow-text">📸 이사 전 물건 상태 촬영</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item"><div class="flow-num">6</div><div class="flow-text">📮 우편물 주소 이전 신청</div></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item"><div class="flow-num">7</div><div class="flow-text">🏠 전입신고 등 행정처리</div></div>
+    </div>
+
+    <div class="cta-card" style="margin-top:22px;">
+      <span class="cta-tag">🚚 여러 업체에 하나씩 연락하기 귀찮다면?</span>
+      <h3>한 번의 방문으로 4곳 이상 이사 견적 비교</h3>
+      <a href="https://get.miso.kr/BkmU9hsVQ2b?~channel=InfluencerProgram&~campaign=MV&~feature=Instagram&~keyword=260813_jjumi_s2&~tags=%EB%82%A8%ED%98%9C%EB%A6%B0" target="_blank" rel="noopener" class="cta-btn">무료 이사 견적 받아보기</a>
+    </div>
+  </section>
+
+  <div class="footer">
+    📌 <b>꼭 확인해줘!</b><br>
+    이 자료는 2026년 8월 19일 기준으로 정리했어.<br>
+    지원사업은 지역별로 연령·소득·주택·전입일·무주택 여부 등의 세부 조건이 다르고, 모집 일정이나 예산 상황에 따라 변경 또는 조기 종료될 수 있어.<br>
+    신청 전 반드시 각 공식 공고에서 최신 내용과 본인의 신청 자격을 확인해줘!
+  </div>
+
+  <div class="brand-tag">🐣 <span>쭈미의 재테크</span> · @jjumi_s2</div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.navchip').forEach(chip=>{
+    chip.addEventListener('click', function(e){
+      document.querySelectorAll('.navchip').forEach(c=>c.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id = entry.target.id;
+        document.querySelectorAll('.navchip').forEach(c=>{
+          c.classList.toggle('active', c.getAttribute('href') === '#'+id);
+        });
+      }
+    });
+  }, {rootMargin:"-40% 0px -50% 0px"});
+  ['sec-support','sec-quote','sec-prep','sec-after'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) io.observe(el);
+  });
+</script>
+
+</body>
+</html>
