@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9/30 전 확인! 내 청약통장 전환 자료집</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF6EF;
+    --cream-2:#F3EBDD;
+    --coral:#FF7A59;
+    --coral-deep:#E8613F;
+    --lavender:#8E7CC3;
+    --lavender-soft:#EDE7F6;
+    --ink:#2B2620;
+    --ink-soft:#6B6255;
+    --line:#E7DCC9;
+    --good:#3E8E5A;
+    --good-bg:#E8F3EA;
+    --warn:#B8862E;
+    --warn-bg:#FBF1DD;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream-2);
+    font-family:'Pretendard Variable','Noto Sans KR',sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+  }
+  .frame{
+    width:390px;
+    max-width:100vw;
+    background:var(--cream);
+    min-height:100vh;
+    padding-bottom:60px;
+  }
+  .top{
+    padding:28px 22px 18px;
+    background:linear-gradient(180deg, var(--lavender-soft) 0%, var(--cream) 100%);
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-size:13px;
+    font-weight:700;
+    color:var(--coral-deep);
+    margin-bottom:8px;
+  }
+  .top h1{
+    font-size:22px;
+    line-height:1.4;
+    margin:0 0 6px;
+    font-weight:900;
+    letter-spacing:-0.3px;
+  }
+  .top p{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin:0;
+    line-height:1.5;
+  }
+  .tabs{
+    position:sticky;
+    top:0;
+    z-index:10;
+    display:flex;
+    overflow-x:auto;
+    background:var(--cream);
+    border-bottom:1px solid var(--line);
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto;
+    padding:14px 14px;
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink-soft);
+    white-space:nowrap;
+    border-bottom:3px solid transparent;
+    cursor:pointer;
+  }
+  .tab.active{
+    color:var(--coral-deep);
+    border-bottom:3px solid var(--coral);
+  }
+  .section{
+    display:none;
+    padding:24px 22px 8px;
+    animation:fade .25s ease;
+  }
+  .section.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .section-num{
+    font-size:12px;
+    font-weight:700;
+    color:var(--lavender);
+    margin-bottom:6px;
+  }
+  h2{
+    font-size:19px;
+    font-weight:900;
+    margin:0 0 14px;
+    line-height:1.4;
+  }
+  p.lead{
+    font-size:14.5px;
+    line-height:1.65;
+    color:var(--ink);
+    margin:0 0 16px;
+  }
+
+  .target-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .target-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#fff;
+    border:1.5px solid var(--coral);
+    border-radius:12px;
+    padding:13px 14px;
+    font-size:15px;
+    font-weight:700;
+  }
+  .target-item .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--coral);
+    flex:0 0 auto;
+  }
+  .arrow-note{
+    text-align:center;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--coral-deep);
+    margin:10px 0 18px;
+  }
+
+  .not-target{
+    background:var(--good-bg);
+    border-radius:12px;
+    padding:14px 15px;
+    margin-bottom:8px;
+  }
+  .not-target .label{
+    font-size:12.5px;
+    font-weight:800;
+    color:var(--good);
+    margin-bottom:6px;
+  }
+  .not-target ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    line-height:1.7;
+    color:var(--ink);
+  }
+  .not-target .sub{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    margin-bottom:16px;
+  }
+  th,td{
+    padding:11px 8px;
+    font-size:12.5px;
+    text-align:center;
+    line-height:1.4;
+    border-bottom:1px solid var(--line);
+  }
+  th{
+    background:var(--lavender-soft);
+    font-weight:800;
+    color:var(--ink);
+    font-size:12px;
+  }
+  td.name{
+    font-weight:800;
+    background:var(--cream-2);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.after{
+    color:var(--coral-deep);
+    font-weight:700;
+  }
+
+  .callout{
+    background:var(--lavender-soft);
+    border-radius:12px;
+    padding:15px 16px;
+    font-size:14px;
+    font-weight:700;
+    line-height:1.6;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+  .callout .big{
+    color:var(--lavender);
+    font-weight:900;
+  }
+
+  .flow-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 16px 14px;
+    margin-bottom:14px;
+  }
+  .flow-card .flow-title{
+    display:inline-block;
+    background:var(--ink);
+    color:#fff;
+    font-size:12.5px;
+    font-weight:800;
+    padding:5px 11px;
+    border-radius:100px;
+    margin-bottom:12px;
+  }
+  .flow-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .flow-row:last-child{margin-bottom:0;}
+  .flow-tag{
+    flex:0 0 68px;
+    font-size:12.5px;
+    font-weight:800;
+    color:var(--ink-soft);
+    padding-top:2px;
+  }
+  .flow-body{
+    flex:1;
+    font-size:13.5px;
+    line-height:1.6;
+  }
+  .flow-body .keep{color:var(--good);font-weight:800;}
+  .flow-body .reset{color:var(--coral-deep);font-weight:800;}
+
+  .killer-box{
+    background:var(--ink);
+    color:#fff;
+    border-radius:14px;
+    padding:16px 17px;
+    font-size:14px;
+    font-weight:700;
+    line-height:1.7;
+    margin-top:6px;
+  }
+  .killer-box .em{color:#FFB199;}
+
+  .case-card{
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:15px 16px;
+    margin-bottom:12px;
+    background:#fff;
+  }
+  .case-card .q{
+    font-size:14.5px;
+    font-weight:800;
+    margin-bottom:8px;
+    display:flex;
+    gap:8px;
+  }
+  .case-card .q .mark{
+    color:var(--coral);
+    flex:0 0 auto;
+  }
+  .case-card .a{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    line-height:1.6;
+    padding-left:22px;
+    border-left:2px solid var(--lavender-soft);
+    margin-left:2px;
+  }
+  .case-card .a b{color:var(--ink);font-weight:700;}
+
+  .no-verdict{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:4px;
+    line-height:1.6;
+  }
+
+  .benefit-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .benefit-tile{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 12px;
+  }
+  .benefit-tile .icon{font-size:20px;display:block;margin-bottom:8px;}
+  .benefit-tile .t{font-size:12.5px;font-weight:800;margin-bottom:4px;line-height:1.4;}
+  .benefit-tile .d{font-size:12px;color:var(--ink-soft);line-height:1.5;}
+
+  .disclaimer{
+    background:var(--warn-bg);
+    border-radius:12px;
+    padding:13px 14px;
+    font-size:12.5px;
+    color:#6B4E14;
+    line-height:1.6;
+    display:flex;
+    gap:8px;
+  }
+  .disclaimer .ico{flex:0 0 auto;}
+
+  .check-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .check-item{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:13px 14px;
+  }
+  .check-item .box{
+    width:18px;height:18px;
+    border-radius:5px;
+    border:2px solid var(--coral);
+    flex:0 0 auto;
+    margin-top:1px;
+  }
+  .check-item .txt{
+    font-size:13.5px;
+    line-height:1.55;
+    font-weight:600;
+  }
+  .check-item.final{
+    border:1.5px solid var(--coral);
+    background:#FFF6F3;
+  }
+  .check-item.final .txt{font-weight:800;}
+
+  .closing{
+    text-align:center;
+    padding:20px 10px 4px;
+  }
+  .closing .line{
+    font-size:15px;
+    font-weight:900;
+    color:var(--coral-deep);
+    line-height:1.6;
+  }
+  .closing .sub{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+
+  .subhead{
+    font-size:13px;
+    font-weight:800;
+    color:var(--coral-deep);
+    margin:18px 0 8px;
+  }
+  .subhead.lav{color:var(--lavender);}
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <div class="top">
+    <div class="eyebrow">쭈미의 재테크 · 청약통장 전환 자료집</div>
+    <h1>9/30 전 확인!<br>내 청약통장 바꿔야 할까?</h1>
+    <p>청약저축·청약예금·청약부금 → 주택청약종합저축 전환, 대상 확인부터 체크리스트까지</p>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-tab="1">① 대상 확인</div>
+    <div class="tab" data-tab="2">② 통장 비교</div>
+    <div class="tab" data-tab="3">③ 실적 인정</div>
+    <div class="tab" data-tab="4">④ 판단하기</div>
+    <div class="tab" data-tab="5">⑤ 달라지는 것</div>
+    <div class="tab" data-tab="6">⑥ 체크리스트</div>
+  </div>
+
+  <!-- 1P -->
+  <div class="section active" data-section="1">
+    <div class="section-num">1P</div>
+    <h2>나는 전환 대상일까?</h2>
+    <p class="lead">아래 3가지 통장 중 하나라도 가지고 있다면, 이번 9월 30일 전환 마감과 직접 관련이 있어.</p>
+
+    <div class="target-list">
+      <div class="target-item"><span class="dot"></span>청약저축</div>
+      <div class="target-item"><span class="dot"></span>청약예금</div>
+      <div class="target-item"><span class="dot"></span>청약부금</div>
+    </div>
+    <div class="arrow-note">→ 하나라도 가지고 있다면 이 자료 꼭 확인!</div>
+
+    <div class="not-target">
+      <div class="label">✅ 이미 전환 대상이 아닌 경우</div>
+      <ul>
+        <li>주택청약종합저축을 이미 가지고 있다면 → 이번 전환 대상 아님 (이미 국민+민영주택 모두 청약 가능)</li>
+        <li>청년주택드림청약통장을 가지고 있다면 → 대상 아님. 나이·소득 요건이 붙는 별도 제도라 이번 9/30 전환 특례와는 무관</li>
+      </ul>
+      <div class="sub">내 통장 종류가 헷갈리면 은행 앱 또는 청약홈에서 바로 확인 가능해.</div>
+    </div>
+  </div>
+
+  <!-- 2P -->
+  <div class="section" data-section="2">
+    <div class="section-num">2P</div>
+    <h2>기존 통장 3종 한눈에 비교</h2>
+    <p class="lead">세 통장 모두 원래는 청약할 수 있는 주택 유형이 정해져 있었어. 전환하면 이 구분이 사라져.</p>
+
+    <table>
+      <tr>
+        <th>기존 통장</th>
+        <th>기존 청약 범위</th>
+        <th>종합저축<br>전환 후</th>
+      </tr>
+      <tr>
+        <td class="name">청약저축</td>
+        <td>국민주택 등</td>
+        <td class="after">국민+민영</td>
+      </tr>
+      <tr>
+        <td class="name">청약부금</td>
+        <td>85㎡ 이하<br>민영주택</td>
+        <td class="after">국민+민영</td>
+      </tr>
+      <tr>
+        <td class="name">청약예금</td>
+        <td>민영주택</td>
+        <td class="after">국민+민영</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      전환의 가장 큰 장점은<br>
+      <span class="big">청약 선택지가 넓어진다는 것</span>
+    </div>
+  </div>
+
+  <!-- 3P -->
+  <div class="section" data-section="3">
+    <div class="section-num">3P · ⭐ 제일 중요</div>
+    <h2>기존 실적, 얼마나 인정될까?</h2>
+    <p class="lead">전환할 때 가장 많이 헷갈리는 부분. 통장 종류에 따라 인정 기준이 달라.</p>
+
+    <div class="flow-card">
+      <div class="flow-title">청약저축 → 종합저축</div>
+      <div class="flow-row">
+        <div class="flow-tag">국민주택</div>
+        <div class="flow-body">
+          <span class="keep">✔ 기존 가입기간</span> · <span class="keep">✔ 기존 납입횟수</span> · <span class="keep">✔ 기존 인정금액</span><br>
+          그대로 이어져
+        </div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-tag">민영주택</div>
+        <div class="flow-body">
+          <span class="reset">→ 새롭게 청약 가능</span>해지는 쪽<br>
+          가입기간은 <b>전환일부터</b> 계산돼
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-title">청약예금·부금 → 종합저축</div>
+      <div class="flow-row">
+        <div class="flow-tag">민영주택</div>
+        <div class="flow-body">
+          <span class="keep">✔ 기존 가입기간</span> 그대로 인정
+        </div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-tag">국민주택</div>
+        <div class="flow-body">
+          <span class="reset">→ 가입기간 전환일부터</span><br>
+          <span class="reset">→ 납입횟수·금액도 전환 후부터</span> 새로 쌓임
+        </div>
+      </div>
+    </div>
+
+    <div class="killer-box">
+      전환한다고<br>
+      지금까지 쌓은 모든 실적이 <span class="em">사라지는 것도 아니고</span>,<br>
+      모든 실적이 <span class="em">그대로 인정되는 것도 아니야!</span>
+    </div>
+  </div>
+
+  <!-- 4P -->
+  <div class="section" data-section="4">
+    <div class="section-num">4P</div>
+    <h2>그래서 나는 바꿔야 할까?</h2>
+    <p class="lead">상황별로 확인해야 할 포인트가 달라. 내 케이스부터 찾아봐.</p>
+
+    <div class="case-card">
+      <div class="q"><span class="mark">▸</span>앞으로 국민주택만<br>생각한다면</div>
+      <div class="a">현재 통장 종류와 <b>기존 실적</b>부터 먼저 확인해. 청약저축이라면 전환 없이도 국민주택 실적은 그대로 이어지고 있어.</div>
+    </div>
+    <div class="case-card">
+      <div class="q"><span class="mark">▸</span>민영주택까지<br>선택지를 넓히고 싶다면</div>
+      <div class="a">종합저축 전환 시 <b>달라지는 조건</b>을 확인해. 어떤 실적이 유지되고 어떤 실적이 전환일부터 새로 쌓이는지가 핵심이야.</div>
+    </div>
+    <div class="case-card">
+      <div class="q"><span class="mark">▸</span>청약예금·부금인데<br>국민주택도 생각한다면</div>
+      <div class="a"><b>국민주택 실적은 전환 후부터</b> 쌓인다는 점을 꼭 확인해. 청약 시점이 가까울수록 전환 타이밍이 중요해져.</div>
+    </div>
+    <div class="case-card">
+      <div class="q"><span class="mark">▸</span>아직 어떤 집에<br>청약할지 모르겠다면</div>
+      <div class="a"><b>기존 실적 + 전환 후 선택지</b>를 함께 비교해봐. 3P의 실적 인정표를 내 통장 종류에 대입해보는 게 제일 정확해.</div>
+    </div>
+
+    <div class="no-verdict">☝️ "이 경우엔 무조건 전환!"이라는 정답은 없어.<br>내 통장 종류 + 앞으로의 청약 계획, 이 두 가지를 같이 놓고 판단하는 게 핵심이야.</div>
+  </div>
+
+  <!-- 5P -->
+  <div class="section" data-section="5">
+    <div class="section-num">5P</div>
+    <h2>종합저축으로 바꾸면 달라지는 것</h2>
+    <p class="lead">전환 후 실제로 받게 되는 혜택들.</p>
+
+    <div class="benefit-grid">
+      <div class="benefit-tile">
+        <span class="icon">🏠</span>
+        <div class="t">국민+민영 모두 가능</div>
+        <div class="d">한 통장으로<br>두 유형 모두 청약</div>
+      </div>
+      <div class="benefit-tile">
+        <span class="icon">💰</span>
+        <div class="t">현재 적용 금리</div>
+        <div class="d">기준일 표시 필요<br>게시 전 재확인</div>
+      </div>
+      <div class="benefit-tile">
+        <span class="icon">💵</span>
+        <div class="t">국민주택 월 납입 인정액</div>
+        <div class="d">기준일 표시 필요<br>게시 전 재확인</div>
+      </div>
+      <div class="benefit-tile">
+        <span class="icon">🧾</span>
+        <div class="t">소득공제 조건·한도</div>
+        <div class="d">기준일 표시 필요<br>게시 전 재확인</div>
+      </div>
+      <div class="benefit-tile">
+        <span class="icon">👫</span>
+        <div class="t">배우자 가입기간 합산</div>
+        <div class="d">조건 충족 시 합산 인정</div>
+      </div>
+      <div class="benefit-tile">
+        <span class="icon">👶</span>
+        <div class="t">미성년자 가입기간 인정</div>
+        <div class="d">인정 기간에 한도 있음</div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <span class="ico">⚠️</span>
+      <span>금리·소득공제 한도 등 세제 조건은 수시로 바뀔 수 있어. <b>제작 직전 최신 공시 기준으로 재검증</b>하고, 카드뉴스에 <b>기준일을 함께 표시</b>하는 걸 추천해.</span>
+    </div>
+  </div>
+
+  <!-- 6P -->
+  <div class="section" data-section="6">
+    <div class="section-num">6P</div>
+    <h2>전환하기 전에 이것만 확인!</h2>
+    <p class="lead">캡처해서 저장해두고 하나씩 체크해봐.</p>
+
+    <div class="check-list">
+      <div class="check-item"><span class="box"></span><span class="txt">내 통장이 청약저축 / 청약예금 / 청약부금인지</span></div>
+      <div class="check-item"><span class="box"></span><span class="txt">가입한 지 몇 년 됐는지</span></div>
+      <div class="check-item"><span class="box"></span><span class="txt">인정 납입횟수·금액은 얼마인지</span></div>
+      <div class="check-item"><span class="box"></span><span class="txt">국민주택을 노리는지</span></div>
+      <div class="check-item"><span class="box"></span><span class="txt">민영주택을 노리는지</span></div>
+      <div class="check-item"><span class="box"></span><span class="txt">전환하면 기존 실적이 어떻게 인정되는지 (3P 참고)</span></div>
+      <div class="check-item final"><span class="box"></span><span class="txt">2026년 9월 30일 전 최종 결정하기</span></div>
+    </div>
+
+    <div class="closing">
+      <div class="line">무조건 바꾸기 전에<br>내 통장부터 확인하기!</div>
+      <div class="sub">쭈미의 재테크 · @jjumi_s2</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const sections = document.querySelectorAll('.section');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      const target = tab.getAttribute('data-tab');
+      tabs.forEach(t=>t.classList.remove('active'));
+      sections.forEach(s=>s.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelector('.section[data-section="'+target+'"]').classList.add('active');
+      tab.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+    });
+  });
+</script>
+
+</body>
+</html>
