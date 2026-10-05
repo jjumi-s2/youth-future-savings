@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>청년미래적금 2차 가입 완벽정리 | 쭈미의 재테크</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FDEFF3; --paper:#FFFFFF; --coral:#F2AFC2; --coral-deep:#B8456A; --coral-soft:#FCE4EC;
+  --lav:#7E5AA0; --lav-deep:#5F3F80; --lav-soft:#EFE6F3;
+  --ink:#3B2A3A; --sub:#7A6577; --line:#F0DCE6; --mint:#F7E4EE; --mint-deep:#A85C8A; --yellow:#F6D1E1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{background:#F4E3EC;font-family:'Pretendard','Noto Sans KR',sans-serif;color:var(--ink);line-height:1.6;word-break:keep-all;-webkit-font-smoothing:antialiased}
+.wrap{max-width:390px;margin:0 auto;background:var(--cream);min-height:100vh;padding-bottom:40px}
+
+/* 표지 */
+.cover{padding:30px 22px 26px;background:linear-gradient(160deg,#F2AFC2 0%,#EFBFD6 50%,#E5D7E9 100%);color:var(--ink);border-radius:0 0 28px 28px;position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;right:-50px;top:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.3)}
+.brand{font-size:12px;font-weight:700;opacity:.95}
+.cover h1{font-size:29px;font-weight:900;line-height:1.25;margin:14px 0 8px;letter-spacing:-.5px}
+.cover p{font-size:14px;opacity:.95}
+.dates{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px;position:relative;z-index:1}
+.dates div{background:#fff;color:var(--ink);border-radius:14px;padding:11px 12px}
+.dates small{display:block;font-size:11px;color:var(--sub);font-weight:600}
+.dates b{font-size:17px;font-weight:900;color:var(--coral-deep);letter-spacing:-.3px}
+
+/* 탭 */
+nav{position:sticky;top:0;z-index:10;background:var(--cream);border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;padding:10px 14px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:none;font-size:13px;font-weight:700;color:var(--sub);text-decoration:none;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+nav a.on{background:var(--lav);color:#fff;border-color:var(--lav)}
+nav a:focus-visible{outline:2px solid var(--lav-deep);outline-offset:2px}
+
+section{padding:24px 18px 6px;display:none}
+section.show{display:block}
+h2{font-size:21px;font-weight:900;letter-spacing:-.4px;line-height:1.3}
+h2 + .lead{font-size:13.5px;color:var(--sub);margin:6px 0 16px}
+h3{font-size:15px;font-weight:800;margin:20px 0 10px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+.note{border-radius:14px;padding:13px 14px;font-size:13.5px;margin-bottom:12px}
+.note b{font-weight:800}
+.warn{background:var(--coral-soft);border-left:4px solid var(--coral)}
+.tip{background:var(--lav-soft);border-left:4px solid var(--lav)}
+.ok{background:var(--mint);border-left:4px solid var(--mint-deep)}
+.note .nt{display:block;margin-bottom:5px;font-size:14px}
+.note p+p{margin-top:7px}
+.note ul{margin:6px 0 0 18px}
+details p{padding:0 0 8px}
+details p:last-child{padding-bottom:14px}
+.chip{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--lav-soft);color:var(--lav-deep)}
+.chip.c{background:var(--coral-soft);color:var(--coral-deep)}
+.chip.g{background:#F1E6EC;color:var(--sub)}
+.chip.m{background:var(--mint);color:var(--mint-deep)}
+
+/* 요약 5가지 */
+.five{list-style:none;counter-reset:n}
+.five li{counter-increment:n;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:13px 0;border-bottom:1px dashed var(--line)}
+.five li:last-child{border-bottom:0}
+.five li::before{content:counter(n);width:30px;height:30px;border-radius:10px;background:var(--lav);color:#fff;font-weight:900;font-size:14px;display:grid;place-items:center}
+.five strong{display:block;font-size:14.5px;font-weight:800}
+.five span{font-size:13px;color:var(--sub)}
+
+/* 표 */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:12px}
+th,td{padding:10px 9px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+thead th{background:var(--lav-soft);color:var(--lav-deep);font-weight:800;font-size:12.5px}
+thead th.old{background:#F5EAF0;color:var(--sub)}
+td.k{font-weight:800;width:74px;background:#FEF8FA}
+td.new{font-weight:700;color:var(--coral-deep)}
+
+/* 타임라인 */
+.tl{position:relative;padding-left:22px}
+.tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.tl .it{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-bottom:10px}
+.tl .it::before{content:"";position:absolute;left:-21px;top:18px;width:12px;height:12px;border-radius:50%;background:var(--coral);border:3px solid var(--cream)}
+.tl .it.l::before{background:var(--lav)}
+.tl .d{font-size:16px;font-weight:900;letter-spacing:-.3px}
+.tl .t{font-size:13.5px;font-weight:700;margin-top:2px}
+.tl .s{font-size:12.5px;color:var(--sub)}
+
+/* 홀짝 */
+.oe{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.oe div{border-radius:16px;padding:14px 12px;text-align:center}
+.oe .o{background:var(--coral-soft)} .oe .e{background:var(--lav-soft)}
+.oe small{font-size:12px;font-weight:700;color:var(--sub);display:block}
+.oe b{display:block;font-size:19px;font-weight:900;margin:2px 0}
+.oe .n{font-size:15px;font-weight:800;letter-spacing:3px}
+.oe .o .n{color:var(--coral-deep)} .oe .e .n{color:var(--lav-deep)}
+
+/* 생년월일 범위 */
+.range{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;text-align:center}
+.range small{font-size:11.5px;color:var(--sub);font-weight:700;display:block}
+.range b{font-size:18px;font-weight:900;letter-spacing:-.5px}
+.range i{font-style:normal;font-size:12px;color:var(--sub);font-weight:700}
+.bar{height:10px;border-radius:999px;background:linear-gradient(90deg,#F2AFC2,#E5D7E9);margin:12px 0 6px}
+
+/* 스텝 */
+.steps{list-style:none;counter-reset:s}
+.steps li{counter-increment:s;position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px 12px 50px;margin-bottom:8px}
+.steps li::before{content:counter(s);position:absolute;left:12px;top:12px;width:28px;height:28px;border-radius:50%;background:#F1E6EC;color:var(--sub);font-weight:900;font-size:13px;display:grid;place-items:center}
+.steps li.hl{border:2px solid var(--coral);background:#FFF7F9}
+.steps li.hl::before{background:var(--coral-deep);color:#fff}
+.steps strong{font-size:14.5px;font-weight:800;display:block}
+.steps span{font-size:12.5px;color:var(--sub)}
+
+/* 유형 */
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 4px}
+.types div{border-radius:14px;padding:12px 6px;text-align:center;font-size:12.5px;font-weight:800;background:#fff;border:1px solid var(--line);line-height:1.35}
+.types .nw{background:var(--lav-soft);border-color:var(--lav);color:var(--lav-deep)}
+.types.two{grid-template-columns:repeat(2,1fr)}
+
+/* 그리드 */
+.g3{display:grid;gap:10px}
+.g3 .card{margin:0}
+.g3 .card strong{display:block;font-size:14.5px;font-weight:800;margin:6px 0 2px}
+.g3 .card p{font-size:13px;color:var(--sub)}
+
+/* 확정/미확정 */
+.split{display:grid;gap:10px}
+.split .box{border-radius:18px;padding:16px;background:#fff;border:2px solid var(--mint-deep)}
+.split .box.x{border:2px dashed var(--coral)}
+.split ul{margin:8px 0 0 16px;font-size:13.5px}
+.split li{margin-bottom:4px}
+.pct{display:flex;align-items:baseline;gap:8px;margin:10px 0 4px}
+.pct b{font-size:30px;font-weight:900;color:var(--coral-deep);letter-spacing:-1px}
+.pct s{font-size:18px;color:var(--sub);font-weight:700}
+.pct span{font-size:13px;color:var(--sub)}
+
+/* 체크리스트 */
+.check{list-style:none}
+.check label{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:13.5px;cursor:pointer}
+.check li:last-child label{border-bottom:0}
+.check input{width:20px;height:20px;accent-color:var(--lav);margin-top:1px}
+.check input:checked + span{color:var(--sub);text-decoration:line-through}
+
+/* FAQ */
+details{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;padding:0 14px}
+summary{font-size:14px;font-weight:800;padding:13px 0;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--lav);font-weight:900}
+details[open] summary::after{content:"−"}
+details p{font-size:13.5px;color:var(--sub);padding:0 0 14px}
+
+footer{margin:26px 18px 0;padding:16px;border-radius:16px;background:#fff;border:1px solid var(--line);font-size:12px;color:var(--sub)}
+footer b{color:var(--ink)}
+
+/* 추가 */
+nav a.alert{border-color:var(--coral-deep);color:var(--coral-deep)}
+nav a.alert.on{background:var(--coral-deep);border-color:var(--coral-deep);color:#fff}
+.basic{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.basic div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 12px}
+.basic small{display:block;font-size:11.5px;color:var(--sub);font-weight:700}
+.basic b{font-size:15px;font-weight:900;line-height:1.35}
+.src{font-size:11.5px;color:var(--sub);margin:8px 2px 12px}
+.plain{margin-left:18px;font-size:13.5px}.plain li{margin:3px 0}
+.go{display:block;text-decoration:none;font-size:13px;font-weight:800;color:var(--coral-deep);background:var(--coral-soft);border:1.5px solid var(--coral-deep);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.cal{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 10px;margin-bottom:10px}
+.cm{font-size:14px;font-weight:900;margin:0 4px 8px}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.cg i{font-style:normal;font-size:11px;color:var(--sub);font-weight:700;padding-bottom:2px}
+.cg span{min-height:40px;border-radius:9px;padding-top:4px;display:flex;flex-direction:column;align-items:center}
+.cg span b{font-size:12.5px;font-weight:700}
+.cg span em{font-style:normal;font-size:9.5px;font-weight:800;line-height:1.1}
+.cg .odd,.lg .odd{background:var(--coral-deep);color:#fff}
+.cg .even,.lg .even{background:var(--lav);color:#fff}
+.cg .all,.lg .all{background:var(--coral)}
+.cg .rev,.lg .rev{background:var(--lav-soft)}
+.cg .open,.lg .open{background:#EFBFD6}
+.cg .hol b{color:var(--coral-deep)}.cg .hol em{color:var(--sub)}
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;font-size:12px;margin:0 2px 14px}
+.lg span{display:flex;align-items:center;gap:6px}
+.lg u{width:12px;height:12px;border-radius:4px;flex:none}
+.ty{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.ty .th{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:8px}
+.ty strong{font-size:15px;font-weight:900;margin-right:2px}
+.ty dl{display:grid;grid-template-columns:76px 1fr;gap:8px 10px;font-size:13px}
+.ty dt{font-weight:800;color:var(--sub)}
+.banner{background:var(--coral-deep);color:#fff;border-radius:20px;padding:22px 18px;text-align:center;margin-bottom:14px}
+.banner .b1{font-size:25px;font-weight:900;letter-spacing:-.5px;line-height:1.25}
+.banner .b2{font-size:19px;font-weight:800;margin-top:6px}
+.banner .b3{font-size:12.5px;margin-top:10px;opacity:.95}
+.plan{border:2.5px dashed var(--coral-deep);border-radius:18px;padding:16px;background:#fff;margin-bottom:6px}
+.plan .row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px dashed var(--line);font-size:13.5px;font-weight:700}
+.plan .row div{display:flex;align-items:baseline;gap:8px}
+.plan s{font-size:17px;color:var(--sub)}.plan i{font-style:normal;color:var(--sub)}
+.plan b{font-size:28px;font-weight:900;color:var(--coral-deep);letter-spacing:-1px}
+.plan .st{text-align:right;font-size:12px;font-weight:800;color:var(--coral-deep);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="brand">쭈미의 재테크 @jjumi_s2</div>
+  <h1>청년미래적금<br>2차 가입 완벽정리</h1>
+  <p>1차와 달라진 5가지, 일정, 갈아타기 순서까지</p>
+  <div class="dates">
+    <div><small>2차 신청</small><b>10.7 ~ 10.16</b></div>
+    <div><small>계좌개설</small><b>11.16 ~ 11.27</b></div>
+  </div>
+</header>
+
+<nav id="nav">
+  <a href="#s1" class="on">요약</a>
+  <a href="#s2">일정</a>
+  <a href="#s3">대상</a>
+  <a href="#s4">갈아타기</a>
+  <a href="#s5">유형·심사</a>
+  <a href="#s6">체크리스트</a>
+  <a href="#s7">FAQ</a>
+  <a href="#s8" class="alert">⚠️ 2027(안)</a>
+</nav>
+
+<!-- 1 요약 -->
+<section id="s1" class="show">
+  <h2>청년미래적금 2차 한눈에 보기</h2>
+  <p class="lead">상품 기본구조는 1차와 같고, 신청·심사 기준 5가지가 바뀌었어요.</p>
+  <div class="basic">
+    <div><small>만기</small><b>3년</b></div>
+    <div><small>월 납입</small><b>최대 50만원</b></div>
+    <div><small>정부 기여금</small><b>일반형 6%<br>우대형 12%</b></div>
+    <div><small>세제</small><b>이자소득<br>비과세</b></div>
+  </div>
+  <p class="src">상품 기본 정보 출처: 서민금융진흥원 청년미래적금 상품 안내</p>
+
+  <h3>1차 vs 2차 달라진 5가지</h3>
+  <table>
+    <thead><tr><th class="old">항목</th><th class="old">1차</th><th>2차</th></tr></thead>
+    <tbody>
+      <tr><td class="k">신청 방식</td><td>5부제</td><td class="new">홀짝제 (첫 이틀만, 10.12부터 제한 없음)</td></tr>
+      <tr><td class="k">갈아타기</td><td>최초 가입기간에 한해 허용</td><td class="new">2차에서 다시 신청 가능<br>(특별중도해지 24시간 운영)</td></tr>
+      <tr><td class="k">가입유형</td><td>2가지 중 선택<br>(일반형·소상공인)</td><td class="new">3가지 중 선택<br>(일반형·중소기업 재직자·소상공인)</td></tr>
+      <tr><td class="k">심사 결과</td><td>최종 유형과 결과만 통보</td><td class="new">사전심사 안내 후 이의신청 가능</td></tr>
+      <tr><td class="k">소득 비교 기준</td><td>2025년 기준 중위소득</td><td class="new">2026년 기준 중위소득<br>(심사 범위 확대)</td></tr>
+    </tbody>
+  </table>
+  <h3>2차부터 확정 적용되는 운영 개선</h3>
+  <div class="card"><ul class="plain">
+    <li>주요 절차 전 알림톡·문자 재안내</li>
+    <li>가구원 동의 링크 전달·동의 완료 독려</li>
+    <li>웹페이지 접속 대비 서버 증설</li>
+    <li>1397 상담 인력 확대</li>
+  </ul></div>
+  <a class="go" href="#s8" data-tab>⚠️ 기여금 15%·25%는 2차 확정 혜택이 아니에요 · 2027(안) 보기</a>
+</section>
+
+<!-- 2 일정 -->
+<section id="s2">
+  <h2>2차 가입 일정</h2>
+  <p class="lead">신청 → 심사 → 계좌개설 순서로 약 7주가 걸려요.</p>
+
+  <h3>내 신청일 찾기 (출생연도 끝자리)</h3>
+  <div class="oe">
+    <div class="o"><small>홀수</small><b>10.7 (수)</b><span class="n">1 3 5 7 9</span></div>
+    <div class="e"><small>짝수</small><b>10.8 (목)</b><span class="n">0 2 4 6 8</span></div>
+  </div>
+  <h3>예시로 보기</h3>
+  <table>
+    <thead><tr><th>출생연도</th><th>끝자리</th><th>신청일</th></tr></thead>
+    <tbody>
+      <tr><td><b>1995</b>년생</td><td>5 (홀수)</td><td class="new">10.7 (수)</td></tr>
+      <tr><td><b>1998</b>년생</td><td>8 (짝수)</td><td class="new">10.8 (목)</td></tr>
+      <tr><td><b>2000</b>년생</td><td>0 (짝수)</td><td class="new">10.8 (목)</td></tr>
+    </tbody>
+  </table>
+  <div class="note tip"><b class="nt">첫 이틀을 놓쳤다면</b><p>10.9 한글날 이후, 10.12(월) ~ 10.16(금)에는 출생연도와 상관없이 누구나 신청할 수 있어요.</p></div>
+
+  <h3>신청 캘린더</h3>
+  <div class="cal"><div class="cm">2026년 10월</div><div class="cg"><i>일</i><i>월</i><i>화</i><i>수</i><i>목</i><i>금</i><i>토</i><span></span><span></span><span></span><span></span><span class=""><b>1</b></span><span class=""><b>2</b></span><span class=""><b>3</b></span><span class=""><b>4</b></span><span class=""><b>5</b></span><span class=""><b>6</b></span><span class="odd"><b>7</b><em>홀수</em></span><span class="even"><b>8</b><em>짝수</em></span><span class="hol"><b>9</b><em>한글날</em></span><span class=""><b>10</b></span><span class=""><b>11</b></span><span class="all"><b>12</b><em>전체</em></span><span class="all"><b>13</b><em>전체</em></span><span class="all"><b>14</b><em>전체</em></span><span class="all"><b>15</b><em>전체</em></span><span class="all"><b>16</b><em>전체</em></span><span class=""><b>17</b></span><span class=""><b>18</b></span><span class="rev"><b>19</b><em>심사</em></span><span class="rev"><b>20</b></span><span class="rev"><b>21</b></span><span class="rev"><b>22</b></span><span class="rev"><b>23</b></span><span class="rev"><b>24</b></span><span class="rev"><b>25</b></span><span class="rev"><b>26</b></span><span class="rev"><b>27</b></span><span class="rev"><b>28</b></span><span class="rev"><b>29</b></span><span class="rev"><b>30</b></span><span class="rev"><b>31</b></span></div></div><div class="cal"><div class="cm">2026년 11월</div><div class="cg"><i>일</i><i>월</i><i>화</i><i>수</i><i>목</i><i>금</i><i>토</i><span class="rev"><b>1</b><em>심사</em></span><span class="rev"><b>2</b></span><span class="rev"><b>3</b></span><span class="rev"><b>4</b></span><span class="rev"><b>5</b></span><span class="rev"><b>6</b></span><span class="rev"><b>7</b></span><span class="rev"><b>8</b></span><span class="rev"><b>9</b></span><span class="rev"><b>10</b></span><span class="rev"><b>11</b></span><span class="rev"><b>12</b></span><span class="rev"><b>13</b></span><span class=""><b>14</b></span><span class=""><b>15</b></span><span class="open"><b>16</b><em>개설</em></span><span class="open"><b>17</b></span><span class="open"><b>18</b></span><span class="open"><b>19</b></span><span class="open"><b>20</b></span><span class="open"><b>21</b></span><span class="open"><b>22</b></span><span class="open"><b>23</b></span><span class="open"><b>24</b></span><span class="open"><b>25</b></span><span class="open"><b>26</b></span><span class="open"><b>27</b></span><span class=""><b>28</b></span><span class=""><b>29</b></span><span class=""><b>30</b></span></div></div>
+  <div class="lg">
+    <span><u class="odd"></u>10.7 홀수 연도생</span><span><u class="even"></u>10.8 짝수 연도생</span>
+    <span><u class="all"></u>10.12~10.16 전체 신청</span><span><u class="rev"></u>10.19~11.13 가입심사</span>
+    <span><u class="open"></u>11.16~11.27 계좌개설</span>
+  </div>
+  <div class="note warn"><b class="nt">놓치기 쉬운 포인트</b><p>신청 마감은 10.16이에요.</p><p>신청만 하고 끝이 아니라, 심사 통과 후 11.16~11.27 사이에 계좌까지 열어야 가입이 완료돼요.</p></div>
+</section>
+
+<!-- 3 대상 -->
+<section id="s3">
+  <h2>가입 대상 확인</h2>
+  <p class="lead">연령은 계좌개설일 기준, 소득은 2026년 기준 중위소득과 비교해요.</p>
+
+  <h3>연령: 만 19~34세</h3>
+  <div class="card">
+    <div class="range">
+      <div><small>가장 이른 생년월일</small><b>1991.11.17</b></div>
+      <i>부터</i>
+      <div><small>가장 늦은 생년월일</small><b>2007.11.27</b></div>
+    </div>
+    <div class="bar"></div>
+    <p style="font-size:13px;text-align:center"><b>1991년 11월 17일생</b>부터 <b>2007년 11월 27일생</b>까지</p>
+    <p style="font-size:12.5px;color:var(--sub);text-align:center;margin-top:4px">기준일: 계좌개설기간 2026.11.16 ~ 11.27</p>
+  </div>
+  <table>
+    <tbody>
+      <tr><td class="k">기준 시점</td><td>신청일이 아니라 <b>계좌개설일</b> 기준으로 만 나이 확인</td></tr>
+      <tr><td class="k">병역</td><td>병역 이행기간은 현재 연령에서 차감, <b>최대 6년</b>까지 인정</td></tr>
+      <tr><td class="k">1차 특례</td><td>1차 최초 가입기간에 예외로 허용했던 1991.1.1~8.7 출생자 특례는 <b>2차에 적용되지 않음</b></td></tr>
+    </tbody>
+  </table>
+  <div class="note warn"><b class="nt">경계 생일이라면</b><p>1991년 11월생, 2007년 11월생처럼 범위 끝에 걸리는 경우 계좌를 여는 날짜에 따라 만 나이가 달라질 수 있어요.</p><p>취급기관이나 1397에서 개설 가능일을 꼭 확인하세요.</p></div>
+
+  <h3>가구소득: 비교 기준만 바뀜</h3>
+  <table>
+    <thead><tr><th class="old">구분</th><th class="old">1차</th><th>2차</th></tr></thead>
+    <tbody>
+      <tr><td class="k">가구소득 자료</td><td>2025년 소득</td><td>2025년 소득 (동일)</td></tr>
+      <tr><td class="k">비교 기준</td><td>2025년 기준 중위소득</td><td class="new">2026년 기준 중위소득</td></tr>
+    </tbody>
+  </table>
+  <h3>가구 중위소득 기준 금액 (월 소득)</h3>
+  <table>
+    <thead><tr><th class="old">가구원 수</th><th class="old">1차 기준<br>2025년 200%</th><th>2차 기준<br>2026년 200%</th><th>2차 우대형<br>2026년 150%</th></tr></thead>
+    <tbody>
+      <tr><td class="k" style="width:auto">1인</td><td>478만원</td><td class="new">513만원</td><td>385만원</td></tr>
+      <tr><td class="k" style="width:auto">2인</td><td>787만원</td><td class="new">840만원</td><td>630만원</td></tr>
+      <tr><td class="k" style="width:auto">3인</td><td>1,005만원</td><td class="new">1,072만원</td><td>804만원</td></tr>
+      <tr><td class="k" style="width:auto">4인</td><td>1,220만원</td><td class="new">1,299만원</td><td>974만원</td></tr>
+    </tbody>
+  </table>
+  <p class="src">월 소득 기준, 만원 단위 반올림. 보건복지부 고시 기준 중위소득으로 계산.</p>
+  <div class="note tip"><b class="nt">표 읽는 법</b><ul>
+    <li>표의 금액은 <b>월</b> 금액이에요. 총급여 6,000만원 같은 개인소득 요건은 연 기준이에요.</li>
+    <li>일반형과 중소기업 신규 취업자는 200% 이하가 기준이에요.</li>
+    <li>우대형 중소기업 재직자와 소상공인은 150% 이하가 기준이에요.</li>
+  </ul></div>
+  <div class="note ok"><b class="nt">1차에서 소득 때문에 탈락했다면</b><p>2026년 기준 중위소득은 전년보다 올랐어요(4인 가구 기준 6.51% 인상).</p><p>내 가구소득은 그대로여도 기준선이 높아져서 2차에서는 충족하는 사례가 늘어날 수 있어요.</p><p>다시 신청해 볼 만해요.</p></div>
+
+  <h3>군 장병이라면</h3>
+  <p class="lead" style="margin-top:0">훈련 중에도 스마트폰 이용 시간에 가입신청과 계좌개설을 할 수 있어요.</p>
+  <p style="margin:-8px 0 14px"><span class="chip g">별도 안내 · 1차 대비 변경사항에는 포함되지 않음</span></p>
+  <div class="g3">
+    <div class="card"><span class="chip">지원 대상</span><strong>2차 가입·계좌개설 기간에 기초군사훈련 중인 청년</strong><p>현역 복무 중 장병도 소득요건 충족 시 신청 가능</p></div>
+    <div class="card"><span class="chip">지원 방식</span><strong>훈련소 내 스마트폰으로 비대면 가입신청·계좌개설</strong><p>금융위원회·국방부가 가입 기회를 놓치지 않도록 지원</p></div>
+    <div class="card"><span class="chip c">입영 전 준비</span><strong>가입할 취급기관 앱 설치</strong><p>회원가입·본인인증 완료, 입출금계좌 미리 준비</p></div>
+  </div>
+  <div class="note ok" style="margin-top:12px"><b class="nt">유형은?</b><p>소득요건을 충족하면 일반형으로 가입할 수 있어요.</p></div>
+  <div class="note tip"><b class="nt">10~11월 입영 예정이라면</b><p>훈련소에서는 새로 앱을 깔고 인증하기 어려울 수 있어요.</p><p>입영 전에 아래 4가지를 끝내 두세요.</p><ul><li>취급기관 앱 설치</li><li>회원가입</li><li>본인인증</li><li>입출금계좌 준비</li></ul></div>
+</section>
+
+<!-- 4 갈아타기 -->
+<section id="s4">
+  <h2>청년도약계좌 갈아타기</h2>
+  <p class="lead">2차의 가장 큰 정책 변경. 기회는 추가됐지만 순서는 그대로예요.</p>
+
+  <table>
+    <thead><tr><th class="old">1차</th><th>2차</th></tr></thead>
+    <tbody>
+      <tr><td>최초 가입기간에 한해 청년도약계좌 → 청년미래적금 갈아타기 허용</td><td class="new">1차 기간을 놓친 기존 가입자도 2차에서 다시 갈아타기 신청 가능</td></tr>
+    </tbody>
+  </table>
+  <div class="card" style="text-align:center">
+    <span class="chip">2026.8.28~31 온라인 설문</span>
+    <p style="font-size:14px;margin-top:8px">응답자 1,245명 중 667명,<br><b style="font-size:24px;color:var(--lav-deep);font-weight:900">54%</b>가 갈아타기 의사</p>
+  </div>
+
+  <h3>갈아타기 순서 (바꾸면 안 돼요)</h3>
+  <ol class="steps">
+    <li><strong>가입 신청·심사</strong><span>청년미래적금 신청 (10.7~10.16)</span></li>
+    <li><strong>가입 가능 안내</strong><span>심사 통과 확인</span></li>
+    <li class="hl"><strong>청년미래적금 계좌 개설</strong><span>납입 전 단계</span></li>
+    <li class="hl"><strong>청년도약계좌 특별중도해지</strong><span>24시간 운영</span></li>
+    <li><strong>납입 개시</strong><span>청년미래적금 납입 시작</span></li>
+  </ol>
+
+  <div class="note warn"><b class="nt">가장 많이 하는 실수 2가지</b><p>① 청년미래적금 계좌개설 <b>전에</b> 청년도약계좌를 먼저 해지하면 갈아타기로 인정받을 수 없어요.</p><p>② 같은 은행이어도 자동으로 처리되지 않아요. 계좌개설과 특별중도해지는 <b>각각 따로 신청</b>해야 해요.</p></div>
+</section>
+
+<!-- 5 유형·심사 -->
+<section id="s5">
+  <h2>가입유형과 사전심사</h2>
+  <p class="lead">신청 단계부터 3개 유형 중 하나를 직접 고르고, 확정 전에 결과를 미리 확인해요.</p>
+
+  <h3>선택지가 2개에서 3개로</h3>
+  <div class="card">
+    <span class="chip g">1차</span>
+    <div class="types two"><div>일반형</div><div>소상공인</div></div>
+    <p style="font-size:12.5px;color:var(--sub);margin-bottom:14px">기관 심사 후 최종 가입유형과 결과만 통보</p>
+    <span class="chip">2차</span>
+    <div class="types"><div>일반형</div><div class="nw">중소기업<br>재직자</div><div class="nw">소상공인</div></div>
+  </div>
+  <h3>유형별 요건과 기여금</h3>
+  <div class="ty">
+    <div class="th"><strong>일반형</strong><span class="chip">기여금 6%</span></div>
+    <dl><dt>개인소득</dt><dd>총급여 6,000만원 이하<br>(종합소득 4,800만원 이하)</dd>
+    <dt>가구소득</dt><dd>기준 중위소득 200% 이하<br>(맞벌이 2인 가구 250% 이하)</dd></dl>
+  </div>
+  <div class="ty">
+    <div class="th"><strong>중소기업 재직자</strong><span class="chip c">우대형 12%</span></div>
+    <dl><dt>재직자</dt><dd>총급여 3,600만원 이하<br>(종합소득 2,600만원 이하)<br>가구 중위소득 150% 이하<br>(맞벌이 2인 가구 200% 이하)</dd>
+    <dt>신규 취업자</dt><dd>총급여 6,000만원 이하<br>(종합소득 4,800만원 이하)<br>가구 중위소득 200% 이하<br>(맞벌이 2인 가구 250% 이하)</dd>
+    <dt>근속 요건</dt><dd>만기 한 달 전 시점까지 중소기업 29개월 이상 근무, 이직 2회 이하</dd></dl>
+  </div>
+  <div class="ty">
+    <div class="th"><strong>소상공인</strong><span class="chip c">우대형 12%</span><span class="chip">일반형 6%</span></div>
+    <dl><dt>우대형</dt><dd>연매출 1억원 이하<br>가구 중위소득 150% 이하<br>(맞벌이 2인 가구 200% 이하)</dd>
+    <dt>일반형</dt><dd>연매출 1억원 초과 ~ 3억원 이하<br>가구 중위소득 200% 이하<br>(맞벌이 2인 가구 250% 이하)</dd>
+    <dt>공통</dt><dd>가입 신청일 기준 사업을 운영 중이어야 함</dd></dl>
+  </div>
+  <div class="ty">
+    <div class="th"><strong>기여금 미대상</strong><span class="chip g">세제혜택만</span></div>
+    <dl><dt>개인소득</dt><dd>총급여 6,000만원 초과 ~ 7,500만원 이하<br>(종합소득 4,800만원 초과 ~ 6,300만원 이하)</dd>
+    <dt>가구소득</dt><dd>기준 중위소득 200% 이하<br>(맞벌이 2인 가구 250% 이하)</dd></dl>
+  </div>
+  <p class="src">출처: 서민금융진흥원 브리핑 배포 자료 「소득기준 및 정부기여금 매칭비율」, 청년미래적금 상품 안내 (kinfa.or.kr). 유형별 요건은 ①연소득·연매출과 ②가구 중위소득을 동시에 충족해야 해요. 최종 유형은 심사로 확정돼요.</p>
+  <div class="note tip"><b class="nt">함께 알아둘 조건</b><ul>
+    <li>직전 3개 과세기간 중 1회 이상 금융소득종합과세 대상(이자소득 및 배당소득 2천만원 초과)이었다면 가입이 제한돼요.</li>
+    <li>육아휴직급여(수당)나 복무 중인 병(兵)이 받는 급여가 있는 경우도 가입할 수 있어요.</li>
+    <li>연매출 3억원을 넘는 소상공인도 종합소득 6,300만원 이하면 일반 소득자로 가입할 수 있어요.</li>
+  </ul></div>
+  <div class="note warn"><b class="nt">⚠️ 15%·25%는 지금 기여금이 아니에요</b><p>현재 확정된 기여금은 일반형 6%, 우대형 12%예요.</p><p>우대형 15%, 지방 중소기업 25%는 2027년 운영계획(안)이에요.</p></div>
+
+  <h3>우대형 심사와 사전심사</h3>
+  <div class="note tip"><b class="nt">우대형 심사 방식</b><p>중소기업 재직 여부는 본인이 직접 선택해요.</p><p>기관은 KoDATA 정보 등과 교차검증해요.</p></div>
+
+  <h3>사전심사 → 이의신청 흐름</h3>
+  <ol class="steps">
+    <li><strong>신청</strong><span>본인이 선택한 가입유형으로 접수</span></li>
+    <li><strong>사전심사</strong><span>심사결과를 최종 확정 전에 미리 안내</span></li>
+    <li class="hl"><strong>이의신청</strong><span>선택 유형과 결과가 다르면 자료 확인·소명</span></li>
+    <li><strong>최종 결과</strong><span>가입유형 확정·통보</span></li>
+  </ol>
+  <div class="note warn"><b class="nt">사전심사 안내를 받으면</b><p>내가 신청한 유형과 심사결과가 같은지 반드시 비교하세요.</p><p>1차에서 생긴 우대형 심사 불편을 반영해 보강된 절차라, 이 단계에서 확인하지 않으면 바로잡을 기회를 놓칠 수 있어요.</p></div>
+</section>
+
+<!-- 6 체크리스트 -->
+<section id="s6">
+  <h2>시점별 체크리스트</h2>
+  <p class="lead">눌러서 체크할 수 있어요.</p>
+
+  <h3>신청 전 (~10.6)</h3>
+  <div class="card"><ul class="check">
+    <li><label><input type="checkbox"><span>계좌개설일 기준 만 19~34세인지 확인 (1991.11.17 ~ 2007.11.27 출생)</span></label></li>
+    <li><label><input type="checkbox"><span>출생연도 끝자리로 내 신청일 확인 (홀수 10.7 / 짝수 10.8)</span></label></li>
+    <li><label><input type="checkbox"><span>가입유형 3가지 중 내 유형 정하기 (일반형 / 중소기업 재직자 / 소상공인)</span></label></li>
+    <li><label><input type="checkbox"><span>가구원에게 동의 요청이 갈 수 있다고 미리 알리기</span></label></li>
+    <li><label><input type="checkbox"><span>가입할 취급기관 앱 설치, 본인인증, 입출금계좌 준비</span></label></li>
+  </ul></div>
+
+  <h3>신청 기간 (10.7~10.16)</h3>
+  <div class="card"><ul class="check">
+    <li><label><input type="checkbox"><span>내 신청일 또는 10.12~10.16에 신청 완료</span></label></li>
+    <li><label><input type="checkbox"><span>가구원 동의 링크 전달하고 동의 완료 확인</span></label></li>
+    <li><label><input type="checkbox"><span>청년도약계좌는 아직 해지하지 않기</span></label></li>
+  </ul></div>
+
+  <h3>심사 기간 (10.19~11.13)</h3>
+  <div class="card"><ul class="check">
+    <li><label><input type="checkbox"><span>알림톡·문자로 오는 사전심사 결과 확인</span></label></li>
+    <li><label><input type="checkbox"><span>신청한 유형과 심사결과가 같은지 비교</span></label></li>
+    <li><label><input type="checkbox"><span>다르면 자료 확인 후 이의신청</span></label></li>
+  </ul></div>
+
+  <h3>계좌개설 기간 (11.16~11.27)</h3>
+  <div class="card"><ul class="check">
+    <li><label><input type="checkbox"><span>청년미래적금 계좌 개설</span></label></li>
+    <li><label><input type="checkbox"><span>(갈아타기) 개설 후에 청년도약계좌 특별중도해지 따로 신청</span></label></li>
+    <li><label><input type="checkbox"><span>납입 개시</span></label></li>
+  </ul></div>
+</section>
+
+<!-- 7 FAQ -->
+<section id="s7">
+  <h2>자주 묻는 질문</h2>
+  <p class="lead">브리핑 내용 기준으로 정리했어요.</p>
+  <details><summary>10.7, 10.8에 신청 못 하면 끝인가요?</summary><p>아니에요.</p><p>홀짝제는 첫 이틀만 운영하고, 10.12부터 10.16까지는 출생연도 제한 없이 신청할 수 있어요.</p></details>
+  <details><summary>1차 때 소득 기준으로 탈락했는데 다시 신청해도 되나요?</summary><p>가구소득 자료는 1차와 같은 2025년 소득이지만, 비교 기준이 2026년 기준 중위소득으로 바뀌었어요.</p><p>기준 중위소득이 올랐기 때문에 같은 소득이라도 2차에서 충족하는 사례가 늘어날 수 있어요.</p></details>
+  <details><summary>1991년 상반기생인데 1차 때는 됐다고 들었어요.</summary><p>1차 최초 가입기간에 한해 1991.1.1~8.7 출생자를 예외적으로 허용했던 특례예요.</p><p>2차에는 적용되지 않아요.</p><p>다만 병역 이행기간은 최대 6년까지 연령에서 차감돼요.</p></details>
+  <details><summary>청년도약계좌를 미리 해지해 두면 편하지 않나요?</summary><p>안 돼요.</p><p>청년미래적금 계좌개설 전에 청년도약계좌를 먼저 해지하면 갈아타기로 인정받을 수 없어요.</p><p>반드시 새 계좌 개설 후에 특별중도해지를 신청하세요.</p></details>
+  <details><summary>같은 은행이면 갈아타기가 자동으로 되나요?</summary><p>아니에요.</p><p>같은 은행이어도 계좌개설과 특별중도해지는 각각 신청해야 해요.</p></details>
+  <details><summary>기여금이 15%로 오른다던데 2차부터인가요?</summary><p>아니에요. 2차 확정 혜택이 아니에요. 2차 우대형 기여금은 12%예요.</p><p>2027년 정부 예산안에 담긴 내용이라 국회를 통과해야 해요.</p><p>확정되면 기존 가입자에게 소급 지급할 예정이라고 안내됐어요.</p></details>
+  <details><summary>궁금한 건 어디에 물어보나요?</summary><p>서민금융진흥원 상담 번호 1397로 문의하세요.</p><p>2차부터 상담 인력이 확대돼요.</p></details>
+</section>
+
+<!-- 8 2027 -->
+<section id="s8">
+  <div class="banner">
+    <div class="b1">⚠️ 2차 확정 혜택 아님</div>
+    <div class="b2">2027년 운영계획(안)</div>
+    <div class="b3">2027년 정부 예산안 · 국회 통과 시에만 적용</div>
+  </div>
+
+  <div class="plan">
+    <span class="chip c">조건부 · 국회 통과 시</span>
+    <div class="row"><span>우대형 기여금</span><div><s>12%</s><i>→</i><b>15%</b></div></div>
+    <div class="row"><span>지방 중소기업 근무 시</span><div><b>25%</b></div></div>
+    <p class="st">계획(안) · 미확정</p>
+  </div>
+
+  <h3>지금 2차 가입자에게 적용되는 기여금</h3>
+  <table>
+    <thead><tr><th>구분</th><th>현재 확정</th><th class="old">2027 계획(안)</th></tr></thead>
+    <tbody>
+      <tr><td class="k">일반형</td><td class="new">6%</td><td>자료에 언급 없음</td></tr>
+      <tr><td class="k">우대형</td><td class="new">12%</td><td>15% (국회 통과 시)</td></tr>
+      <tr><td class="k">지방 중소기업</td><td class="new">12% (우대형)</td><td>25% (국회 통과 시)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note warn"><b class="nt">오해하지 마세요</b><p>이번 2차부터 15%를 주는 게 아니에요.</p><p>2차 가입자의 우대형 기여금은 12%예요.</p></div>
+  <div class="note tip"><b class="nt">확정되면 어떻게 되나요</b><p>예산이 확정되면 기존 가입자에게 소급 지급할 예정이라고 안내됐어요.</p><p>국회 통과 전까지는 계획(안)이에요.</p></div>
+</section>
+
+<footer>
+  <b>출처</b> 서민금융진흥원 「2차 가입, 무엇이 달라졌나」 인플루언서 브리핑 자료 (2026.10)<br>유형별 요건·상품 기본 정보: 서민금융진흥원 청년미래적금 상품 안내 (kinfa.or.kr)<br>
+  세부 요건과 일정은 변경될 수 있으니 신청 전 공식 안내와 1397에서 다시 확인하세요.<br><br>
+  <b>쭈미의 재테크</b> @jjumi_s2
+</footer>
+</div>
+
+<script>
+const links=[...document.querySelectorAll('#nav a')];
+document.querySelectorAll('a[data-tab]').forEach(l=>l.addEventListener('click',e=>{e.preventDefault();show(l.getAttribute('href'),true);}));
+function show(id,scroll){
+  const t=document.querySelector(id); if(!t) return;
+  document.querySelectorAll('section').forEach(x=>x.classList.toggle('show',x===t));
+  links.forEach(l=>{const on=l.getAttribute('href')===id;l.classList.toggle('on',on);if(on)l.scrollIntoView({inline:'center',block:'nearest'});});
+  if(scroll){const n=document.getElementById('nav');const y=n.getBoundingClientRect().top+window.scrollY;if(window.scrollY>y)window.scrollTo(0,y);}
+}
+links.forEach(l=>l.addEventListener('click',e=>{e.preventDefault();const id=l.getAttribute('href');show(id,true);try{history.replaceState(null,'',id);}catch(_){}}));
+try{if(location.hash&&document.querySelector(location.hash))show(location.hash,false);}catch(_){}
+</script>
+</body>
+</html>
