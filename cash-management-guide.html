@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>현금 관리 가이드 | 쭈미의 재테크</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#FDEFF3;
+  --card:#FFFFFF;
+  --pink:#F2AFC2;
+  --pink-soft:#F6D1E1;
+  --pink-mid:#EFBFD6;
+  --lav:#E5D7E9;
+  --lav-deep:#8E74A6;
+  --rose:#C9668A;
+  --rose-deep:#A84870;
+  --ink:#43333F;
+  --ink-soft:#7A6674;
+  --line:#F0DCE5;
+  --warn-bg:#FFF6E8;
+  --warn:#B57A1E;
+  --ok:#5E9C7C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Pretendard','Noto Sans KR',-apple-system,sans-serif;
+  background:var(--bg);color:var(--ink);
+  line-height:1.6;font-size:14.5px;letter-spacing:-0.2px;
+}
+.wrap{max-width:390px;margin:0 auto;min-height:100vh;background:var(--bg);padding-bottom:40px}
+
+/* header */
+.top{padding:18px 16px 10px;text-align:center}
+.brand{display:inline-block;font-size:11.5px;font-weight:700;color:var(--rose);background:#fff;border:1.5px solid var(--pink);border-radius:20px;padding:3px 12px}
+
+/* tabs */
+.tabs{position:sticky;top:0;z-index:10;background:var(--bg);padding:8px 12px 10px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-bottom:1px solid var(--line)}
+.tab{border:none;background:#fff;color:var(--ink-soft);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 4px;border-radius:12px;cursor:pointer;border:1.5px solid var(--line);line-height:1.25}
+.tab .n{display:block;font-size:10px;font-weight:800;color:var(--pink);margin-bottom:1px}
+.tab.on{background:var(--rose);color:#fff;border-color:var(--rose)}
+.tab.on .n{color:var(--pink-soft)}
+
+.sec{display:none;padding:16px 16px 0}
+.sec.on{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+h2{font-size:21px;font-weight:900;line-height:1.35;margin:4px 0 6px;letter-spacing:-0.6px}
+.kicker{font-size:11.5px;font-weight:800;color:var(--rose);letter-spacing:.5px}
+.lead{color:var(--ink-soft);font-size:13.5px;margin-bottom:14px}
+h3{font-size:15.5px;font-weight:800;margin:0 0 10px;display:flex;align-items:center;gap:6px}
+h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--rose);flex-shrink:0}
+
+.card{background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 2px 0 var(--line)}
+.card.lav{background:var(--lav)}
+.card.soft{background:var(--pink-soft)}
+.muted{color:var(--ink-soft);font-size:12.5px}
+.small{font-size:12px}
+b,strong{font-weight:800}
+.hl{background:linear-gradient(transparent 60%,var(--pink-mid) 60%);font-weight:800}
+
+/* cover */
+.cover{background:linear-gradient(160deg,#fff 0%,var(--pink-soft) 55%,var(--lav) 100%);border-radius:24px;padding:26px 20px 22px;text-align:center;margin-bottom:12px;position:relative;overflow:hidden}
+.cover .badge{display:inline-block;background:var(--rose);color:#fff;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:12px}
+.cover h1{font-size:25px;font-weight:900;line-height:1.32;letter-spacing:-1px;margin-bottom:10px}
+.cover h1 em{font-style:normal;color:var(--rose-deep)}
+.cover p{font-size:13.5px;color:var(--ink-soft)}
+.coin-row{display:flex;justify-content:center;gap:8px;margin:18px 0 4px}
+.coin{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;background:#fff;box-shadow:0 3px 0 var(--pink)}
+.msg-box{background:var(--rose);color:#fff;border-radius:18px;padding:16px;margin-bottom:12px}
+.msg-box .t{font-size:12px;font-weight:700;opacity:.85;margin-bottom:4px}
+.msg-box .m{font-size:16.5px;font-weight:900;line-height:1.45}
+.toc{display:grid;gap:8px}
+.toc button{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:11px 12px;text-align:left;font-family:inherit;color:var(--ink);cursor:pointer;width:100%}
+.toc .num{width:28px;height:28px;border-radius:9px;background:var(--pink-soft);color:var(--rose-deep);font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.toc .tt{font-size:13.5px;font-weight:800;line-height:1.3}
+.toc .ds{font-size:11.5px;color:var(--ink-soft)}
+.toc .star{margin-left:auto;font-size:10.5px;font-weight:800;color:#fff;background:var(--lav-deep);padding:2px 7px;border-radius:8px;flex-shrink:0}
+
+/* buckets */
+.buckets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bk{border-radius:14px;padding:12px 8px;text-align:center}
+.bk .ic{font-size:22px}
+.bk .nm{font-size:13px;font-weight:900;margin:4px 0 2px}
+.bk .d{font-size:11px;color:var(--ink-soft);line-height:1.4}
+.bk.a{background:#fff;border:1.5px solid var(--line)}
+.bk.b{background:var(--lav)}
+.bk.c{background:var(--rose);color:#fff}
+.bk.c .d{color:#FBE3EC}
+.arrow-note{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;margin-top:10px;background:var(--bg);border-radius:12px;padding:10px}
+
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+th{background:var(--pink-soft);font-weight:800;padding:9px 6px;text-align:center;font-size:12.5px}
+th:first-child{border-radius:10px 0 0 0}th:last-child{border-radius:0 10px 0 0}
+td{padding:9px 6px;text-align:center;border-bottom:1px solid var(--line)}
+td.l,th.l{text-align:left}
+tr:last-child td{border-bottom:none}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:8px;background:var(--lav);color:var(--lav-deep)}
+.tag.r{background:var(--pink-soft);color:var(--rose-deep)}
+
+/* ratio bars */
+.rbar{margin:8px 0}
+.rbar .lab{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;margin-bottom:4px}
+.rbar .track{height:22px;border-radius:11px;background:var(--lav);overflow:hidden;display:flex}
+.rbar .cash{background:var(--rose);color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+.rbar .inv{flex:1;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:10.5px;font-weight:700;color:var(--lav-deep)}
+
+/* calculator */
+.calc label{display:block;font-size:12.5px;font-weight:800;margin:10px 0 5px}
+.calc .inrow{display:flex;align-items:center;gap:6px}
+.calc input[type=number]{flex:1;font-family:inherit;font-size:16px;font-weight:700;padding:10px 12px;border:1.5px solid var(--pink);border-radius:12px;background:#fff;color:var(--ink);min-width:0}
+.calc .unit{font-size:13px;font-weight:700;color:var(--ink-soft)}
+input[type=range]{width:100%;accent-color:var(--rose)}
+.result{margin-top:12px;background:var(--bg);border-radius:14px;padding:12px}
+.result .row{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;font-size:13px}
+.result .big{font-size:19px;font-weight:900;color:var(--rose-deep)}
+
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn);border-radius:12px;padding:11px 12px;font-size:12.5px;margin-bottom:12px}
+.warn b{color:var(--warn)}
+.note{background:#fff;border:1.5px dashed var(--pink);border-radius:12px;padding:10px 12px;font-size:12.5px;margin-bottom:12px}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;font-weight:700;background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:5px 10px}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile{background:var(--bg);border-radius:14px;padding:12px}
+.tile .ic{font-size:20px}
+.tile .tt{font-size:13px;font-weight:800;margin:4px 0 2px}
+.tile .d{font-size:11.5px;color:var(--ink-soft);line-height:1.45}
+
+/* simulation */
+.toggle{display:flex;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:12px}
+.toggle button{flex:1;border:none;background:none;font-family:inherit;font-size:12.5px;font-weight:800;padding:8px;border-radius:9px;color:var(--ink-soft);cursor:pointer}
+.toggle button.on{background:#fff;color:var(--rose-deep);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.step{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:center;margin-bottom:10px}
+.step .drop{font-size:15px;font-weight:900;color:var(--rose-deep);text-align:center;background:var(--pink-soft);border-radius:12px;padding:8px 0;line-height:1.2}
+.step .drop span{display:block;font-size:10px;font-weight:700;color:var(--ink-soft)}
+.step .bars{font-size:11.5px}
+.step .bars .meta{display:flex;justify-content:space-between;margin-bottom:3px;font-weight:700}
+.step .track{height:14px;border-radius:7px;background:var(--lav);overflow:hidden;display:flex}
+.step .used{background:var(--rose);transition:width .35s}
+.step .now{background:var(--pink);transition:width .35s}
+.legend{display:flex;gap:12px;font-size:11px;color:var(--ink-soft);margin-top:4px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+
+.mistake{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.mistake:last-child{border-bottom:none}
+.mistake .x{width:24px;height:24px;border-radius:50%;background:var(--pink-soft);color:var(--rose-deep);font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px}
+.mistake .tt{font-size:13px;font-weight:800}
+.mistake .d{font-size:12px;color:var(--ink-soft)}
+
+/* vs table */
+.vs th:nth-child(2){background:var(--lav)}
+.vs th:nth-child(3){background:var(--pink-soft)}
+.vs td{font-size:12px;vertical-align:top}
+.vs td.l{font-weight:800;font-size:11.5px;color:var(--ink-soft);width:70px}
+
+/* ETF cards */
+.etf{background:#fff;border-radius:18px;padding:14px;margin-bottom:10px;border-top:5px solid var(--pink)}
+.etf.k{border-top-color:var(--lav-deep)}
+.etf.a{border-top-color:var(--rose)}
+.etf .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}
+.etf .nm{font-size:15px;font-weight:900;line-height:1.3}
+.etf .cd{font-size:11px;color:var(--ink-soft);font-weight:700}
+.etf .type{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:8px;background:var(--bg);white-space:nowrap}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+.kv div{background:var(--bg);border-radius:10px;padding:7px 4px;text-align:center}
+.kv .k{font-size:10px;color:var(--ink-soft);font-weight:700}
+.kv .v{font-size:13px;font-weight:900}
+.etf ul{list-style:none;font-size:12.5px}
+.etf li{padding:3px 0 3px 16px;position:relative}
+.etf li:before{content:'';position:absolute;left:3px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--pink)}
+.etf li.c:before{background:var(--warn)}
+.fee{margin:6px 0}
+.fee .r{display:grid;grid-template-columns:78px 1fr 46px;gap:8px;align-items:center;font-size:12px;margin-bottom:7px;font-weight:700}
+.fee .t{height:12px;background:var(--bg);border-radius:6px;overflow:hidden}
+.fee .f{height:100%;background:var(--rose);border-radius:6px}
+.pick{display:grid;gap:8px}
+.pick div{display:flex;gap:10px;align-items:center;background:var(--bg);border-radius:12px;padding:10px}
+.pick .q{font-size:12.5px;font-weight:800;flex:1}
+.pick .a{font-size:11.5px;font-weight:800;color:#fff;background:var(--lav-deep);border-radius:8px;padding:3px 8px;white-space:nowrap}
+.pick .a.r{background:var(--rose)}
+.pick .a.p{background:var(--pink);color:var(--rose-deep)}
+
+.sites a{display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:var(--ink);background:var(--bg);border-radius:12px;padding:10px 12px;margin-bottom:6px;font-size:13px;font-weight:800}
+.sites a span{font-size:11.5px;color:var(--ink-soft);font-weight:600}
+
+/* checklist */
+.cl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.cl-count{font-size:22px;font-weight:900;color:var(--rose-deep)}
+.prog{height:10px;background:var(--bg);border-radius:5px;overflow:hidden;margin-bottom:12px}
+.prog div{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--rose));transition:width .3s}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:11px 10px;border-radius:12px;cursor:pointer;margin-bottom:6px;background:var(--bg);user-select:none}
+.chk input{display:none}
+.chk .box{width:22px;height:22px;border-radius:7px;border:2px solid var(--pink);background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:900;margin-top:1px}
+.chk.done{background:var(--pink-soft)}
+.chk.done .box{background:var(--rose);border-color:var(--rose)}
+.chk .tt{font-size:13.5px;font-weight:800}
+.chk .d{font-size:11.5px;color:var(--ink-soft)}
+.ready{text-align:center;font-weight:900;font-size:14px;padding:11px;border-radius:12px;background:var(--lav);color:var(--lav-deep);margin-top:4px}
+.ready.go{background:var(--rose);color:#fff}
+
+.plan label{display:block;font-size:12px;font-weight:800;margin:10px 0 4px;color:var(--ink-soft)}
+.plan input[type=text],.plan select{width:100%;font-family:inherit;font-size:14px;padding:9px 11px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+.plan .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.plan .grid3 input{text-align:center}
+.plan .rowl{display:grid;grid-template-columns:44px 1fr 1fr;gap:6px;align-items:center;margin-bottom:6px}
+.plan .rowl b{font-size:12px;text-align:center;background:var(--pink-soft);border-radius:8px;padding:8px 0;color:var(--rose-deep)}
+.btn{display:block;width:100%;border:none;font-family:inherit;font-size:13.5px;font-weight:800;padding:11px;border-radius:12px;cursor:pointer;margin-top:10px}
+.btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink-soft)}
+
+.nav{display:flex;gap:8px;margin:16px 0 0}
+.nav button{flex:1;border:none;font-family:inherit;font-size:13px;font-weight:800;padding:12px;border-radius:14px;cursor:pointer;background:#fff;color:var(--ink-soft);border:1.5px solid var(--line)}
+.nav button.nx{background:var(--rose);color:#fff;border-color:var(--rose)}
+
+/* plan card */
+.btn.main{background:var(--rose);color:#fff}
+.btn.sub{background:var(--lav-deep);color:#fff}
+#cardWrap{display:none;margin-bottom:12px}
+#cardWrap.on{display:block;animation:fade .3s ease}
+.mycard{background:linear-gradient(165deg,#fff 0%,var(--pink-soft) 60%,var(--lav) 100%);border-radius:22px;padding:20px 18px 16px;width:358px;max-width:100%;margin:0 auto}
+.mycard .mc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.mycard .mc-brand{font-size:11px;font-weight:800;color:var(--rose);background:#fff;border-radius:20px;padding:3px 10px}
+.mycard .mc-date{font-size:11px;font-weight:700;color:var(--ink-soft)}
+.mycard .mc-title{font-size:20px;font-weight:900;line-height:1.3;letter-spacing:-.6px;margin-bottom:12px}
+.mycard .mc-title em{font-style:normal;color:var(--rose-deep)}
+.mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.mc-box{background:#fff;border-radius:14px;padding:10px 12px}
+.mc-box.wide{grid-column:1/-1}
+.mc-box .k{font-size:10.5px;font-weight:800;color:var(--ink-soft)}
+.mc-box .v{font-size:15px;font-weight:900;line-height:1.35;word-break:keep-all}
+.mc-box .v.hl2{color:var(--rose-deep);font-size:18px}
+.mc-steps{background:#fff;border-radius:14px;padding:10px 12px;margin-bottom:8px}
+.mc-steps .k{font-size:10.5px;font-weight:800;color:var(--ink-soft);margin-bottom:6px}
+.mc-step{display:grid;grid-template-columns:38px 1fr auto;gap:8px;align-items:center;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13.5px;font-weight:800}
+.mc-step:last-child{border-bottom:none}
+.mc-step .no{font-size:11px;text-align:center;background:var(--pink-soft);color:var(--rose-deep);border-radius:8px;padding:3px 0}
+.mc-step .amt{color:var(--rose-deep)}
+.mc-chk{display:flex;align-items:center;gap:10px;background:var(--rose);color:#fff;border-radius:14px;padding:10px 12px}
+.mc-chk .n{font-size:20px;font-weight:900}
+.mc-chk .t{font-size:12px;font-weight:700;line-height:1.4}
+.mc-foot{text-align:center;font-size:10px;color:var(--ink-soft);margin-top:10px}
+.save-tip{font-size:11.5px;color:var(--ink-soft);text-align:center;margin-top:8px}
+#savedImg{display:none;width:100%;border-radius:18px;margin-top:10px;box-shadow:0 2px 0 var(--line)}
+
+footer{text-align:center;font-size:11px;color:var(--ink-soft);padding:22px 16px 0;line-height:1.7}
+footer b{color:var(--rose)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="top"><span class="brand">@jjumi_s2 · 쭈미의 재테크</span></div>
+
+<nav class="tabs" id="tabs">
+  <button class="tab on" data-t="0"><span class="n">01</span>표지</button>
+  <button class="tab" data-t="1"><span class="n">02</span>필요한 현금</button>
+  <button class="tab" data-t="2"><span class="n">03</span>하락장 사용법</button>
+  <button class="tab" data-t="3"><span class="n">04</span>어디에 보관?</button>
+  <button class="tab" data-t="4"><span class="n">05</span>파킹 ETF 3종</button>
+  <button class="tab" data-t="5"><span class="n">06</span>내 계획표</button>
+</nav>
+
+<!-- ============ 1. 표지 ============ -->
+<section class="sec on" id="s0">
+  <div class="cover">
+    <span class="badge">마이쭈 전용 자료집</span>
+    <h1>주식 떨어질 때<br><em>후회하지 않는</em><br>현금 관리 가이드</h1>
+    <p>“그때 현금 좀 남겨둘걸…”을<br>미리 막는 6단계 정리</p>
+    <div class="coin-row"><div class="coin">💰</div><div class="coin">📉</div><div class="coin">🅿️</div><div class="coin">📝</div></div>
+  </div>
+
+  <div class="msg-box">
+    <div class="t">이 자료집의 핵심 메시지</div>
+    <div class="m">하락장에서 기회를 잡는 건<br>‘타이밍’보다 <u>미리 정해둔 현금</u>이에요.</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>이 자료집으로 할 수 있는 것</h3>
+    <div class="tiles">
+      <div class="tile"><div class="ic">🧮</div><div class="tt">내 현금 계산</div><div class="d">투자금 대비 대기자금을 바로 계산</div></div>
+      <div class="tile"><div class="ic">🪜</div><div class="tt">분할매수 설계</div><div class="d">하락 구간별로 얼마씩 쓸지 미리 정하기</div></div>
+      <div class="tile"><div class="ic">🅿️</div><div class="tt">보관 장소 선택</div><div class="d">파킹통장 vs 파킹형 ETF 차이 이해</div></div>
+      <div class="tile"><div class="ic">✅</div><div class="tt">계획표 완성</div><div class="d">체크리스트로 내 계획을 직접 작성</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>목차</h3>
+    <div class="toc">
+      <button data-go="1"><span class="num">2</span><span><div class="tt">나는 현금이 얼마나 필요할까?</div><div class="ds">비상금 vs 투자 대기자금 · 현금 비중 계산</div></span></button>
+      <button data-go="2"><span class="num">3</span><span><div class="tt">하락장에서 현금은 어떻게 쓸까?</div><div class="ds">하락률별 분할매수 시뮬레이션</div></span></button>
+      <button data-go="3"><span class="num">4</span><span><div class="tt">투자 대기자금은 어디에 보관할까?</div><div class="ds">파킹통장 vs 파킹형 ETF</div></span></button>
+      <button data-go="4"><span class="num">5</span><span><div class="tt">파킹형 ETF 3종 비교</div><div class="ds">TIGER · KODEX · ACE 특징과 선택 기준</div></span></button>
+      <button data-go="5"><span class="num">6</span><span><div class="tt">나만의 현금 관리 계획표</div><div class="ds">직접 작성하는 체크리스트</div></span><span class="star">실전</span></button>
+    </div>
+  </div>
+
+  <div class="note">📌 이 자료집은 <b>투자 권유가 아닌 정보 정리</b>예요. 예시 숫자는 이해를 돕기 위한 가상 수치이고, 상품 정보는 기준일 이후 바뀔 수 있어요.</div>
+  <div class="nav"><button class="nx" data-go="1">시작하기 →</button></div>
+</section>
+
+<!-- ============ 2. 필요한 현금 ============ -->
+<section class="sec" id="s1">
+  <div class="kicker">STEP 02</div>
+  <h2>나는 현금이<br>얼마나 필요할까?</h2>
+  <p class="lead">“현금”을 한 덩어리로 보면 하락장에서 비상금까지 끌어 쓰게 돼요. 먼저 <b>용도별로 3칸</b>을 나눠요.</p>
+
+  <div class="card">
+    <h3><span class="dot"></span>내 돈은 3칸으로 나눠요</h3>
+    <div class="buckets">
+      <div class="bk a"><div class="ic">🏠</div><div class="nm">생활비</div><div class="d">이번 달 고정비·카드값</div></div>
+      <div class="bk b"><div class="ic">🛟</div><div class="nm">비상금</div><div class="d">실직·병원비 등 예상 못 한 지출</div></div>
+      <div class="bk c"><div class="ic">🎯</div><div class="nm">투자 대기자금</div><div class="d">하락장에서 추가 매수용</div></div>
+    </div>
+    <div class="arrow-note">⚠️ <span><b>비상금 ≠ 투자 대기자금.</b> 비상금은 주가가 떨어져도 <b>절대 투자에 쓰지 않는 돈</b>이에요. 이 자료집의 계산은 모두 생활비·비상금을 뺀 뒤의 이야기예요.</span></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>비상금 먼저 계산하기</h3>
+    <p class="muted" style="margin-bottom:8px">흔히 <b>월 생활비의 3~6개월분</b>을 기준으로 잡아요. 수입이 불규칙하거나 부양가족이 있다면 더 넉넉하게 잡는 게 안전해요.</p>
+    <div class="calc">
+      <label>내 월 생활비</label>
+      <div class="inrow"><input type="number" id="living" value="200" min="0" inputmode="numeric"><span class="unit">만 원</span></div>
+      <div class="result">
+        <div class="row"><span>3개월분 (최소)</span><span class="big" id="em3">600만 원</span></div>
+        <div class="row"><span>6개월분 (여유)</span><span class="big" id="em6">1,200만 원</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>투자 대기자금 = 투자금 × 현금 비중</h3>
+    <p class="muted" style="margin-bottom:10px">투자금 <b>1,000만 원</b> 기준 예시예요.</p>
+    <table>
+      <tr><th>현금 비중</th><th>투자 대기자금</th><th>투자 중인 돈</th></tr>
+      <tr><td><b>10%</b></td><td><b>100만 원</b></td><td>900만 원</td></tr>
+      <tr><td><b>20%</b></td><td><b>200만 원</b></td><td>800만 원</td></tr>
+      <tr><td><b>30%</b></td><td><b>300만 원</b></td><td>700만 원</td></tr>
+    </table>
+    <div class="rbar"><div class="lab"><span>10%</span><span class="muted">100만 원</span></div><div class="track"><div class="cash" style="width:10%"></div><div class="inv">투자 900</div></div></div>
+    <div class="rbar"><div class="lab"><span>20%</span><span class="muted">200만 원</span></div><div class="track"><div class="cash" style="width:20%">현금</div><div class="inv">투자 800</div></div></div>
+    <div class="rbar"><div class="lab"><span>30%</span><span class="muted">300만 원</span></div><div class="track"><div class="cash" style="width:30%">현금</div><div class="inv">투자 700</div></div></div>
+    <div class="warn" style="margin:10px 0 0"><b>권장 비율이 아니에요.</b> 10·20·30%는 계산을 돕기 위한 예시일 뿐, 적정 비중은 사람마다 달라요.</div>
+  </div>
+
+  <div class="card soft">
+    <h3><span class="dot"></span>내 숫자로 계산해보기</h3>
+    <div class="calc">
+      <label>현재 투자금 (생활비·비상금 제외)</label>
+      <div class="inrow"><input type="number" id="invest" value="1000" min="0" inputmode="numeric"><span class="unit">만 원</span></div>
+      <label>현금 비중 <span id="rlab" style="color:var(--rose-deep)">20%</span></label>
+      <input type="range" id="ratio" min="5" max="50" step="5" value="20">
+      <div class="result" style="background:#fff">
+        <div class="row"><span>투자 대기자금</span><span class="big" id="cashOut">200만 원</span></div>
+        <div class="row"><span>투자 중인 돈</span><b id="invOut">800만 원</b></div>
+        <div class="row"><span>3번 나눠 쓴다면 1회당</span><b id="perOut">약 67만 원</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>내 현금 비중, 이렇게 가늠해요</h3>
+    <table class="vs">
+      <tr><th class="l">질문</th><th>비중 ↓ 쪽</th><th>비중 ↑ 쪽</th></tr>
+      <tr><td class="l">하락 경험</td><td>-20%도 버텨봤다</td><td>-10%에도 잠 못 잔다</td></tr>
+      <tr><td class="l">추가 수입</td><td>매달 꾸준히 적립 가능</td><td>추가 납입이 어렵다</td></tr>
+      <tr><td class="l">투자 대상</td><td>지수 ETF 위주</td><td>개별 종목·테마 비중 큼</td></tr>
+      <tr><td class="l">사용 시점</td><td>10년 이상 묻어둘 돈</td><td>몇 년 안에 쓸 돈 포함</td></tr>
+    </table>
+    <p class="muted" style="margin-top:8px">오른쪽에 해당하는 게 많을수록 현금을 조금 더 남겨두는 편이 마음 편해요.</p>
+  </div>
+
+  <div class="nav"><button data-go="0">← 이전</button><button class="nx" data-go="2">다음 →</button></div>
+</section>
+
+<!-- ============ 3. 하락장 사용법 ============ -->
+<section class="sec" id="s2">
+  <div class="kicker">STEP 03</div>
+  <h2>하락장에서 현금은<br>어떻게 쓸까?</h2>
+  <p class="lead">핵심은 <b>한 번에 다 쓰지 않는 것</b>. 떨어질 때마다 정해둔 만큼만 나눠서 써요.</p>
+
+  <div class="card">
+    <h3><span class="dot"></span>대기자금 300만 원 시뮬레이션</h3>
+    <div class="toggle" id="simToggle">
+      <button class="on" data-m="eq">균등형 100·100·100</button>
+      <button data-m="up">점증형 50·100·150</button>
+    </div>
+    <div id="simRows"></div>
+    <div class="legend"><span><i style="background:var(--rose)"></i>이전까지 쓴 돈</span><span><i style="background:var(--pink)"></i>이번 매수</span><span><i style="background:var(--lav)"></i>남은 현금</span></div>
+    <div id="simTable" style="margin-top:12px"></div>
+    <p class="muted" style="margin-top:8px" id="simDesc"></p>
+  </div>
+
+  <div class="warn"><b>가상 시나리오예요.</b> 분할매수 방법을 이해하기 위한 예시일 뿐, 하락률만 보고 자동으로 사라는 뜻이 아니에요. 매수 전에는 투자 대상의 상태와 추가 하락 가능성을 꼭 확인해야 해요.</div>
+
+  <div class="card">
+    <h3><span class="dot"></span>‘기준 가격’부터 정해요</h3>
+    <div class="tiles">
+      <div class="tile"><div class="ic">📍</div><div class="tt">내 첫 매수가</div><div class="d">이미 보유 중이라면 가장 계산이 쉬움</div></div>
+      <div class="tile"><div class="ic">⛰️</div><div class="tt">최근 고점</div><div class="d">지수 ETF처럼 시장 전체 하락을 볼 때</div></div>
+    </div>
+    <p class="muted" style="margin-top:8px">어떤 기준이든 <b>미리 하나로 정해서 적어두는 것</b>이 중요해요. 하락 중에 기준을 바꾸면 계획이 흔들려요.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>추가 매수 전 3초 체크</h3>
+    <div class="pick">
+      <div><span class="q">① 왜 떨어졌지? 시장 전체 vs 이 종목만의 문제</span></div>
+      <div><span class="q">② 투자 이유(실적·성장성)가 아직 유효한가?</span></div>
+      <div><span class="q">③ 이 돈을 써도 생활비·비상금은 그대로인가?</span></div>
+    </div>
+    <p class="muted" style="margin-top:8px">하나라도 “아니오”라면 그 회차는 <b>쉬어가도 괜찮아요.</b> 현금을 남겨두는 것도 계획의 일부예요.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>하락장에서 흔한 실수</h3>
+    <div class="mistake"><div class="x">✕</div><div><div class="tt">첫 하락에 대기자금 전부 투입</div><div class="d">-10%가 바닥이 아닐 수 있어요. -30%에서 쓸 돈이 사라져요.</div></div></div>
+    <div class="mistake"><div class="x">✕</div><div><div class="tt">비상금·생활비까지 끌어오기</div><div class="d">급하게 돈이 필요할 때 손실 상태로 팔아야 할 수 있어요.</div></div></div>
+    <div class="mistake"><div class="x">✕</div><div><div class="tt">이유 확인 없이 개별 종목 물타기</div><div class="d">기업 자체에 문제가 생긴 하락이면 손실만 키울 수 있어요.</div></div></div>
+    <div class="mistake"><div class="x">✕</div><div><div class="tt">계획에 없던 빚투·레버리지</div><div class="d">하락이 길어지면 회복보다 버티는 게 먼저예요.</div></div></div>
+    <div class="mistake"><div class="x">✕</div><div><div class="tt">다 쓴 뒤 계획 없이 손 놓기</div><div class="d">현금이 0원이 된 뒤 어떻게 할지(적립 재개 등)도 미리 적어둬요.</div></div></div>
+  </div>
+
+  <div class="nav"><button data-go="1">← 이전</button><button class="nx" data-go="3">다음 →</button></div>
+</section>
+
+<!-- ============ 4. 보관 장소 ============ -->
+<section class="sec" id="s3">
+  <div class="kicker">STEP 04</div>
+  <h2>투자 대기자금은<br>어디에 보관할까?</h2>
+  <p class="lead">기다리는 동안에도 이자는 챙기고, 필요할 때는 바로 쓸 수 있어야 해요. 대표 선택지 2가지를 비교해요.</p>
+
+  <div class="buckets" style="grid-template-columns:1fr 1fr;margin-bottom:12px">
+    <div class="bk b"><div class="ic">🏦</div><div class="nm">파킹통장</div><div class="d">은행·저축은행의 수시입출금 통장</div></div>
+    <div class="bk c"><div class="ic">📊</div><div class="nm">파킹형 ETF</div><div class="d">증권 계좌에서 사고파는 초단기 금리형 ETF</div></div>
+  </div>
+
+  <div class="card" style="padding:12px">
+    <table class="vs">
+      <tr><th class="l">항목</th><th>파킹통장</th><th>파킹형 ETF</th></tr>
+      <tr><td class="l">어디서</td><td>은행 앱</td><td>증권 계좌</td></tr>
+      <tr><td class="l">수익 방식</td><td>약정 금리로 이자 지급</td><td>단기금리만큼 매일 가격이 조금씩 오름</td></tr>
+      <tr><td class="l">금리 조건</td><td>한도·우대조건 있는 경우 많음</td><td>금액 한도 없음 · 시중 단기금리 따라 변동</td></tr>
+      <tr><td class="l">예금자보호</td><td><span class="tag">O</span><br>1인당 1억 원까지</td><td><span class="tag r">X</span><br>보호 대상 아님</td></tr>
+      <tr><td class="l">현금화</td><td>즉시 이체</td><td>매도 후 <b>2영업일 뒤</b> 출금<br>(T+2)</td></tr>
+      <tr><td class="l">비용</td><td>대부분 없음</td><td>총보수 + 매매수수료 + 호가 차이</td></tr>
+      <tr><td class="l">세금</td><td>이자소득세 15.4%</td><td>매매차익에 배당소득세 15.4% (보유기간 과세)</td></tr>
+      <tr><td class="l">손실 가능성</td><td>사실상 없음</td><td>매우 낮지만 0은 아님</td></tr>
+    </table>
+  </div>
+
+  <div class="card lav">
+    <h3><span class="dot"></span>파킹형 ETF의 진짜 장점</h3>
+    <p style="font-size:13px">주식을 사려면 결국 <b>증권 계좌</b>에 돈이 있어야 해요. 파킹형 ETF는 대기자금을 증권 계좌 안에 둔 채로 이자를 받다가, 하락장에서 <b>매도 후 바로 다른 종목 매수</b>로 갈아탈 수 있어요.</p>
+    <p class="muted" style="margin-top:6px">※ 매도대금으로 같은 날 다른 종목을 사는 건 대부분 가능하지만, <b>은행으로 출금</b>은 결제일(2영업일 뒤)부터예요. 증권사별 세부 조건은 확인하세요.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>그래서 어디에 둘까?</h3>
+    <div class="pick">
+      <div><span class="q">비상금</span><span class="a">파킹통장</span></div>
+      <div><span class="q">생활비</span><span class="a">입출금 통장</span></div>
+      <div><span class="q">몇 주~몇 달 안에 쓸 투자 대기자금</span><span class="a r">파킹형 ETF</span></div>
+      <div><span class="q">아직 증권 계좌가 익숙하지 않다면</span><span class="a p">파킹통장부터</span></div>
+    </div>
+    <p class="muted" style="margin-top:8px">정답은 하나가 아니에요. 비상금은 <b>보호·즉시성</b>, 투자 대기자금은 <b>증권 계좌 안에서의 편의성</b>이 기준이에요.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>파킹형 ETF 쓸 때 주의할 점</h3>
+    <div class="mistake"><div class="x">!</div><div><div class="tt">며칠짜리 초단기 매매는 손해일 수 있어요</div><div class="d">하루 이자보다 매매수수료·호가 차이가 더 클 수 있어요.</div></div></div>
+    <div class="mistake"><div class="x">!</div><div><div class="tt">금리가 내리면 수익도 줄어요</div><div class="d">시중 단기금리를 따라가기 때문에 확정 금리가 아니에요.</div></div></div>
+    <div class="mistake"><div class="x">!</div><div><div class="tt">장 운영 시간에만 사고팔 수 있어요</div><div class="d">주말·공휴일·장 마감 후에는 매도할 수 없어요.</div></div></div>
+  </div>
+
+  <div class="nav"><button data-go="2">← 이전</button><button class="nx" data-go="4">다음 →</button></div>
+</section>
+
+<!-- ============ 5. ETF 3종 ============ -->
+<section class="sec" id="s4">
+  <div class="kicker">STEP 05</div>
+  <h2>파킹형 ETF 3종 비교</h2>
+  <p class="lead">이름은 비슷해도 <b>따라가는 금리와 운용 방식</b>이 달라요. 대표 상품 3개로 차이를 살펴봐요.</p>
+
+  <div class="warn"><b>기준일 2026.10.28</b> · 총보수 등 수치는 공시·집계 자료 기준이며 수시로 바뀔 수 있어요. 매수 전 운용사 홈페이지와 증권사 앱에서 최신 정보를 꼭 확인하세요. 특정 상품 추천이 아니에요.</div>
+
+  <div class="card">
+    <h3><span class="dot"></span>먼저, 2가지 유형 이해하기</h3>
+    <div class="tiles" style="grid-template-columns:1fr">
+      <div class="tile"><div class="tt">🏦 CD금리형 <span class="tag">TIGER · KODEX</span></div><div class="d">은행이 발행하는 91일 만기 양도성예금증서(CD) 금리를 매일 일할로 쌓아가요. 대부분 증권사와 스왑(TRS) 계약을 맺는 <b>합성형</b>이에요.</div></div>
+      <div class="tile"><div class="tt">💼 머니마켓형 <span class="tag r">ACE</span></div><div class="d">만기가 짧은 기업어음(CP)·단기사채·CD 등을 <b>직접 담는 실물형</b>이에요. CD금리보다 조금 더 높은 수익을 노리는 대신, 담은 채권의 신용위험이 있어요.</div></div>
+    </div>
+  </div>
+
+  <div class="etf">
+    <div class="hd"><div><div class="nm">TIGER CD금리투자KIS(합성)</div><div class="cd">357870 · 미래에셋자산운용</div></div><span class="type">CD금리 · 합성</span></div>
+    <div class="kv"><div><div class="k">총보수</div><div class="v">0.03%</div></div><div><div class="k">분배</div><div class="v">연 1회</div></div><div><div class="k">상장</div><div class="v">2020</div></div></div>
+    <ul>
+      <li>국내 최초 CD금리형 ETF로 운용 기간이 가장 길어요</li>
+      <li>CD 91일물 금리를 매일 복리로 반영하는 구조</li>
+      <li>분배가 적어 이자가 가격에 쌓이는 형태에 가까워요</li>
+      <li class="c">합성형이라 스왑 상대 증권사의 거래상대방 위험이 있어요</li>
+    </ul>
+  </div>
+
+  <div class="etf k">
+    <div class="hd"><div><div class="nm">KODEX CD금리액티브(합성)</div><div class="cd">459580 · 삼성자산운용</div></div><span class="type">CD금리 · 합성</span></div>
+    <div class="kv"><div><div class="k">총보수</div><div class="v">0.02%</div></div><div><div class="k">분배</div><div class="v">월배당</div></div><div><div class="k">상장</div><div class="v">2023</div></div></div>
+    <ul>
+      <li>파킹형 ETF 중 순자산 규모가 가장 큰 편(7조 원대)이라 거래가 활발해요</li>
+      <li>2025년 7월부터 매달 분배금을 주는 월배당으로 전환</li>
+      <li>1주 가격이 약 100만 원대라 소액은 매수 단위가 커요</li>
+      <li class="c">월 분배금마다 15.4% 원천징수 (일반 계좌 기준)</li>
+    </ul>
+  </div>
+
+  <div class="etf a">
+    <div class="hd"><div><div class="nm">ACE 머니마켓액티브</div><div class="cd">487340 · 한국투자신탁운용</div></div><span class="type">머니마켓 · 실물</span></div>
+    <div class="kv"><div><div class="k">총보수</div><div class="v">0.05%</div></div><div><div class="k">분배</div><div class="v">연 1회</div></div><div><div class="k">상장</div><div class="v">2024</div></div></div>
+    <ul>
+      <li>잔존만기 3개월 이하 단기채·CP·CD를 직접 담아 운용</li>
+      <li>9월 23일 기준 연 환산 만기수익률(YTM) 3.74%로 CD 91일물 금리(3.21%)보다 높았어요</li>
+      <li>순자산 1조 원 돌파(2026.9) — 3종 중 규모는 가장 작아요</li>
+      <li class="c">편입 채권 발행사의 신용위험, 보수가 상대적으로 높은 편</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>총보수 한눈에 (낮을수록 좋음)</h3>
+    <div class="fee">
+      <div class="r"><span>KODEX</span><div class="t"><div class="f" style="width:40%"></div></div><span>0.02%</span></div>
+      <div class="r"><span>TIGER</span><div class="t"><div class="f" style="width:60%"></div></div><span>0.03%</span></div>
+      <div class="r"><span>ACE</span><div class="t"><div class="f" style="width:100%"></div></div><span>0.05%</span></div>
+    </div>
+    <p class="muted">총보수 외 기타비용까지 포함한 <b>합성총보수(TER)</b>는 KODEX 0.03%, TIGER 0.05%, ACE 0.07% 수준이에요. 실제 부담은 TER이나 실부담비용으로 비교하는 게 더 정확해요.</p>
+  </div>
+
+  <div class="card" style="padding:12px">
+    <h3 style="padding:4px 4px 0"><span class="dot"></span>5가지 기준으로 비교</h3>
+    <table class="vs">
+      <tr><th class="l">기준</th><th>CD금리형<br><span class="small">TIGER·KODEX</span></th><th>머니마켓형<br><span class="small">ACE</span></th></tr>
+      <tr><td class="l">추종 금리</td><td>CD 91일물</td><td>CD·KOFR 등 초단기채 금리 + α</td></tr>
+      <tr><td class="l">운용 방식</td><td>합성(스왑)</td><td>실물 채권 편입</td></tr>
+      <tr><td class="l">총보수</td><td>0.02~0.03%</td><td>0.05%</td></tr>
+      <tr><td class="l">현금화</td><td colspan="2">공통: 매도 후 2영업일 뒤 출금 · 장중에만 매도 가능</td></tr>
+      <tr><td class="l">손실 가능성</td><td>스왑 상대방 위험 (매우 낮음)</td><td>편입 채권 신용위험 (낮음)</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>나에게 맞는 선택 기준</h3>
+    <div class="pick">
+      <div><span class="q">보수가 가장 낮고 거래량 많은 걸 원해요</span><span class="a">CD금리형</span></div>
+      <div><span class="q">매달 분배금을 받고 싶어요</span><span class="a">월배당형</span></div>
+      <div><span class="q">분배 없이 가격에 쌓이는 게 편해요</span><span class="a">연분배형</span></div>
+      <div><span class="q">CD금리보다 조금 더 높은 수익을 원해요</span><span class="a r">머니마켓형</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>매수 전 확인 4가지</h3>
+    <div class="tiles">
+      <div class="tile"><div class="ic">💸</div><div class="tt">비용</div><div class="d">총보수보다 TER·실부담비용</div></div>
+      <div class="tile"><div class="ic">📈</div><div class="tt">거래량</div><div class="d">거래가 많을수록 호가 차이가 작아요</div></div>
+      <div class="tile"><div class="ic">⚖️</div><div class="tt">괴리율</div><div class="d">시장가와 기준가(NAV) 차이가 작은지</div></div>
+      <div class="tile"><div class="ic">🗂️</div><div class="tt">계좌</div><div class="d">ISA·연금계좌에서 매수 가능한지</div></div>
+    </div>
+  </div>
+
+  <div class="card sites">
+    <h3><span class="dot"></span>최신 정보 확인하는 곳</h3>
+    <a href="https://www.tigeretf.com" target="_blank" rel="noopener">TIGER ETF <span>미래에셋 공식</span></a>
+    <a href="https://www.samsungfund.com/etf/main.do" target="_blank" rel="noopener">KODEX <span>삼성자산운용 공식</span></a>
+    <a href="https://www.aceetf.co.kr" target="_blank" rel="noopener">ACE ETF <span>한국투자신탁운용 공식</span></a>
+    <a href="https://data.krx.co.kr" target="_blank" rel="noopener">KRX 정보데이터시스템 <span>시세·순자산</span></a>
+  </div>
+
+  <div class="nav"><button data-go="3">← 이전</button><button class="nx" data-go="5">다음 →</button></div>
+</section>
+
+<!-- ============ 6. 계획표 ============ -->
+<section class="sec" id="s5">
+  <div class="kicker">STEP 06 · 실전</div>
+  <h2>나만의<br>현금 관리 계획표</h2>
+  <p class="lead">읽고 끝내지 말고 <b>직접 채워보세요.</b> 입력한 내용은 이 기기에 저장돼요. 다 채우면 캡처해서 보관!</p>
+
+  <div class="card">
+    <div class="cl-head"><h3 style="margin:0"><span class="dot"></span>투자 대기자금 체크리스트</h3><span class="cl-count" id="clCount">0/5</span></div>
+    <div class="prog"><div id="clBar"></div></div>
+    <label class="chk"><input type="checkbox"><span class="box">✓</span><span><div class="tt">생활비와 비상금은 따로 확보했어</div><div class="d">월 생활비 3~6개월분, 투자 계좌와 분리</div></span></label>
+    <label class="chk"><input type="checkbox"><span class="box">✓</span><span><div class="tt">내 투자 대기자금 목표를 정했어</div><div class="d">투자금 × 현금 비중 = 금액으로 적어두기</div></span></label>
+    <label class="chk"><input type="checkbox"><span class="box">✓</span><span><div class="tt">파킹통장과 파킹형 ETF의 차이를 이해했어</div><div class="d">예금자보호·현금화 시점·비용 차이</div></span></label>
+    <label class="chk"><input type="checkbox"><span class="box">✓</span><span><div class="tt">추가 매수할 자산과 조건을 정했어</div><div class="d">어떤 종목을, 기준가 대비 몇 % 하락에서</div></span></label>
+    <label class="chk"><input type="checkbox"><span class="box">✓</span><span><div class="tt">하락해도 무리하지 않을 금액으로 계획했어</div><div class="d">전부 써도 생활이 흔들리지 않는 금액</div></span></label>
+    <div class="ready" id="ready">준비 중… 하나씩 체크해봐요</div>
+  </div>
+
+  <div class="card soft plan">
+    <h3><span class="dot"></span>내 현금 관리 계획 적기</h3>
+    <label>① 비상금 (따로 보관)</label>
+    <input type="text" data-k="em" placeholder="예) 600만 원 · ○○은행 파킹통장">
+    <label>② 투자금 / 현금 비중 / 투자 대기자금</label>
+    <div class="grid3">
+      <input type="text" data-k="inv" placeholder="1,000만">
+      <input type="text" data-k="rat" placeholder="20%">
+      <input type="text" data-k="cash" placeholder="200만">
+    </div>
+    <label>③ 투자 대기자금 보관처</label>
+    <select data-k="where">
+      <option value="">선택하기</option>
+      <option>파킹통장</option>
+      <option>파킹형 ETF (CD금리형)</option>
+      <option>파킹형 ETF (머니마켓형)</option>
+      <option>CMA</option>
+      <option>나눠서 보관</option>
+    </select>
+    <label>④ 추가 매수할 자산</label>
+    <input type="text" data-k="asset" placeholder="예) S&P500 ETF">
+    <label>⑤ 기준 가격</label>
+    <input type="text" data-k="base" placeholder="예) 최근 고점 / 내 첫 매수가 ○○원">
+    <label>⑥ 분할매수 계획 (하락률 · 금액)</label>
+    <div class="rowl"><b>1차</b><input type="text" data-k="d1" placeholder="-10%"><input type="text" data-k="m1" placeholder="100만 원"></div>
+    <div class="rowl"><b>2차</b><input type="text" data-k="d2" placeholder="-20%"><input type="text" data-k="m2" placeholder="100만 원"></div>
+    <div class="rowl"><b>3차</b><input type="text" data-k="d3" placeholder="-30%"><input type="text" data-k="m3" placeholder="100만 원"></div>
+    <label>⑦ 현금을 다 쓴 뒤에는?</label>
+    <input type="text" data-k="after" placeholder="예) 매달 적립식으로 다시 현금 채우기">
+    <button class="btn main" id="makeCard">📇 내 계획 카드 만들기</button>
+    <button class="btn ghost" id="resetBtn">전체 지우기</button>
+  </div>
+
+  <div id="cardWrap">
+    <div class="mycard" id="myCard"></div>
+    <button class="btn sub" id="saveCard">📥 이미지로 저장하기</button>
+    <p class="save-tip" id="saveTip">앨범에 저장해두고, 하락장이 오면 이 카드부터 꺼내 보세요</p>
+    <img id="savedImg" alt="내 현금 관리 계획 카드">
+  </div>
+
+  <div class="card">
+    <h3><span class="dot"></span>계획은 이렇게 유지해요</h3>
+    <div class="tiles">
+      <div class="tile"><div class="ic">🗓️</div><div class="tt">분기 1번 점검</div><div class="d">투자금이 늘었으면 대기자금도 다시 계산</div></div>
+      <div class="tile"><div class="ic">🔁</div><div class="tt">쓴 만큼 다시 채우기</div><div class="d">반등 후 적립으로 현금 비중 회복</div></div>
+      <div class="tile"><div class="ic">📸</div><div class="tt">캡처해서 고정</div><div class="d">하락장에선 감정 대신 계획표 보기</div></div>
+      <div class="tile"><div class="ic">✍️</div><div class="tt">매수 후 기록</div><div class="d">날짜·가격·이유를 한 줄로 남기기</div></div>
+    </div>
+  </div>
+
+  <div class="nav"><button data-go="4">← 이전</button><button class="nx" data-go="0">처음으로 ↺</button></div>
+</section>
+
+<footer>
+  <b>쭈미의 재테크</b> · @jjumi_s2<br>
+  자료 기준일 2026.10.28 · 상품 정보는 운용사 공시·ETF 집계 자료 참고<br>
+  본 자료는 투자 권유가 아닌 정보 제공 목적이며,<br>투자 판단과 책임은 본인에게 있어요.
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+(function(){
+  var secs=document.querySelectorAll('.sec'), tabs=document.querySelectorAll('.tab');
+  function go(i){
+    i=+i;
+    secs.forEach(function(s,k){s.classList.toggle('on',k===i)});
+    tabs.forEach(function(t,k){t.classList.toggle('on',k===i)});
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){go(t.dataset.t)})});
+  document.querySelectorAll('[data-go]').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.go)})});
+
+  function won(n){
+    n=Math.round(n);
+    if(n>=10000){var e=Math.floor(n/10000),r=n%10000;return e+'억'+(r?' '+r.toLocaleString()+'만':'')+' 원'}
+    return n.toLocaleString()+'만 원';
+  }
+
+  // emergency
+  var liv=document.getElementById('living');
+  function em(){var v=+liv.value||0;document.getElementById('em3').textContent=won(v*3);document.getElementById('em6').textContent=won(v*6)}
+  liv.addEventListener('input',em);em();
+
+  // ratio calc
+  var inv=document.getElementById('invest'),rat=document.getElementById('ratio');
+  function rc(){
+    var v=+inv.value||0,r=+rat.value;
+    document.getElementById('rlab').textContent=r+'%';
+    var c=v*r/100;
+    document.getElementById('cashOut').textContent=won(c);
+    document.getElementById('invOut').textContent=won(v-c);
+    document.getElementById('perOut').textContent='약 '+won(c/3);
+  }
+  inv.addEventListener('input',rc);rat.addEventListener('input',rc);rc();
+
+  // simulation
+  var plans={eq:[100,100,100],up:[50,100,150]};
+  var desc={eq:'매 구간 같은 금액을 써요. 계산이 쉽고 어디가 바닥이든 평균적으로 대응할 수 있어요.',up:'더 많이 떨어질수록 더 많이 사요. 깊은 하락에 대비하지만, -10~-20%에서 반등하면 쓴 돈이 적어요.'};
+  function sim(m){
+    var p=plans[m],tot=300,used=0,rows='',tb='<table><tr><th>기준가 대비</th><th>매수 금액</th><th>남은 현금</th></tr>';
+    ['-10%','-20%','-30%'].forEach(function(d,i){
+      var prev=used;used+=p[i];var left=tot-used;
+      rows+='<div class="step"><div class="drop">'+d+'<span>'+(i+1)+'차</span></div><div class="bars"><div class="meta"><span>'+p[i]+'만 원 매수</span><span>남은 현금 '+(left?left+'만 원':'0원')+'</span></div><div class="track"><div class="used" style="width:'+(prev/tot*100)+'%"></div><div class="now" style="width:'+(p[i]/tot*100)+'%"></div></div></div></div>';
+      tb+='<tr><td><b>'+d+'</b></td><td>'+p[i]+'만 원</td><td>'+(left?left+'만 원':'<b>0원</b>')+'</td></tr>';
+    });
+    document.getElementById('simRows').innerHTML=rows;
+    document.getElementById('simTable').innerHTML=tb+'</table>';
+    document.getElementById('simDesc').textContent=desc[m];
+  }
+  document.querySelectorAll('#simToggle button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#simToggle button').forEach(function(x){x.classList.toggle('on',x===b)});
+      sim(b.dataset.m);
+    });
+  });
+  sim('eq');
+
+  // storage helpers
+  var KEY='jjumi-cash-plan-v1';
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
+  function save(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+  var st=load();
+
+  // checklist
+  var chks=document.querySelectorAll('.chk');
+  function upd(){
+    var n=0;
+    chks.forEach(function(c,i){var on=c.querySelector('input').checked;c.classList.toggle('done',on);if(on)n++});
+    document.getElementById('clCount').textContent=n+'/5';
+    document.getElementById('clBar').style.width=(n/5*100)+'%';
+    var r=document.getElementById('ready');
+    r.classList.toggle('go',n===5);
+    r.textContent=n===5?'🎉 준비 완료! 이제 하락장도 계획대로':(n===0?'준비 중… 하나씩 체크해봐요':'준비 중… '+(5-n)+'개 남았어요');
+  }
+  chks.forEach(function(c,i){
+    var inp=c.querySelector('input');
+    if(st.chk&&st.chk[i])inp.checked=true;
+    inp.addEventListener('change',function(){
+      st.chk=Array.prototype.map.call(chks,function(x){return x.querySelector('input').checked});
+      save(st);upd();
+    });
+  });
+  upd();
+
+  // plan fields
+  var fields=document.querySelectorAll('.plan [data-k]');
+  fields.forEach(function(f){
+    if(st.f&&st.f[f.dataset.k])f.value=st.f[f.dataset.k];
+    f.addEventListener('input',function(){st.f=st.f||{};st.f[f.dataset.k]=f.value;save(st)});
+    f.addEventListener('change',function(){st.f=st.f||{};st.f[f.dataset.k]=f.value;save(st)});
+  });
+  document.getElementById('resetBtn').addEventListener('click',function(){
+    if(!confirm('입력한 계획과 체크를 모두 지울까요?'))return;
+    st={};save(st);
+    fields.forEach(function(f){f.value=''});
+    chks.forEach(function(c){c.querySelector('input').checked=false});
+    upd();
+    document.getElementById('cardWrap').classList.remove('on');
+  });
+
+  // plan card
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function val(k){var f=document.querySelector('.plan [data-k="'+k+'"]');var v=f?f.value.trim():'';return v?esc(v):'<span style="color:#C9B7C3">미정</span>'}
+  function buildCard(){
+    var n=Array.prototype.filter.call(chks,function(c){return c.querySelector('input').checked}).length;
+    var d=new Date(),ds=d.getFullYear()+'.'+(d.getMonth()+1)+'.'+d.getDate();
+    var steps='';
+    [1,2,3].forEach(function(i){steps+='<div class="mc-step"><span class="no">'+i+'차</span><span>기준가 대비 '+val('d'+i)+'</span><span class="amt">'+val('m'+i)+'</span></div>'});
+    document.getElementById('myCard').innerHTML=
+      '<div class="mc-top"><span class="mc-brand">@jjumi_s2 · 쭈미의 재테크</span><span class="mc-date">'+ds+' 작성</span></div>'+
+      '<div class="mc-title">하락장에서 흔들리지 않을<br><em>나의 현금 관리 계획</em></div>'+
+      '<div class="mc-grid">'+
+        '<div class="mc-box wide"><div class="k">🛟 비상금 (투자에 안 씀)</div><div class="v">'+val('em')+'</div></div>'+
+        '<div class="mc-box"><div class="k">투자금</div><div class="v">'+val('inv')+'</div></div>'+
+        '<div class="mc-box"><div class="k">현금 비중</div><div class="v">'+val('rat')+'</div></div>'+
+        '<div class="mc-box"><div class="k">🎯 투자 대기자금</div><div class="v hl2">'+val('cash')+'</div></div>'+
+        '<div class="mc-box"><div class="k">🅿️ 보관처</div><div class="v">'+val('where')+'</div></div>'+
+        '<div class="mc-box wide"><div class="k">📌 추가 매수할 자산 · 기준 가격</div><div class="v">'+val('asset')+' · '+val('base')+'</div></div>'+
+      '</div>'+
+      '<div class="mc-steps"><div class="k">🪜 분할매수 계획</div>'+steps+'</div>'+
+      '<div class="mc-grid"><div class="mc-box wide"><div class="k">🔁 현금을 다 쓴 뒤에는</div><div class="v">'+val('after')+'</div></div></div>'+
+      '<div class="mc-chk"><span class="n">'+n+'/5</span><span class="t">'+(n===5?'체크리스트 완료! 감정 말고 계획대로 움직이기':'체크리스트 진행 중 · 남은 항목도 채워보기')+'</span></div>'+
+      '<div class="mc-foot">본 계획은 개인 기록용이며 투자 권유가 아닙니다</div>';
+    document.getElementById('savedImg').style.display='none';
+    document.getElementById('saveTip').textContent='앨범에 저장해두고, 하락장이 오면 이 카드부터 꺼내 보세요';
+    var w=document.getElementById('cardWrap');w.classList.add('on');
+    w.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  document.getElementById('makeCard').addEventListener('click',buildCard);
+
+  document.getElementById('saveCard').addEventListener('click',function(){
+    var btn=this,tip=document.getElementById('saveTip');
+    if(typeof html2canvas!=='function'){tip.textContent='이미지 저장을 불러오지 못했어요. 카드를 화면 캡처해주세요!';return}
+    btn.disabled=true;btn.textContent='이미지 만드는 중…';
+    html2canvas(document.getElementById('myCard'),{scale:3,backgroundColor:null,useCORS:true}).then(function(cv){
+      var url=cv.toDataURL('image/png');
+      var a=document.createElement('a');a.href=url;a.download='쭈미_현금관리계획.png';
+      document.body.appendChild(a);a.click();a.remove();
+      var img=document.getElementById('savedImg');img.src=url;img.style.display='block';
+      tip.innerHTML='저장이 안 됐다면 아래 이미지를 <b>길게 눌러</b> ‘사진에 저장’ 해주세요 👇';
+    }).catch(function(){tip.textContent='이미지 저장에 실패했어요. 카드를 화면 캡처해주세요!'})
+    .then(function(){btn.disabled=false;btn.textContent='📥 이미지로 저장하기'});
+  });
+})();
+</script>
+</body>
+</html>
